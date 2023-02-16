@@ -1,0 +1,51 @@
+header {
+    display: table;
+    background-color: #264653;
+    position: fixed;
+    vertical-align: middle;
+    top: 0px;
+    right: 0px;
+    margin: 0px;
+    border-width: 0px;
+    width: 100vw;
+    height: 10vh;
+}
+
+.hbutton {
+    color:#F4A261;
+    background-color: #1b323a;
+    top: 10px;
+}
+
+.title {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 35px;
+    text-align: left;
+    color: #F4A261;
+    padding-left: 10px;
+    padding-right: 40px;
+}
+
+body {
+    background-color: #B9E2E0;
+
+}
+
+h2 {
+    color: #264653;
+    text-align: center;
+}
+
+p {
+    color: #1b323a;
+    font-size: 20px;
+    text-align:left;
+    margin-left: 20px;
+}
+
+
+footer {
+    /* same bar as top, diff color? */
+}
+
