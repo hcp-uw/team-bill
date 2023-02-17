@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="billstats.css">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Vs. Bill Statistics</title>
@@ -10,22 +10,39 @@
     <style>
         table, th, td {
           border:1px solid black;
+          font-size: 2rem;
         }
+        td:hover {background-color: coral;}
     </style>
 
-    <body>
-        <h2>Leaderboards</h2>
-        <table style="width:100%"> 
-            <tr>
-                <td>Name 1</td>
-                <td>Name 2</td>
-                <td>Name 3</td>
-            </tr>
-            <tr>
-                <td>This is placement</td>
-                <td>This is another placement</td>
-                <td>This is a third placement</td>
-            </tr>
-        </table>
-    </body>
+<body>
+
+    <h3>
+    <script>
+        for (var i = 1; i < 10; i++) { 
+        var str = i + ') String of text '
+        span = document.createElement('span'); 
+    
+        span.innerHTML = str; 
+        
+        var body = document.getElementsByTagName('body')[0]; 
+        body.appendChild(span); 
+    } 
+    </script>
+    </h3>
+
+    <div>
+        <h1>Question #1</h1>
+        <h2>Choose your answer</h2>
+    </div>
+</body>
+<table width="100%">
+    <tr>
+      <td>Bill's answer #1</td>
+      <td>Friend's answer #1</td>
+    </tr>
+  </table>
+  <div>
+    <h3>You choose (bill's/friends's) answer!</h3>
+  </div>
 </html>

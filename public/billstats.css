@@ -1,0 +1,32 @@
+body {
+    background-color: #B9E2E0;
+    font-size: 0;
+}
+
+h1 {
+    font-size: 2.5rem;
+    text-align: center;
+    color: #000000;
+}
+
+h2 {
+    font-size: 2rem;
+    text-align: center;
+    color: #264653;
+}
+
+h3 {
+    font-size: 1rem;
+    text-align: center;
+    color: #ff3a3a;
+}
+
+tr {
+    text-align: center;
+    color: #264653;
+}
+
+span {
+    font-size: 1rem;
+    color: #FFFF;
+}
