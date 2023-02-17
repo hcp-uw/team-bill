@@ -1,41 +1,37 @@
-header {
-    display: table;
+.fixed-header, .fixed-footer {
+    padding: 15px 0;
     background-color: #264653;
     position: fixed;
-    vertical-align: middle;
-    top: 0px;
-    right: 0px;
-    margin: 0px;
-    border-width: 0px;
-    width: 100vw;
-    height: 10vh;
+    width: 100%;
+    z-index: 9999;
+    height: 40px;
+    left: 0;
+}
+
+.fixed-header {
+    top: 0;
+}
+
+.fixed-footer {
+    bottom: 0;
 }
 
 .hbutton {
     color:#F4A261;
     background-color: #1b323a;
     top: 10px;
+    right: 0;
 }
 
 .title {
-    display: table-cell;
     vertical-align: middle;
-    font-size: 35px;
-    text-align: left;
+    font-size: 2rem;
+    text-align: center;
     color: #F4A261;
-    padding-left: 10px;
-    padding-right: 40px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 body {
     background-color: #B9E2E0;
-
-}
-
-footer {
-    background-color: #264653;
-    overflow: hidden;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
 }
