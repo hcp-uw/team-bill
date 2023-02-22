@@ -16,12 +16,27 @@
     bottom: 0;
 }
 
-.hbutton {
+.hbutton, .fbutton {
+    width: 6rem;
+    height: 2rem;
+    font-size: 15px;
+    padding: 2px;
     color:#F4A261;
     background-color: #1b323a;
-    top: 0;
-    right: 0;
     z-index: 101;
+    position: absolute;
+}
+
+.hbutton {
+    right: 0;
+    top: 0;
+    margin-top: 1rem;
+    margin-right: 3rem;
+}
+
+.fbutton {
+    left: 0;
+    bottom: 0;
 }
 
 .title {
