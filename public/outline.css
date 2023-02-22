@@ -3,7 +3,7 @@
     background-color: #264653;
     position: fixed;
     width: 100%;
-    z-index: 9999;
+    z-index: 100; /*How items are stacked on page*/
     height: 40px;
     left: 0;
 }
@@ -19,8 +19,9 @@
 .hbutton {
     color:#F4A261;
     background-color: #1b323a;
-    top: 10px;
+    top: 0;
     right: 0;
+    z-index: 101;
 }
 
 .title {
@@ -33,5 +34,7 @@
 }
 
 body {
+    padding-top: 50px;
     background-color: #B9E2E0;
+
 }
