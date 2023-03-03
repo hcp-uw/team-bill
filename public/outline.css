@@ -43,11 +43,12 @@
 
 .title {
     vertical-align: middle;
-    font-size: 2rem;
+    font-size: 3rem;
     text-align: center;
     color: #F4A261;
     padding-left: 0.4rem;
     padding-right: 0.4rem;
+    margin-top: 0;
 }
 
 body {
