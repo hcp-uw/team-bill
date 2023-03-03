@@ -1,5 +1,5 @@
 .fixed-header, .fixed-footer {
-    padding: 15px 0;
+    padding: 1rem 0;
     background-color: #264653;
     position: fixed;
     width: 100%;
@@ -34,9 +34,11 @@
     margin-right: 3rem;
 }
 
-.fbutton {
+.fbutton { /*may be more specialized, depends on what is in footer*/
     left: 0;
     bottom: 0;
+    margin-bottom: 1rem;
+    margin-right: 3rem;
 }
 
 .title {
