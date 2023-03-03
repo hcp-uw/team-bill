@@ -1,10 +1,10 @@
 .fixed-header, .fixed-footer {
-    padding: 1rem 0;
+    padding: 1rem 0; /* 1rem = 16px */
     background-color: #264653;
     position: fixed;
     width: 100%;
     z-index: 100; /*How items are stacked on page*/
-    height: 40px;
+    height: 2.4rem;
     left: 0;
 }
 
@@ -19,8 +19,8 @@
 .hbutton, .fbutton {
     width: 6rem;
     height: 2rem;
-    font-size: 15px;
-    padding: 2px;
+    font-size: 1rem;
+    padding: 0.08rem;
     color:#F4A261;
     background-color: #1b323a;
     z-index: 101;
@@ -46,12 +46,12 @@
     font-size: 2rem;
     text-align: center;
     color: #F4A261;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
 }
 
 body {
-    padding-top: 50px;
+    padding-top: 3rem;
     background-color: #B9E2E0;
 
 }
