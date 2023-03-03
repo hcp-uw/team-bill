@@ -6,7 +6,7 @@ body {
 h1 {
     font-size: 2.5rem;
     text-align: center;
-    color: #000000;
+    color: #264653;
 }
 
 h2 {
@@ -18,7 +18,7 @@ h2 {
 h3 {
     font-size: 1rem;
     text-align: center;
-    color: #ff3a3a;
+    color: #264653;
 }
 
 tr {
@@ -29,4 +29,9 @@ tr {
 span {
     font-size: 1rem;
     color: #FFFF;
+}
+
+button {
+    background-color: #F4A261;
+    width: 50vw;
 }
