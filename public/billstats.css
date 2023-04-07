@@ -33,5 +33,11 @@ span {
 
 button {
     background-color: #F4A261;
-    width: 50vw;
+    width: 45vw;
+    height: 10vh;
+}
+
+#ansBtnLeft{
+    background-color: #F4A261;
+    
 }
