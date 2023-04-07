@@ -38,7 +38,14 @@
     left: 0;
     bottom: 0;
     margin-bottom: 1rem;
-    margin-right: 3rem;
+}
+
+.fbutt1 {
+    margin-left: 3rem;
+}
+
+.fbutt2 {
+    margin-left: 12rem;
 }
 
 .title {
@@ -56,3 +63,18 @@ body {
     background-color: #B9E2E0;
 
 }
+
+/* <footer class="fixed-footer">
+            <div> 
+                <a href = "aboutus.html">
+                    <button class = "fbutton fbutt1">About us</button>
+                </a>
+
+                <a href = "index.html">
+                    <button class = "fbutton fbutt2">Home</button>
+                </a>
+            </div>
+        </footer>
+How make standard footer buttons
+*/
+
