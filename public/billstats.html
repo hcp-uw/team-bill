@@ -7,42 +7,28 @@
     <title>Vs. Bill Statistics</title>
     </head>
 
-
-
 <body>
-
-  <!-- <div class="topnav" style = "position:relative; top:-9px; left: -10px">
-    <a href ='index.html'>Home</a>
-    <a class="active" href='VsBillTitlePage.html'>Vs.Bill</a>
-    <a href='vsyourself.html'>Vs. Yourself</a>
-    <a href="#about">About Us</a>
-  </div> -->
-
-
-    <h1>Question #1</h1>
-    <h2>Choose your answer</h2>
-
-
-
+  <script src = billstats.js></script>
     <div>
-      <button type="billButton" onclick="bill()">
-        <h2>
-          Bill's answer #1
-        </h2>
-      </button>
-      <button type = "friendButton" onclick="friend()">
-        <h2>
-          Friend's answer #1
-        </h2>
-      </button>
+        <h1>Question #1</h1>
+        <h2>Choose your answer</h2>
     </div>
 
+    <button type="billButton" onclick="bill()">
+      <h2>
+        Bill's answer #1
+      </h2>
+    </button>
+    <button type = "friendButton" onclick="friend()">
+      <h2>
+        Friend's answer #1
+      </h2>
+    </button>
   
   <div> 
-    <h3 id = "answer1">
+    <h3>
+      <p id = "answer1"></p>
     </h3>
   </div>
 </body>
 </html>
-
-<script src = billstats.js></script>

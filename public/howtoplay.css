@@ -1,5 +1,5 @@
 .header {
-    padding-top: 4rem;
+    padding-top: 5rem;
     color: #264653;
     text-align: center;
     font-size: 2rem;
@@ -10,8 +10,4 @@ p {
     font-size: 1.5rem;
     text-align:justify;
     margin-left: 0.5rem;
-}
-
-p.last {
-    padding-bottom: 5rem;
 }

@@ -3,12 +3,22 @@
     <head>
         <link rel="stylesheet" href="outline.css" >
         <link rel="stylesheet" href="howtoplay.css">
+        <link rel="icon" href="https://cdn0.iconfinder.com/data/icons/social-glyph/30/spotify-480.png">
         <meta charset="utf-8">
         <meta name="Description" content="How to play Bill!">
         <title>How to Play!</title>
+        
     </head>
     <body>
-        <header class="fixed-header">
+        <div class="topnav" style = "position:relative; top:-60px; left: -10px">
+            <a class="active" href='index.html'>Home</a>
+            <a href='VsBillTitlePage.html'>Vs. Bill</a>
+            <a href='VsYourselfTitlePage.html'>Vs. Yourself</a>
+            <a href="#about">About Us</a>
+          </div> 
+        
+        <!--
+       <header class="fixed-header">
             <div class="title">How to Play!</div>
             <div>
                 <a href="gameintro.html">
@@ -16,28 +26,20 @@
                 </a>
             </div>
         </header>
+        -->
+    
         <main>
-            <!-- image of Bill centered left, wrap text-->
+            <script scr="howtoplay.js"></script>
+            <!-- image of bil centered left, wrap text-->
             <div class="header">Vs. Yourself:</div>
-                <p id="yourself"></p>
+                <p>You will be asked 10 questions about your personal listening
+                    habits on Spotify. These questions are entirely objective.
+                    Bill will present you with your results at the end of the round. </p>
             <div class="header">Vs. Bill:</div>
-                <p id="bill"></p>
-            <div class="header">Vs. Friends</div>
-                <p class="last" id="friends"></p>
-             <script src=howtoplay.js></script>
+                <p>Explanation of game mode here!</p>
+            <div class="header">Vs. Friends</dov>
+                <p id="friends"></p>
         </main>
-        <footer class="fixed-footer">
-            <div> 
-                <a href = "aboutus.html">
-                    <button class = "fbutton fbutt1">About us</button>
-                </a>
-
-                <a href = "index.html">
-                    <button class = "fbutton fbutt2">Home</button>
-                </a>
-            </div>
-        </footer>
+        
     </body>
-
 </html>
-<script src= howtoplay.js ></script>

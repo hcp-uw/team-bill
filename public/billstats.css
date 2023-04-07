@@ -15,6 +15,7 @@ h2 {
     color: #264653;
 }
 
+
 h3 {
     font-size: 1rem;
     text-align: center;
@@ -33,11 +34,6 @@ span {
 
 button {
     background-color: #F4A261;
-    width: 45vw;
-    height: 10vh;
+    width: 50vw;
 }
 
-#ansBtnLeft{
-    background-color: #F4A261;
-    
-}
