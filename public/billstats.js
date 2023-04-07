@@ -16,10 +16,7 @@ for (let i = 1; i < 21; i+=2) {
     var btnLeft = document.createElement("button");
     var btnRight = document.createElement("button");
     
-    btnLeft.setAttribute("id", "ansBtnLeft");
-    btnRight.setAttribute("id", "ansBtnRight");
-    
-    var resultDiv = document.createTextNode("Result: " + j);
+    var resultDivText = document.createTextNode("Result: " + j);
     var btnLeftText = document.createTextNode("Answer number: " + i);
     var btnRightText = document.createTextNode("Answer number: " + (i+1));
     var questionDivText = document.createTextNode("Question #" + j);
@@ -35,5 +32,11 @@ for (let i = 1; i < 21; i+=2) {
     document.body.appendChild(textDiv);
     
     j+=1;
+
+    btnLeft.addEventListener("click", friend());
+    
 }
+
+
+
 
