@@ -7,20 +7,20 @@
     <title>Vs. Bill Statistics</title>
     </head>
 
-<body>
+<body onload = loadQuestions()>
   <script src = billstats.js></script>
     <div>
-        <h1>Question #1</h1>
+        <h1 id = "question1">Question #1</h1>
         <h2>Choose your answer</h2>
     </div>
 
-    <button type="billButton" onclick="bill()">
-      <h2>
+    <button type="billButton" onclick="bill(1)">
+      <h2 id = "btnAnswer1">
         Bill's answer #1
       </h2>
     </button>
-    <button type = "friendButton" onclick="friend()">
-      <h2>
+    <button type = "friendButton" onclick="friend(1)">
+      <h2 id = "btnAnswer2">
         Friend's answer #1
       </h2>
     </button>
@@ -29,6 +29,216 @@
     <h3>
       <p id = "answer1"></p>
     </h3>
+  </div>  
+
+
+    <div>
+        <h1 id = "question2">Question #2</h1>
+        <h2>Choose your answer</h2>
+    </div>
+
+    <button type="billButton" onclick="bill(2)">
+      <h2 id = "btnAnswer3">
+        Bill's answer #2 
+      </h2>
+    </button>
+    <button type = "friendButton" onclick="friend(2)">
+      <h2 id = "btnAnswer4">
+        Friend's answer #2
+      </h2>
+    </button>
+  
+  <div> 
+    <h3>
+      <p id = "answer2"></p>
+    </h3>
   </div>
+
+
+  <div>
+    <h1 id = "question3">Question #3</h1>
+    <h2>Choose your answer</h2>
+</div>
+
+<button type="billButton" onclick="bill(3)">
+  <h2 id = "btnAnswer5">
+    Bill's answer #3
+  </h2>
+</button>
+<button type = "friendButton" onclick="friend(3)">
+  <h2 id = "btnAnswer6">
+    Friend's answer #3
+  </h2>
+</button>
+
+<div> 
+  <h3>
+    <p id = "answer3"></p>
+  </h3>
+</div>
+
+
+<div>
+  <h1 id = "question4">Question #4</h1>
+  <h2>Choose your answer</h2>
+</div>
+
+<button type="billButton" onclick="bill(4)">
+  <h2 id = "btnAnswer7">
+    Bill's answer #4
+  </h2>
+  </button>
+  <button type = "friendButton" onclick="friend(4)">
+  <h2 id = "btnAnswer8">
+    Friend's answer #4
+  </h2>
+</button>
+
+<div> 
+  <h3>
+    <p id = "answer4"></p>
+  </h3>
+</div>
+
+
+<div>
+  <h1 id = "question5">Question #5</h1>
+  <h2>Choose your answer</h2>
+</div>
+
+<button type="billButton" onclick="bill(5)">
+  <h2 id = "btnAnswer9">
+    Bill's answer #5
+  </h2>
+  </button>
+  <button type = "friendButton" onclick="friend(5)">
+  <h2 id = "btnAnswer10">
+    Friend's answer #5
+  </h2>
+</button>
+
+<div> 
+  <h3>
+    <p id = "answer5"></p>
+  </h3>
+</div>
+
+
+<div>
+  <h1 id = "question6">Question #6</h1>
+  <h2>Choose your answer</h2>
+</div>
+
+<button type="billButton" onclick="bill(6)">
+  <h2 id = "btnAnswer11">
+    Bill's answer #6
+  </h2>
+  </button>
+  <button type = "friendButton" onclick="friend(6)">
+  <h2 id = "btnAnswer12">
+    Friend's answer #6
+  </h2>
+</button>
+
+<div> 
+  <h3>
+    <p id = "answer6"></p>
+  </h3>
+</div>
+
+
+
+<div>
+  <h1 id = "question7">Question #7</h1>
+  <h2>Choose your answer</h2>
+</div>
+
+<button type="billButton" onclick="bill(7)">
+  <h2 id = "btnAnswer13">
+    Bill's answer #7
+  </h2>
+  </button>
+  <button type = "friendButton" onclick="friend(7)">
+  <h2 id = "btnAnswer14">
+    Friend's answer #7
+  </h2>
+</button>
+
+<div> 
+  <h3>
+    <p id = "answer7"></p>
+  </h3>
+</div>
 </body>
+
+
+<div>
+  <h1 id = "question8">Question #8</h1>
+  <h2>Choose your answer</h2>
+</div>
+
+<button type="billButton" onclick="bill(8)">
+  <h2 id = "btnAnswer15">
+    Bill's answer #8
+  </h2>
+  </button>
+  <button type = "friendButton" onclick="friend(8)">
+  <h2 id = "btnAnswer16">
+    Friend's answer #8
+  </h2>
+</button>
+
+<div> 
+  <h3>
+    <p id = "answer8"></p>
+  </h3>
+</div>
+
+
+<div>
+  <h1 id = "question9">Question #9</h1>
+  <h2>Choose your answer</h2>
+</div>
+
+<button type="billButton" onclick="bill(9)">
+  <h2 id = "btnAnswer17">
+    Bill's answer #9
+  </h2>
+  </button>
+  <button type = "friendButton" onclick="friend(9)">
+  <h2 id = "btnAnswer18">
+    Friend's answer #9
+  </h2>
+</button>
+
+<div> 
+  <h3>
+    <p id = "answer9"></p>
+  </h3>
+</div>
+
+
+
+<div>
+  <h1 id = "question10">Question #10</h1>
+  <h2>Choose your answer</h2>
+</div>
+
+<button type="billButton" onclick="bill(10)">
+  <h2 id = "btnAnswer19">
+    Bill's answer #10
+  </h2>
+  </button>
+  <button type = "friendButton" onclick="friend(10)">
+  <h2 id = "btnAnswer20">
+    Friend's answer #10
+  </h2>
+</button>
+
+<div> 
+  <h3>
+    <p id = "answer10"></p>
+  </h3>
+</div>
+
 </html>
