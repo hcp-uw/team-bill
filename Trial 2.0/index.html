@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link href='https://fonts.googleapis.com/css?family=Nunito' rel='stylesheet'>
+
     <link rel="stylesheet" href="outline.css" >
     <link rel="icon" href="https://cdn0.iconfinder.com/data/icons/social-glyph/30/spotify-480.png">
     <meta charset="utf-8">
@@ -25,22 +27,30 @@
     -->
     <script defer src="/__/firebase/init.js?useEmulator=true"></script>
 
-    <style media="screen"> </style>
-
-    <div class="topnav" style = "position:relative;top: -60px; left: -10px;">
-      <a class="active" href='index.html'>Home</a>
-      <a href='VsBillTitlePage.html'>Vs. Bill</a>
-      <a href='VsYourselfTitlePage.html'>Vs. Yourself</a>
-      <a href='howtoplay.html'>How to Play</a>  
-    </div>
+    <style media="screen">
+      a {
+        font-family: 'Nunito';font-size: 22px;
+      }
+      button {
+        font-family: 'Nunito'; font-size: 15px;;
+      }
+    </style>
+    
   </head>
   
   <body>
-    <div>
-      <input id="authorizeBtn" type="button"
-      value="Request Authorization"><br/>
-      <script type="module" src="index.js"></script>
+    <div class="topnav" style = "position:relative;top: -60px; left: -10px;">
+        <a class="active" href='index.html'>home</a>
+        <a href='VsBillTitlePage.html'>vs. bill</a>
+        <a href='VsYourselfTitlePage.html'>vs. yourself</a>
+        <a href='howtoplay.html'>how to play</a>
     </div>
   </body>
   
 </html>
+
+<script type="text/javascript">
+    document.getElementById("button1").onclick = function () {
+        location.href = "https://spotify.com/";
+    };
+</script>

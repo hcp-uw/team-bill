@@ -108,3 +108,18 @@ export function callTopTracks(callbackFunction) {
         callbackFunction
     );
 }
+
+/*function shuffle() {
+    callApi(
+        "PUT",
+        SHUFFLE + "?state=true&device_id=" + deviceId(),
+        null,
+        handleApiResponse
+    );
+    play();
+}*/
+
+
+export function deviceId() {
+    return document.getElementById("devices").value;
+}
