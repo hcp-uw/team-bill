@@ -1,4 +1,4 @@
-import {client_id, client_secret, redirect_uri, scope, AUTHORIZE, handleRedirect} from "./spotify.js";
+import { client_id, client_secret, redirect_uri, scope, AUTHORIZE, handleRedirect } from "./spotify.js";
 
 var access_token = null;
 
@@ -39,4 +39,3 @@ function requestAuthorization() {
     url += "&scope=" + scope;
     window.location.href = url; // Show Spotify's authorization screen
 }
-document.getElementById('authorizeBtn').addEventListener('click', requestAuthorization);
