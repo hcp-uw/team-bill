@@ -1,5 +1,4 @@
-import {client_id, client_secret, redirect_uri, scope, AUTHORIZE, PLAYLISTS, DEVICES, PLAY, PAUSE, NEXT, PREVIOUS, PLAYER, TRACKS, 
-    TOPTRACKS, handleRedirect, refreshAccessToken, callApi, deviceId } from "./spotify.js";
+import {client_id, client_secret, redirect_uri, scope, AUTHORIZE, handleRedirect} from "./spotify.js";
 
 var access_token = null;
 
