@@ -4,15 +4,17 @@
 }
 
 body {
-  padding-top: 3rem;
+  padding-top: 3.75rem;
   background-color: #000000;
+  margin: 0px;
 }
 
 /* Add a black background color to the top navigation */
-.topnav {
+.topnav {  
+  margin: 0;
   position: sticky;
   background-color: #191919;
-  width: 100%;
+  width: 100rem;
   overflow: hidden;
 }
 
