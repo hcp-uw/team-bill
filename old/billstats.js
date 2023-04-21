@@ -2,74 +2,120 @@
 function bill(ansNum) { 
     // Change this text based off the question being asked
     // Change the button color based off if they chose friends or bill's answer
-    document.getElementById("answer" + ansNum).innerHTML = "You chose Bill's answer...";
-    document.getElementById("button").style.backgroundColor = "#FFFF";
+    if (document.getElementById("answer" + ansNum) != null){
+        document.getElementById("answer" + ansNum).innerHTML = "You chose Bill's answer...";
+    }
+    if (document.getElementById("billButton") != null) {
+        document.getElementById("billButton").style.backgroundColor = "#FFFF";
+    }
 
 }
 
 // Changes the result text to the friends for the results text dependent on number given
 function friend(ansNum) { 
     // Same as bill() function, change based off answer and question
-    document.getElementById("answer" + ansNum).innerHTML = "You chose your friend's answer!";
+    if (document.getElementById("answer" + ansNum) != null){
+        document.getElementById("answer" + ansNum).innerHTML = "You chose your friend's answer!";
+    }
 }
 
 // Replaces "Question #" titles on startup with the questions from game
 function loadQuestions() {
     for (let i = 1; i < 11; i++) { 
-        document.getElementById("question" + i).innerHTML = "INSERT QUESTION " + i + " QUESTION HERE"
+        if (document.getElementById("question" + i) != null){
+            document.getElementById("question" + i).innerHTML
+            = "INSERT QUESTION " + i + " QUESTION HERE"
+        }
     }
 }
 
-// Randomly assigns and replaces the left and right buttons text with answers from the game
+function printConsole() {
+    console.log("Button Clicked");
+}
+
 function loadAnswers() {
     let j = 1;
     for (let i = 1; i < 11; i++) { 
-        document.getElementById("question" + i).innerHTML = "INSERT QUESTION " + i + " QUESTION HERE";
+        let rand = Math.floor(Math.random() * 2)
+        
+        document.body.appendChild(Object.assign(document.createElement('h1'),
+        { id:'question'+i, innerHTML: "Question " + i, style: "font-size: 3rem"}))
 
-        // let rand = Math.random();     
-        document.getElementById("btnAnswer1").innerHTML = "BILL'S " +  i + " ANSWER";
-        // document.getElementById("btnAnswer" + j).innerHTML = "BILL'S " +  i + " ANSWER";
-        // document.getElementById("btnAnswer" + (j + 1)).innerHTML = "FRIEND'S " +  i + " ANSWER";
-        // if (rand < .5) { // FIX ANSWERS NOT SHOWING UP AAND MAKE SURE RANDOM IS 50/50
-        //     console.log("test");
+        document.body.appendChild(Object.assign(document.createElement('div'),{ id:'box' + j}))
+        .appendChild(Object.assign(document.createElement('button'), { id:'button' + (j),
+             style: "font-size: 2rem"}))
+        document.getElementById("box" + j).appendChild(Object.assign(document.createElement('button'),
+        { id:'button' + ((j + 1)), style: "font-size: 2rem"}))
+    
+        document.getElementById("button" + j).addEventListener("click", printConsole());
+        document.getElementById("button" + (j+1)).addEventListener("click", friend(i));
+        document.body.appendChild(Object.assign(document.createElement('div'),{ id:'box' + (j + 1)}))
+        document.getElementById("button" + (j + 1)).innerHTML = "Friend " + (j + 1);
+        document.getElementById("button" + j).innerHTML = "Bill " + j;
 
+
+
+
+        // if (rand === 1){
+        //     document.body.appendChild(Object.assign(document.createElement('div'),{ id:'box' + j}))
+        //     .appendChild(Object.assign(document.createElement('button'),
+        //             { 
+        //             id:'button' + (j),
+        //             onclick: printConsole()
+        //             }))
+        //     document.getElementById("button" + j).innerHTML = "Bill " + j;
+
+            
+
+        //     document.body.appendChild(Object.assign(document.createElement('div'),{ id:'box'}))
+        //     .appendChild(Object.assign(document.createElement('button'),
+        //             { 
+        //             id:'button' + ((j + 1)),
+        //             onclick: printConsole()
+        //             }))
+        //     document.getElementById("button" + (j + 1)).innerHTML = "Friend " + (j + 1);
         // } else {
-        //     // document.getElementById("btnAnswer" + j).innerHTML = "FRIENDS'S " +  i + " ANSWER";
-        //     // document.getElementById("btnAnswer" +(j + 1)).innerHTML = "BILL'S " +  i + " ANSWER";
+        //     document.body.appendChild(Object.assign(document.createElement('div'),{ id:'box'}))
+        //     .appendChild(Object.assign(document.createElement('button'),
+        //             { 
+        //             id:'button' + (j),
+        //             onclick: printConsole()
+        //             }))
+        //     document.getElementById("button" + j).innerHTML = "Friend " + j;
+        
+        //     document.body.appendChild(Object.assign(document.createElement('div'),{ id:'box'}))
+        //     .appendChild(Object.assign(document.createElement('button'),
+        //             { 
+        //             id:'button' + (j+1),
+        //             onclick: printConsole()
+        //             }))
+        //     document.getElementById("button" + (j + 1)).innerHTML = "Bill " + (j + 1);
         // }
-        j+=2;
+        j += 2;
+        // document.getElementById("question" + i).innerHTML 
+        // = "INSERT QUESTION " + i + " QUESTION HERE";
+
+        // let rand = Math.floor(Math.random() * 2)
+        
+        // console.log(rand);
+        // if (document.getElementById("btnAnswer" + j) != null && 
+        // document.getElementById("btnAnswer" + (j + 1) ) != null) {
+
+        //     if (rand === 1) { 
+        //         document.getElementById("btnAnswer" + j).innerHTML = "BILL'S " +  i + " ANSWER";
+        //         document.getElementById("btnAnswer" + (j + 1)).innerHTML 
+        //         = "FRIEND'S " +  i + " ANSWER";
+        //     } else {
+        //         document.getElementById("btnAnswer" + j).innerHTML = "FRIEND'S " +  i + " ANSWER";
+        //         document.getElementById("btnAnswer" + (j + 1)).innerHTML 
+        //         = "BILL'S " +  i + " ANSWER";
+        //     }
+        // }
+        // j+=2;
     }
 
 }
 
-
-// var j = 1;  
-// for (let i = 1; i < 21; i+=2) {
-//     var textDiv = document.createElement("h3");
-//     var questionDiv = document.createElement("h3");
-//     var btnLeft = document.createElement("button");
-//     var btnRight = document.createElement("button");
-    
-//     var resultDivText = document.createTextNode("Result: " + j);
-//     var btnLeftText = document.createTextNode("Answer number: " + i);
-//     var btnRightText = document.createTextNode("Answer number: " + (i+1));
-//     var questionDivText = document.createTextNode("Question #" + j);
-
-//     questionDiv.appendChild(questionDivText);
-//     btnLeft.appendChild(btnLeftText);
-//     btnRight.appendChild(btnRightText);
-//     textDiv.appendChild(resultDivText);
-
-//     document.body.appendChild(questionDiv);
-//     document.body.appendChild(btnLeft);
-//     document.body.appendChild(btnRight);
-//     document.body.appendChild(textDiv);
-    
-//     j+=1;
-
-//     btnLeft.addEventListener("click", friend());
-    
-// }
 
 
 
