@@ -1,5 +1,4 @@
-import {client_id, client_secret, redirect_uri, scope, AUTHORIZE, PLAYLISTS, DEVICES, PLAY, PAUSE, NEXT, PREVIOUS, PLAYER, TRACKS, 
-    TOPTRACKS, handleRedirect, refreshAccessToken, callApi, deviceId } from "./spotify.js";
+import {client_id, client_secret, redirect_uri, scope, AUTHORIZE, handleRedirect } from "./spotify.js";
 
 var access_token = null;
 
@@ -15,16 +14,10 @@ if (window.location.search.length > 0) {
     if (access_token == null) {
         // we don't have an access token so present token section
         console.log("No access token.");
-        document.getElementById("tokenSection").style.display = "block";
     } else {
         console.log("Has access Token")
         // we have an access token so present device section
         console.log("Access token: " + access_token);
-        // document.getElementById("deviceSection").style.display = "block";
-        // refreshTopTracks();
-        // refreshDevices();
-        // currentlyPlaying();
-        window.location.replace("/game");
     }
 }
 }
@@ -32,17 +25,17 @@ if (window.location.search.length > 0) {
 //requestAuthorization
 function requestAuthorization() {
 console.log("Requested Authorization!");
-// client_id = document.getElementById("clientId").value;
-// client_secret = document.getElementById("clientSecret").value;
-localStorage.setItem("client_id", client_id);
-localStorage.setItem("client_secret", client_secret); // In a real app you should not expose your client_secret to the user
+    // client_id = document.getElementById("clientId").value;
+    // client_secret = document.getElementById("clientSecret").value;
+    localStorage.setItem("client_id", client_id);
+    localStorage.setItem("client_secret", client_secret); // In a real app you should not expose your client_secret to the user
 
-let url = AUTHORIZE;
-url += "?client_id=" + client_id;
-url += "&response_type=code";
-url += "&redirect_uri=" + encodeURI(redirect_uri);
-url += "&show_dialog=true";
-url += "&scope=" + scope;
-window.location.href = url; // Show Spotify's authorization screen
+    let url = AUTHORIZE;
+    url += "?client_id=" + client_id;
+    url += "&response_type=code";
+    url += "&redirect_uri=" + encodeURI(redirect_uri);
+    url += "&show_dialog=true";
+    url += "&scope=" + scope;
+    window.location.href = url; // Show Spotify's authorization screen
 }
 document.getElementById('authorizeBtn').addEventListener('click', requestAuthorization);
