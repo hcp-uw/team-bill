@@ -3,71 +3,17 @@
   src: 'https://fonts.googleapis.com/css?family=Nunito';
 }
 
-.fixed-header, .fixed-footer {
-  padding: 1rem 0; /* 1rem = 16px */
-  background-color: #264653;
-  position: fixed;
-  width: 100%;
-  z-index: 100; /*How items are stacked on page*/
-  height: 2.4rem;
-  left: 0;
+body {
+  padding-top: 3rem;
+  background-color: #000000;
 }
 
-.fixed-header {
-  top: 0;
-}
-
-.fixed-footer {
-  bottom: 0;
-}
-
-.hbutton, .fbutton {
-  width: 6rem;
-  height: 2rem;
-  font-size: 1rem;
-  padding: 0.08rem;
-  color:#F4A261;
-  background-color: #1b323a;
-  z-index: 101;
-  position: absolute;
-}
-
-.hbutton {
-  right: 0;
-  top: 0;
-  margin-top: 1rem;
-  margin-right: 3rem;
-}
-
-.fbutton { /*may be more specialized, depends on what is in footer*/
-  left: 0;
-  bottom: 0;
-  margin-bottom: 1rem;
-  margin-right: 3rem;
-}
-
-  .title {
-      vertical-align: middle;
-      font-size: 3rem;
-      text-align: center;
-      color: #F4A261;
-      padding-left: 0.4rem;
-      padding-right: 0.4rem;
-      margin-top: 0;
-  }
-
-  body {
-      padding-top: 3rem;
-      background-color: #000000;
-
-  }
 /* Add a black background color to the top navigation */
 .topnav {
   position: sticky;
   background-color: #191919;
-  width: 1600px;
+  width: 100%;
   overflow: hidden;
-  margin: auto;
 }
 
 /* Style the links inside the navigation bar */
