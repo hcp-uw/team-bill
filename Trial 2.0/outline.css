@@ -1,3 +1,8 @@
+@font-face {
+  font-family: Nunito;
+  src: 'https://fonts.googleapis.com/css?family=Nunito';
+}
+
 .fixed-header, .fixed-footer {
   padding: 1rem 0; /* 1rem = 16px */
   background-color: #264653;
@@ -53,16 +58,16 @@
 
   body {
       padding-top: 3rem;
-      background-color: #B9E2E0;
+      background-color: #000000;
 
   }
 /* Add a black background color to the top navigation */
 .topnav {
   position: sticky;
-  top: 0;
-  background-color: #264653;
+  background-color: #191919;
   width: 1600px;
   overflow: hidden;
+  margin: auto;
 }
 
 /* Style the links inside the navigation bar */
@@ -86,3 +91,14 @@
   background-color: #F4A261;
   color: white;
 }
+
+#button1 {
+  border:1px #333 solid;   
+ padding:10px;
+ background-color:white;
+ -webkit-border-radius:40px;
+ -moz-border-radius:40px;
+ border-radius:40px;
+}
+
+
