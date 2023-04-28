@@ -1,4 +1,4 @@
-import { callApi } from "./spotify";
+import { callApi, TOPTRACKS } from "./spotify.js";
 
 // import questionsFile from './questions.json' assert { type: 'json' };
 //type question = {q:string, index:number, type:string, apiCall:string}
@@ -20,8 +20,7 @@ class simpleAnswerGen {
     constructor(questions) {
         this.questions = questions;
         this.apiToResponse = new Map();
-        this.setApiResponseMap();
-        // TODO
+        this.getApiData();
     }
 
     getQuestion = () => { return this.curQuestion.q };
@@ -41,17 +40,28 @@ class simpleAnswerGen {
      * call map set values
      */
     getApiData() {
-        callApi(function() {
-            const data = this.data;
-            this.handleApiDataResponse(data, "best key ever");
-        })
+        // callApi(function() {
+        //     const data = this.data;
+        //     this.handleApiDataResponse(data, "best key ever");
+        // })
+
+        // example function:
+        callApi(
+            "GET",
+            TOPTRACKS + "?limit=50&time_range=long_term",
+            null,
+            handleApiDataResponse,
+            "tracks-long-50"
+        );
     }
 
     /**
-     * pass key we wanted to map to
+     * Adds the data to apiResponseMap
      */
-    handleApiDataResponse(data, key) { 
-
+    handleApiDataResponse() { 
+        const key = this.type; // sets "key" equal to the string passed into callApi for apiType
+        const data = JSON.parse(this.responseText);
+        apiResponseMap.set(key, data);
     }
 
     /**
