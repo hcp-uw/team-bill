@@ -4,18 +4,20 @@
 }
 
 body {
-  padding-top: 3.75rem;
+  padding-top: 3rem;
   background-color: #000000;
-  margin: 0px;
 }
 
 /* Add a black background color to the top navigation */
-.topnav {  
-  margin: 0;
+.topnav {
   position: sticky;
   background-color: #191919;
-  width: 100rem;
+  width: 100vw;
   overflow: hidden;
+  position:relative;
+  top: -60px;
+  left: -10px;
+
 }
 
 /* Style the links inside the navigation bar */
@@ -23,9 +25,35 @@ body {
   float: left;
   color: #f2f2f2;
   text-align: center;
-  padding: 16px 18px;
+  padding: 1.5rem 1.2rem;
+  
   text-decoration: none;
-  font-size: 17px;
+  font-size: 1.1rem;
+  
+}
+
+/* Style the log in button inside the navigation bar */
+.topnav input {
+
+  float: right;
+  color: #191919;
+  text-align: center;
+  padding: .6rem 1.3rem;
+  margin: .8rem 1rem;
+  text-decoration: none;
+  font-size: 1.1rem;
+  background-color: #f2f2f2;
+  border-radius: 40%;
+  border-color: #f2f2f2;
+  border-style: solid;
+  font-family: 'Nunito';
+
+}
+
+/* Change the color of button on hover */
+.topnav a:hover {
+  background-color: #191919;
+  color: #f2f2f2;
 }
 
 /* Change the color of links on hover */

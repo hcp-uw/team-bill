@@ -1,4 +1,4 @@
-export var redirect_uri = "http://127.0.0.1:8080";
+export var redirect_uri = "http://127.0.0.1:5000";
 
 export var client_id = "a0c734380e8a4301b8af9f29b139165c";
 export var client_secret = "33dad7cfdcd347b0a83d551537ffa728"; // In a real app you should not expose your client_secret to the user
@@ -90,11 +90,12 @@ function handleAuthorizationResponse() {
     }
 }
 
-export function callApi(method, url, body, callback) {
+export function callApi(method, url, body, callback, apiType) {
     let xhr = new XMLHttpRequest();
     xhr.open(method, url, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("Authorization", "Bearer " + access_token);
+    xhr.type = apiType;
     xhr.send(body);
     xhr.onload = callback;
 }
