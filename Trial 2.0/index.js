@@ -1,5 +1,6 @@
-import {client_id, client_secret, redirect_uri, scope, AUTHORIZE, PLAYLISTS, DEVICES, PLAY, PAUSE, NEXT, PREVIOUS, PLAYER, TRACKS, 
-    TOPTRACKS, handleRedirect, refreshAccessToken, callApi, deviceId } from "./spotify.js";
+import {client_id, client_secret, redirect_uri, scope, AUTHORIZE, PLAYLISTS, TOPTRACKS,
+        handleRedirect, refreshAccessToken, callApi } from "./spotify.js";
+import { makeQuestionGen } from "./questionGenerator.js";
 
 var access_token = null;
 
@@ -18,13 +19,13 @@ if (window.location.search.length > 0) {
         document.getElementById("tokenSection").style.display = "block";
     } else {
         console.log("Has access Token")
-        // we have an access token so present device section
         console.log("Access token: " + access_token);
+        const gen = makeQuestionGen();
         // document.getElementById("deviceSection").style.display = "block";
         // refreshTopTracks();
         // refreshDevices();
         // currentlyPlaying();
-        window.location.replace("/game");
+        // window.location.replace("/game");
     }
 }
 }
