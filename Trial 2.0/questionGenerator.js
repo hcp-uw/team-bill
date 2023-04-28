@@ -1,30 +1,30 @@
-type question = {q:string, index:number, type:string, apiCall:string}
+//type question = {q:string, index:number, type:string, apiCall:string}
 //type song = {name: string, artist: string}
 
-export interface answerGen {
+/*export interface answerGen {
     /**
      * 
-     */
+     *
     getQuestion(): string;
 
     /**
      * 
-     */
+     *
     getAnswer(): string;
 
     /**
      * 
-     */
+     *
     getNonAnswers(): [string, string, string];
 
     /**
      * 
-     */
+     *
     changeQuestion(): void;
 
-}
+}*/
 
-class simpleAnswerGen implements answerGen {
+//class simpleAnswerGen implements answerGen {
     questions: Array<question>;
     curQuestion: question;
     curAnswer: string;
@@ -61,11 +61,11 @@ class simpleAnswerGen implements answerGen {
         this.setAnswer();
     }
     
-}
+//}
 
-export function makeQuestionGen(questions ?: Array<question>): answerGen {
+/*export function makeQuestionGen(questions ?: Array<question>): answerGen {
     if (questions === undefined) {
         questions = /* read json file */ new Array<question>;
-    }
-    return new simpleAnswerGen(questions);
-}
+    //}
+    //return new simpleAnswerGen(questions);
+//}
