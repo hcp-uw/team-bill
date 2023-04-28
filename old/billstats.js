@@ -1,5 +1,9 @@
+
+
 // Changes the result text to the bill for the results text dependent on number given
-function bill(ansNum) { 
+function bill() { 
+
+    let ansNum = this.id.slice(-1)
     // Change this text based off the question being asked
     // Change the button color based off if they chose friends or bill's answer
     if (document.getElementById("answer" + ansNum) != null){
@@ -12,7 +16,9 @@ function bill(ansNum) {
 }
 
 // Changes the result text to the friends for the results text dependent on number given
-function friend(ansNum) { 
+function friend() { 
+    
+    let ansNum = this.id.slice(-1)
     // Same as bill() function, change based off answer and question
     if (document.getElementById("answer" + ansNum) != null){
         document.getElementById("answer" + ansNum).innerHTML = "You chose your friend's answer!";
@@ -45,13 +51,19 @@ function loadAnswers() {
         .appendChild(Object.assign(document.createElement('button'), { id:'button' + (j),
              style: "font-size: 2rem"}))
         document.getElementById("box" + j).appendChild(Object.assign(document.createElement('button'),
-        { id:'button' + ((j + 1)), style: "font-size: 2rem"}))
+        { id:'button' + ((j + 10)), style: "font-size: 2rem"}))
     
-        document.getElementById("button" + j).addEventListener("click", printConsole());
-        document.getElementById("button" + (j+1)).addEventListener("click", friend(i));
-        document.body.appendChild(Object.assign(document.createElement('div'),{ id:'box' + (j + 1)}))
-        document.getElementById("button" + (j + 1)).innerHTML = "Friend " + (j + 1);
+        document.getElementById("button" + j).addEventListener("click", this.bill, false);
+        document.getElementById("button" + (j+10)).addEventListener("click", this.friend, false);
+        
+        document.body.appendChild(Object.assign(document.createElement('div'),{ id:'box' + (j)}))
+        
+        document.getElementById("button" + (j + 10)).innerHTML = "Friend " + (j + 10);
         document.getElementById("button" + j).innerHTML = "Bill " + j;
+
+        document.body.appendChild(Object.assign(document.createElement('h2'),
+        { id:'answer'+i, innerHTML: "Answer " + i, style: "font-size: 2rem"}))
+        j += 2;
 
 
 
@@ -91,7 +103,6 @@ function loadAnswers() {
         //             }))
         //     document.getElementById("button" + (j + 1)).innerHTML = "Bill " + (j + 1);
         // }
-        j += 2;
         // document.getElementById("question" + i).innerHTML 
         // = "INSERT QUESTION " + i + " QUESTION HERE";
 
