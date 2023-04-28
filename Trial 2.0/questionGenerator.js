@@ -1,42 +1,27 @@
+import { callApi } from "./spotify";
+
+// import questionsFile from './questions.json' assert { type: 'json' };
 //type question = {q:string, index:number, type:string, apiCall:string}
 //type song = {name: string, artist: string}
 
-/*export interface answerGen {
-    /**
-     * 
-     *
-    getQuestion(): string;
+class simpleAnswerGen {
+    questions;
+    curQuestion;
+    curAnswer;
+    curNonAnswers;
 
-    /**
-     * 
-     *
-    getAnswer(): string;
-
-    /**
-     * 
-     *
-    getNonAnswers(): [string, string, string];
-
-    /**
-     * 
-     *
-    changeQuestion(): void;
-
-}*/
-
-//class simpleAnswerGen implements answerGen {
-    questions: Array<question>;
-    curQuestion: question;
-    curAnswer: string;
-    curNonAnswers: [string, string, string];
+    // maps type of API call to response of that call
+    apiResponseMap;
 
     /**
      * 
      * @param questions 
      */
-    constructor(questions: Array<question>) {
+    constructor(questions) {
         this.questions = questions;
-
+        this.apiToResponse = new Map();
+        this.setApiResponseMap();
+        // TODO
     }
 
     getQuestion = () => { return this.curQuestion.q };
@@ -48,24 +33,62 @@
     /**
      * Set answer and non answer fields to correct values
      */
-    setAnswer(): void {
+    setAnswer() {
         // TODO: add more code here
     }
 
     /**
-     * Picks a question from question at random and removes it.
+     * call map set values
      */
-    pickQuestion(): void {
-        // TODO: add code here
+    getApiData() {
+        callApi(function() {
+            const data = this.data;
+            this.handleApiDataResponse(data, "best key ever");
+        })
+    }
 
+    /**
+     * pass key we wanted to map to
+     */
+    handleApiDataResponse(data, key) { 
+
+    }
+
+    /**
+     * 
+     * @param {*} questiontype 
+     * @param {*} number 
+     */
+    getAnswer(questiontype, number) {
+        // TODO: add code here
         this.setAnswer();
     }
-    
-//}
 
-/*export function makeQuestionGen(questions ?: Array<question>): answerGen {
+    /**
+     * Picks a question from questions at random and removes it.
+     */
+    pickQuestion() {
+        this.curQuestion = questions.splice(Math.floor(Math.random() * questions.length-1), 1);
+    }
+    
+}
+
+/**
+ * 
+ * @param {*} questions 
+ * @returns 
+ */
+export function makeQuestionGen(questions) {
     if (questions === undefined) {
-        questions = /* read json file */ new Array<question>;
-    //}
-    //return new simpleAnswerGen(questions);
-//}
+        // read local JSON file in javascript
+        fetch("./questions.json")
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            //console.log(data);
+            questions = data.questionsList;
+        })
+    }
+    return new simpleAnswerGen(questions);
+}

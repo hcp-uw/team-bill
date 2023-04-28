@@ -1,13 +1,13 @@
 {
-    "questions":[
-        {"question":"What is your #_ most listened to song?", "index":13, "type":"NumberedSong", "apiCall":"TopTracks"},
-        {"question":"How many _ songs are in your top ten?", "index":9, "type":"ArtistInTopTen", "apiCall":"TopTracks"}, 
-        {"question":"Who is your top artist?", "index":-1, "type":"TopArtist", "apiCall":"TopArtists"},
-        {"question":"Which artist appears most in your top #_ songs?","index":-1, "type":"CommonArtistTop", "apiCall":"TopTracks"},
-        {"question":"How many different artists are in your top #_ songs?","index":-1, "type":"ArtistDiversity", "apiCall":"TopTracks"},
-        {"question":"Which artist appears most in your playlists?","index":-1, "type":"CommonArtistPlaylist", "apiCall":"GetPlaylists"},
-        {"question":"What is your most common genre in your top ten?","index":-1, "type":"CommonGenreTop", "apiCall":"TopTracks"},
-        {"question":"Which album appears most in your top #_ songs?","index":37, "type":"CommonAlbumTop", "apiCall":"TopTracks"},
+    "questionsList":[
+        {"question":"What is your #_ most listened to song?", "index":13, "id":"1", "apiCall":"TopTracks"},
+        {"question":"How many _ songs are in your top ten?", "index":9, "id":"2", "apiCall":"TopTracks"}, 
+        {"question":"Who is your top artist?", "index":-1, "id":"3", "apiCall":"TopArtists"},
+        {"question":"Which artist appears most in your top #_ songs?","index":-1, "id":"4", "apiCall":"TopTracks"},
+        {"question":"How many different artists are in your top #_ songs?","index":-1, "id":"5", "apiCall":"TopTracks"},
+        {"question":"Which artist appears most in your playlists?","index":-1, "id":"6", "apiCall":"GetPlaylists"},
+        {"question":"What is your most common genre in your top ten?","index":-1, "id":"7", "apiCall":"TopTracks"},
+        {"question":"Which album appears most in your top #_ songs?","index":37, "id":"8", "apiCall":"TopTracks"},
         {"question":"","index":0, "type":""},
         {"question":"","index":0, "type":""},
         {"question":"","index":0, "type":""},

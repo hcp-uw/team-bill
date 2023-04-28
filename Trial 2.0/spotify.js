@@ -71,7 +71,7 @@ function callAuthorizationApi(body) {
 
 //Export
 function handleAuthorizationResponse() {
-    if (this.status == 200) {
+    if (this.status == 200) { 
         var data = JSON.parse(this.responseText);
         console.log(data);
         var data = JSON.parse(this.responseText);
