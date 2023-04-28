@@ -90,11 +90,12 @@ function handleAuthorizationResponse() {
     }
 }
 
-export function callApi(method, url, body, callback) {
+export function callApi(method, url, body, callback, apiType) {
     let xhr = new XMLHttpRequest();
     xhr.open(method, url, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("Authorization", "Bearer " + access_token);
+    xhr.type = apiType;
     xhr.send(body);
     xhr.onload = callback;
 }
