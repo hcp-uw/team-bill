@@ -31,18 +31,18 @@ if (window.location.search.length > 0) {
 
 //requestAuthorization
 function requestAuthorization() {
-console.log("Requested Authorization!");
-// client_id = document.getElementById("clientId").value;
-// client_secret = document.getElementById("clientSecret").value;
-localStorage.setItem("client_id", client_id);
-localStorage.setItem("client_secret", client_secret); // In a real app you should not expose your client_secret to the user
+    console.log("Requested Authorization!");
+    // client_id = document.getElementById("clientId").value;
+    // client_secret = document.getElementById("clientSecret").value;
+    localStorage.setItem("client_id", client_id);
+    localStorage.setItem("client_secret", client_secret); // In a real app you should not expose your client_secret to the user
 
-let url = AUTHORIZE;
-url += "?client_id=" + client_id;
-url += "&response_type=code";
-url += "&redirect_uri=" + encodeURI(redirect_uri);
-url += "&show_dialog=true";
-url += "&scope=" + scope;
-window.location.href = url; // Show Spotify's authorization screen
+    let url = AUTHORIZE;
+    url += "?client_id=" + client_id;
+    url += "&response_type=code";
+    url += "&redirect_uri=" + encodeURI(redirect_uri);
+    url += "&show_dialog=true";
+    url += "&scope=" + scope;
+    window.location.href = url; // Show Spotify's authorization screen
 }
 document.getElementById('authorizeBtn').addEventListener('click', requestAuthorization);
