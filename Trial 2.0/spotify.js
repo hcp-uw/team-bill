@@ -13,6 +13,7 @@ export const AUTHORIZE = "https://accounts.spotify.com/authorize";
 export const PLAYLISTS = "https://api.spotify.com/v1/me/playlists";
 export const TRACKS = "https://api.spotify.com/v1/playlists/{{PlaylistId}}/tracks";
 export const TOPTRACKS = "https://api.spotify.com/v1/me/top/tracks";
+export const TOPARTIST = "https://api.spotify.com/v1/me/top/artists";
 
 document.addEventListener("DOMContentLoaded", onPageLoad);
 
@@ -98,6 +99,25 @@ export function callApi(method, url, body, callback, apiType) {
     xhr.type = apiType;
     xhr.send(body);
     xhr.onload = callback;
+}
+
+/**
+ * Calls a synchronous get request and returns the data if the request was fulfilled. 
+ * @param {string} url URL of request
+ * @param {*} body Body of request
+ * @returns {object} response test of the request. 
+ */
+export function callApiSync(url, body) {
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", url, false);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader("Authorization", "Bearer " + access_token);
+    xhr.send(body);
+
+    if (xhr.status == 200) {
+        var data = JSON.parse(xhr.responseText);
+        return data;
+    }
 }
 
 export function callTopTracks(callbackFunction) {
