@@ -1,10 +1,26 @@
-import { callApi, TOPTRACKS } from "./spotify.js";
+import { callApi, callApiSync, TOPTRACKS, TOPARTIST } from "./spotify.js";
 
-// import questionsFile from './questions.json' assert { type: 'json' };
-//type question = {q:string, index:number, type:string, apiCall:string}
-//type song = {name: string, artist: string}
+/**
+ * @typedef question
+ * 
+ * @property {string} question 
+ * @property {number} index
+ * @property {number} id
+ * @property {string} apiCall
+ */
 
-class simpleAnswerGen {
+/**
+ * @typedef questionGen
+ * An object that stores a list of questions and constructors answers for each question based off 
+ * of information from spotify's api.
+ * 
+ * @property {function getQuestion() {question}} getQuestion Returns the current question
+ * @property {function getAnswer() {string}} getAnswer Returns the current answer
+ * @property {function getNonAnswers() {Array<string>}} getNonAnswers Returns the current list of non answers
+ * @property {function changeQuestion() {}} changeQuestion Changes the question
+ */
+
+class simpleQuestionGen {
     questions;
     curQuestion;
     curAnswer;
@@ -14,12 +30,12 @@ class simpleAnswerGen {
     apiResponseMap;
 
     /**
-     * 
-     * @param questions 
+     * Constructs new simpleQuestionGen
+     * @param {Array<question>} questions 
      */
     constructor(questions) {
         this.questions = questions;
-        this.apiToResponse = new Map();
+        this.apiResponseMap = new Map();
         this.getApiData();
     }
 
@@ -33,45 +49,44 @@ class simpleAnswerGen {
      * Set answer and non answer fields to correct values
      */
     setAnswer() {
-        // TODO: add more code here
+        const number = 1; // We need some way of choosing a number
+        const id = this.curQuestion.id;
+
+        this.curAnswer = this.findAnswer(id, number);
+
+        this.curNonAnswers = [];
+        const minRange = 1; // We should store and get these range values from the questions.
+        const maxRange = 20;
+        var usedNumbers = [number];
+        while (this.curNonAnswers.length < 3) {
+            let offNumber = Math.floor(Math.random() * (maxRange - minRange)) + minRange;
+            if (!usedNumbers.includes(offNumber)) {
+                this.curNonAnswers.push(this.findAnswer(id, offNumber));
+            }
+        }
     }
 
     /**
-     * call map set values
+     * Gets data from the spotify API and stores it in apiResponceMap.
      */
     getApiData() {
-        // callApi(function() {
-        //     const data = this.data;
-        //     this.handleApiDataResponse(data, "best key ever");
-        // })
-
-        // example function:
-        callApi(
-            "GET",
-            TOPTRACKS + "?limit=50&time_range=long_term",
-            null,
-            handleApiDataResponse,
-            "tracks-long-50"
-        );
+        const types = ["tracks-long-50", "artist-long-50"];
+        const urls = [TOPTRACKS + "?limit=50&time_range=long_term", TOPARTIST + "?limit=50&time_range=long_term" ];
+        for (let i = 0; i < types.length; i++) {
+            const data = callApiSync(urls[i], null);
+            this.apiResponseMap.set(types[i], data);
+        }
+        console.log(this.apiResponseMap);
     }
 
     /**
-     * Adds the data to apiResponseMap
+     * Uses the information from the spotify api to answer a given question.
+     * @param {number} questionID ID of the question to get the answer for.
+     * @param {number} number The numeric modifier to the question.
+     * @returns {string} Returns the answer to the question.
      */
-    handleApiDataResponse() { 
-        const key = this.type; // sets "key" equal to the string passed into callApi for apiType
-        const data = JSON.parse(this.responseText);
-        apiResponseMap.set(key, data);
-    }
-
-    /**
-     * 
-     * @param {*} questiontype 
-     * @param {*} number 
-     */
-    getAnswer(questiontype, number) {
+    findAnswer(questionID, number) {
         // TODO: add code here
-        this.setAnswer();
     }
 
     /**
@@ -84,14 +99,15 @@ class simpleAnswerGen {
 }
 
 /**
- * 
- * @param {*} questions 
- * @returns 
+ * Factory function for a question gen.
+ * @param {Array<question>} questions The list of questions to build the questionGen off of.
+ * If none are given it defaults to a premade list of questions.
+ * @returns {questionGen} Returns new questionGen.
  */
 export function makeQuestionGen(questions) {
     if (questions === undefined) {
         // read local JSON file in javascript
-        fetch("./questions.json")
+        fetch(".questions.json")
         .then(function (response) {
             return response.json();
         })
@@ -100,5 +116,5 @@ export function makeQuestionGen(questions) {
             questions = data.questionsList;
         })
     }
-    return new simpleAnswerGen(questions);
+    return new simpleQuestionGen(questions);
 }
