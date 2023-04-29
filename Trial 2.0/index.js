@@ -1,5 +1,4 @@
-import {client_id, client_secret, redirect_uri, scope, AUTHORIZE, PLAYLISTS, TOPTRACKS,
-        handleRedirect, refreshAccessToken, callApi } from "./spotify.js";
+import {client_id, client_secret, redirect_uri, scope, AUTHORIZE, handleRedirect } from "./spotify.js";
 import { makeQuestionGen } from "./questionGenerator.js";
 
 var access_token = null;
