@@ -105,7 +105,7 @@ export function callApi(method, url, body, callback, apiType) {
  * Calls a synchronous get request and returns the data if the request was fulfilled. 
  * @param {string} url URL of request
  * @param {*} body Body of request
- * @returns {object} response test of the request. 
+ * @returns {object} response text of the request. 
  */
 export function callApiSync(url, body) {
     let xhr = new XMLHttpRequest();
