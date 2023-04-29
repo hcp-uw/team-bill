@@ -5,35 +5,36 @@ var access_token = null;
 
 document.addEventListener("DOMContentLoaded", onPageLoad);
 
+/**
+ * Determineds if a access token is stored in local storage. If it does it will stored it in a
+ * local variable. Currently nothing is happening if no access token is found.
+ */
 function onPageLoad() {
-console.log("index.js onPageLoad");
-if (window.location.search.length > 0) {
-    handleRedirect();
-    console.log("handled redirect!");
-} else {
-    access_token = localStorage.getItem("access_token");
-    if (access_token == null) {
-        // we don't have an access token so present token section
-        console.log("No access token.");
-        document.getElementById("tokenSection").style.display = "block";
+    console.log("index.js onPageLoad");
+    if (window.location.search.length > 0) {
+        handleRedirect();
+        console.log("handled redirect!");
     } else {
-        console.log("Has access Token")
-        console.log("Access token: " + access_token);
-        const gen = makeQuestionGen();
-        // document.getElementById("deviceSection").style.display = "block";
-        // refreshTopTracks();
-        // refreshDevices();
-        // currentlyPlaying();
-        // window.location.replace("/game");
+        access_token = localStorage.getItem("access_token");
+        if (access_token == null) {
+            // we don't have an access token so present token section
+            console.log("No access token.");
+            document.getElementById("tokenSection").style.display = "block"; // Pretty sure this is an 
+            // artifact from my test code and is not being used. Might want to delete --Zack
+        } else {
+            console.log("Has access Token")
+            console.log("Access token: " + access_token);
+            const gen = makeQuestionGen();
+        }
     }
 }
-}
 
-//requestAuthorization
+/**
+ * Requests authorization from spotify. Will redirect the user to the spotify login portal and 
+ * then back to the address of the callback function in ./spotify.js
+ */
 function requestAuthorization() {
     console.log("Requested Authorization!");
-    // client_id = document.getElementById("clientId").value;
-    // client_secret = document.getElementById("clientSecret").value;
     localStorage.setItem("client_id", client_id);
     localStorage.setItem("client_secret", client_secret); // In a real app you should not expose your client_secret to the user
 
