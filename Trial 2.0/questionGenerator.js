@@ -107,7 +107,7 @@ class simpleQuestionGen {
 export function makeQuestionGen(questions) {
     if (questions === undefined) {
         // read local JSON file in javascript
-        fetch(".questions.json")
+        fetch("./questions.json")
         .then(function (response) {
             return response.json();
         })
