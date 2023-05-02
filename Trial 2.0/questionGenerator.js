@@ -67,7 +67,7 @@ class simpleQuestionGen {
     }
 
     /**
-     * Gets data from the spotify API and stores it in apiResponceMap.
+     * Gets data from the spotify API and stores it in apiResponseMap.
      */
     getApiData() {
         const types = ["tracks-long-50", "artist-long-50"];
