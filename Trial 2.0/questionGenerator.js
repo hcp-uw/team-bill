@@ -60,7 +60,7 @@ class simpleQuestionGen {
         var usedNumbers = [number];
         while (this.curNonAnswers.length < 3) {
             let offNumber = Math.floor(Math.random() * (maxRange - minRange)) + minRange;
-            if (!usedNumbers.includes(offNumber)) {
+            if (!usedNumbers.includes(offNumber) && offNumber !== number) {
                 this.curNonAnswers.push(this.findAnswer(id, offNumber));
             }
         }
