@@ -1,16 +1,12 @@
 {
     "questionsList":[
-        {"question":"What is your #_ most listened to song?", "index":13, "id":"1", "apiCall":"TopTracks"},
-        {"question":"How many _ songs are in your top ten?", "index":9, "id":"2", "apiCall":"TopTracks"}, 
-        {"question":"Who is your top artist?", "index":-1, "id":"3", "apiCall":"TopArtists"},
-        {"question":"Which artist appears most in your top #_ songs?","index":-1, "id":"4", "apiCall":"TopTracks"},
-        {"question":"How many different artists are in your top #_ songs?","index":-1, "id":"5", "apiCall":"TopTracks"},
-        {"question":"Which artist appears most in your playlists?","index":-1, "id":"6", "apiCall":"GetPlaylists"},
-        {"question":"What is your most common genre in your top ten?","index":-1, "id":"7", "apiCall":"TopTracks"},
-        {"question":"Which album appears most in your top #_ songs?","index":37, "id":"8", "apiCall":"TopTracks"},
-        {"question":"","index":0, "type":""},
-        {"question":"","index":0, "type":""},
-        {"question":"","index":0, "type":""},
-        {"question":"","index":0, "type":""}
+        {"question":"What is your #_ most listened to song?", "id":1, "apiCall":"tracks-long-50", "max":20},
+        {"question":"How many _ songs are in your top ten?", "id":2, "apiCall":"tracks-long-50", "max":20}, 
+        {"question":"Who is your top artist?", "id":3, "apiCall":"artist-long-50", "max":-1},
+        {"question":"Which artist appears most in your top #_ songs?", "id":4, "apiCall":"tracks-long-50", "max":20},
+        {"question":"How many different artists are in your top #_ songs?", "id":5, "apiCall":"tracks-long-50", "max":20},
+        {"question":"Which artist appears most in your playlists?", "id":6, "apiCall":"playlist-50", "max":-1},
+        {"question":"What is your most common genre in your top ten?", "id":7, "apiCall":"tracks-long-50", "max":-1},
+        {"question":"Which album appears most in your top #_ songs?", "id":8, "apiCall":"tracks-long-50", "max":20}
     ]
 }

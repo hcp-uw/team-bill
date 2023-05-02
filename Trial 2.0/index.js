@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", onPageLoad);
  * local variable. Currently nothing is happening if no access token is found.
  */
 function onPageLoad() {
-    console.log("index.js onPageLoad");
     if (window.location.search.length > 0) {
         handleRedirect();
         console.log("handled redirect!");
@@ -22,8 +21,8 @@ function onPageLoad() {
             document.getElementById("tokenSection").style.display = "block"; // Pretty sure this is an 
             // artifact from my test code and is not being used. Might want to delete --Zack
         } else {
-            console.log("Has access Token")
-            console.log("Access token: " + access_token);
+            // console.log("Has access Token")
+            // console.log("Access token: " + access_token);
             const gen = makeQuestionGen();
         }
     }

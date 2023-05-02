@@ -1,10 +1,10 @@
-import { callApi, callApiSync, TOPTRACKS, TOPARTIST } from "./spotify.js";
+import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS } from "./spotify.js";
 
 /**
  * @typedef question
  * 
- * @property {string} question 
- * @property {number} index
+ * @property {string} question
+ * @property {number} max
  * @property {number} id
  * @property {string} apiCall
  */
@@ -21,13 +21,11 @@ import { callApi, callApiSync, TOPTRACKS, TOPARTIST } from "./spotify.js";
  */
 
 class simpleQuestionGen {
-    questions;
+    questions; // list of current possible questions (question is removed when it is added to curQuestion)
     curQuestion;
     curAnswer;
     curNonAnswers;
-
-    // maps type of API call to response of that call
-    apiResponseMap;
+    apiResponseMap; // maps type of API call to (unfiltered) response of that call
 
     /**
      * Constructs new simpleQuestionGen
@@ -35,48 +33,58 @@ class simpleQuestionGen {
      */
     constructor(questions) {
         this.questions = questions;
+        console.log(this.questions);
         this.apiResponseMap = new Map();
         this.getApiData();
+        this.changeQuestion();
     }
 
     getQuestion = () => { return this.curQuestion.q };
     getAnswer = () => { return this.curAnswer };
     getNonAnswers = () => { return this.curNonAnswers };
 
-    changeQuestion = () => { this.pickQuestion; }
+    changeQuestion = () => {
+        this.pickQuestion();
+        this.setAnswer();
+    }
 
     /**
      * Set answer and non answer fields to correct values
      */
     setAnswer() {
-        const number = 1; // We need some way of choosing a number
+        var maxRange = this.curQuestion.max;
+        
+        console.log(this.curQuestion)
+        console.log(this.curQuestion.apiCall);
+        const items = this.apiResponseMap.get(this.curQuestion.apiCall).items;
+        if (maxRange === -1) {
+            var number = 1;
+            maxRange = 20;
+            
+            if(items.length < 20) {
+                this.curQuestion.max = items.length;
+            }  
+        } else {
+            if(items.length < 20) {
+                this.curQuestion.max = items.length;
+            }
+            var number = Math.floor(Math.pow((Math.random() * maxRange), 2) / (maxRange)) + 1;
+        }
+        console.log(number);
+        
         const id = this.curQuestion.id;
 
         this.curAnswer = this.findAnswer(id, number);
-
         this.curNonAnswers = [];
-        const minRange = 1; // We should store and get these range values from the questions.
-        const maxRange = 20;
+
         var usedNumbers = [number];
         while (this.curNonAnswers.length < 3) {
-            let offNumber = Math.floor(Math.random() * (maxRange - minRange)) + minRange;
-            if (!usedNumbers.includes(offNumber) && offNumber !== number) {
+            let offNumber = Math.floor(Math.random() * maxRange) + 1;
+            if (!usedNumbers.includes(offNumber)) {
                 this.curNonAnswers.push(this.findAnswer(id, offNumber));
+                usedNumbers.push(offNumber);
             }
         }
-    }
-
-    /**
-     * Gets data from the spotify API and stores it in apiResponseMap.
-     */
-    getApiData() {
-        const types = ["tracks-long-50", "artist-long-50"];
-        const urls = [TOPTRACKS + "?limit=50&time_range=long_term", TOPARTIST + "?limit=50&time_range=long_term" ];
-        for (let i = 0; i < types.length; i++) {
-            const data = callApiSync(urls[i], null);
-            this.apiResponseMap.set(types[i], data);
-        }
-        console.log(this.apiResponseMap);
     }
 
     /**
@@ -93,9 +101,23 @@ class simpleQuestionGen {
      * Picks a question from questions at random and removes it.
      */
     pickQuestion() {
-        this.curQuestion = questions.splice(Math.floor(Math.random() * questions.length-1), 1);
+        if(this.questions !== undefined) {
+            this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
+        }
     }
-    
+
+    /**
+     * Gets data from the spotify API and stores it in apiResponseMap.
+     */
+    getApiData() {
+        const types = ["tracks-long-50", "artist-long-50", "playlist-50"];
+        const urls = [TOPTRACKS + "?limit=50&time_range=long_term", TOPARTIST + "?limit=50&time_range=long_term", PLAYLISTS + "?limit=50"];
+        for (let i = 0; i < types.length; i++) {
+            const data = callApiSync(urls[i], null);
+            this.apiResponseMap.set(types[i], data);
+        }
+        console.log(this.apiResponseMap);
+    }
 }
 
 /**
@@ -104,17 +126,16 @@ class simpleQuestionGen {
  * If none are given it defaults to a premade list of questions.
  * @returns {questionGen} Returns new questionGen.
  */
-export function makeQuestionGen(questions) {
-    if (questions === undefined) {
-        // read local JSON file in javascript
-        fetch("./questions.json")
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (data) {
-            //console.log(data);
-            questions = data.questionsList;
-        })
-    }
-    return new simpleQuestionGen(questions);
+export function makeQuestionGen() {
+    // read local JSON file in javascript
+    fetch("./questions.json")
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (data) {
+        //console.log(data);
+        var questions = data.questionsList;
+        console.log(questions)
+        return new simpleQuestionGen(questions);
+    })
 }
