@@ -1,12 +1,14 @@
 {
     "questionsList":[
         {"question":"What is your #_ most listened to song?", "id":1, "apiCall":"tracks-long-50", "max":20},
-        {"question":"How many _ songs are in your top ten?", "id":2, "apiCall":"tracks-long-50", "max":20}, 
+        {"question":"Which of these songs is the most popular?", "id":2, "apiCall":"tracks-long-50", "max":40}, 
         {"question":"Who is your top artist?", "id":3, "apiCall":"artist-long-50", "max":-1},
-        {"question":"Which artist appears most in your top #_ songs?", "id":4, "apiCall":"tracks-long-50", "max":20},
+        {"question":"Which artist appears most in your top _ songs?", "id":4, "apiCall":"tracks-long-50", "max":20},
         {"question":"How many different artists are in your top #_ songs?", "id":5, "apiCall":"tracks-long-50", "max":20},
         {"question":"Which artist appears most in your playlists?", "id":6, "apiCall":"playlist-50", "max":-1},
-        {"question":"What is your most common genre in your top ten?", "id":7, "apiCall":"tracks-long-50", "max":-1},
-        {"question":"Which album appears most in your top #_ songs?", "id":8, "apiCall":"tracks-long-50", "max":20}
+        {"question":"What is your #_ most common genre in your top ten?", "id":7, "apiCall":"tracks-long-50", "max":5},
+        {"question":"Which album appears most in your top #_ songs?", "id":8, "apiCall":"tracks-long-50", "max":20},
+        {"question":"How many of your top _ songs are explicit?", "id":9, "apiCall":"tracks-long-50", "max":20},
+        {"question":"Which of these artists is the most popular?", "id":10, "apiCall":"artist-long-50", "max":40}
     ]
 }
