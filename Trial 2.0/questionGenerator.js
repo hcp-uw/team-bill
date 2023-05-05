@@ -145,7 +145,29 @@ class simpleQuestionGen {
                 }
                 break;
             case 4:
-                // TODO
+                // Which artist appears most in your top _ songs?
+                let artistMap = new Map();
+                let api = this.curQuestion.apiCall;
+                for (song in this.apiResponseMap.get(api).items.splice(0, numbers[0] + 1)) {
+                    for (artist in song.artists) {
+                        let name = artist.name;
+                        if (!artistMap.has(name)) {
+                            artistMap.set(name, 0);
+                        }
+                        artistMap.set(name, artistMap.get(name) + 1);
+                    }
+                }
+
+                let maxNum = 0;
+                let maxArtist = "";
+                artistMap.forEach (function(value, key) {
+                    if (maxNum < value) {
+                        maxArtist = key;
+                    }
+                });
+
+                result.push(maxArtist);
+                // TODO: get wrong answers in a better way than just changing number.
                 break;
             default:
                 result = ["Correct Answer", "Bad Answer", "Terrible Answer", "Pitiful Answer"];
