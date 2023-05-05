@@ -64,32 +64,40 @@ class simpleQuestionGen {
         // if maxRange is not -1. set "number" to pseudo-random number within range (greater chance for lower numbers)
         // if items.length is less than maxRange, set maxRange to items.length
         if (maxRange === -1) {
-            number = 1;
+            number = 0;
             maxRange = Math.min(items.length, 20);
         } else {
             maxRange = Math.min(items.length, maxRange);
-            number = Math.floor(Math.pow((Math.random() * maxRange), 2) / (maxRange)) + 1;
+            number = Math.floor(Math.pow((Math.random() * maxRange), 2) / (maxRange));
         }
-        console.log("Number:" + number);
-        this.curQuestion.question = this.curQuestion.question.replace("_", number); // add chosen random number to question if necessary
+        this.curQuestion.question = this.curQuestion.question.replace("_", number + 1); // add chosen random number to question if necessary
         console.log(this.curQuestion);
         
         const id = this.curQuestion.id;
 
         // reset current answer & non-answers
-        this.curAnswer = this.findAnswer(id, number);
+        // this.curAnswer = this.findAnswer(id, number);
         this.curNonAnswers = [];
 
         let usedNumbers = [number];
-        while (this.curNonAnswers.length < 3) {
-            console.log("(WHILE LOOP) Used numbers so far:");
-            console.log(usedNumbers);
-            let offNumber = Math.floor(Math.random() * maxRange) + 1;
+        if (this.apiResponseMap.get(this.curQuestion.apiCall).items.length < 5) {
+            throw new Error("Go listen to more spotify you dumb!");
+        }
+        while (usedNumbers.length < 4) {
+            console.log("(WHILE LOOP)");
+            let offNumber = Math.floor(Math.random() * maxRange);
             if (!usedNumbers.includes(offNumber)) {
-                this.curNonAnswers.push(this.findAnswer(id, offNumber));
+                // this.curNonAnswers.push(this.findAnswer(id, offNumber));
                 usedNumbers.push(offNumber);
             }
         }
+
+        console.log("numbers: " + usedNumbers);
+
+        [this.curAnswer, ...this.curNonAnswers] = this.findAnswer(id, usedNumbers);
+        // temp = this.findAnswer(id, usedNumbers);
+        // this.curAnswer = temp.answer;
+        // this.curNonAnswers = temp.nonAnswer
 
         console.log("Current answer:");
         console.log(this.curAnswer);
@@ -101,25 +109,51 @@ class simpleQuestionGen {
     /**
      * Uses the information from the Spotify API to return the answer to a given question.
      * @param {number} questionID ID of the question to get the answer for.
-     * @param {number} number The numeric modifier to the question.
-     * @returns {string} Returns the answer to the question as a string.
+     * @param {array} numbers The numeric modifier to the question. Index 0 is correct answer modifier,
+     *                        rest are non-answers.
+     * @returns {Object} Returns all four answers/non-answers. {answer: "", nonAnswers: ["","",""]}
      */
-    findAnswer(questionID, number) {
+    findAnswer(questionID, numbers) {
         // TODO: add code here
+        let result = [];
 
         switch (questionID) {
             case 1:
-                let song = this.apiResponseMap.get("track-long-50").items[number-1];
-                return song.name;
+            case 11:
+                for (let i = 0; i < 4; i++) {
+                    result.push(this.apiResponseMap.get(this.curQuestion.apiCall).items[numbers[i]]);
+                }
+                break;
             case 2:
-                // TODO
+                for (let i = 0; i < 4; i++) {
+                    result.push(this.apiResponseMap.get("tracks-long-50").items[numbers[i]]);
+                }
+                for (let i = 1; i < 4; i++) {
+                    if (result[i].popularity > result[0].popularity) {
+                        let temp = result[0];
+                        result[0] = result[i];
+                        result[i] = temp;
+                    }
+                }
+                for (let i = 0; i < 4; i++) {
+                    console.log(`#${i}: Name: ${result[i].name} Popularity: ${result[i].popularity}`);
+                }
+                break;
             case 3: 
-                // TODO
+                for (let i = 0; i < 4; i++) {
+                    result.push(this.apiResponseMap.get("artists-long-50").items[numbers[i]]);
+                }
+                break;
             case 4:
                 // TODO
+                break;
+            default:
+                result = ["Correct Answer", "Bad Answer", "Terrible Answer", "Pitiful Answer"];
+                break;
         }
-        
-        return "ID:" + questionID +  ", number: " + number;
+        // console.log("Result:");
+        // console.log(result);
+        return result;
     }
 
     /**
@@ -138,7 +172,7 @@ class simpleQuestionGen {
      * Gets data from the spotify API and stores it in apiResponseMap.
      */
     getApiData() {
-        const types = ["tracks-long-50", "artist-long-50", "playlist-50"];
+        const types = ["tracks-long-50", "artists-long-50", "playlists-50"];
         const urls = [TOPTRACKS + "?limit=50&time_range=long_term", TOPARTIST + "?limit=50&time_range=long_term", PLAYLISTS + "?limit=50"];
         for (let i = 0; i < types.length; i++) {
             const data = callApiSync(urls[i], null);
