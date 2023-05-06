@@ -52,6 +52,10 @@ class simpleQuestionGen {
      * Set answer and non answer fields to correct values
      */
     setAnswer() {
+        if (this.apiResponseMap.get(this.curQuestion.apiCall).items.length < 4) {
+            throw new Error("Go listen to more spotify you dumb!");
+        }
+
         console.log("Set Answer Below \n ------------------------");
         let maxRange = this.curQuestion.max;
         let number = 0;
@@ -60,7 +64,7 @@ class simpleQuestionGen {
         console.log(this.curQuestion);
         const items = this.apiResponseMap.get(this.curQuestion.apiCall).items;
 
-        // if maxRange is -1, set to 20
+        // if maxRange is -1, set to either 20 or the length of items, which ever is smaller
         // if maxRange is not -1. set "number" to pseudo-random number within range (greater chance for lower numbers)
         // if items.length is less than maxRange, set maxRange to items.length
         if (maxRange === -1) {
@@ -70,19 +74,14 @@ class simpleQuestionGen {
             maxRange = Math.min(items.length, maxRange);
             number = Math.floor(Math.pow((Math.random() * maxRange), 2) / (maxRange));
         }
-        this.curQuestion.question = this.curQuestion.question.replace("_", number + 1); // add chosen random number to question if necessary
+        // Adds chosen random number to the question if necessary
+        this.curQuestion.question = this.curQuestion.question.replace("_", number + 1); 
         console.log(this.curQuestion);
-        
-        const id = this.curQuestion.id;
 
-        // reset current answer & non-answers
-        // this.curAnswer = this.findAnswer(id, number);
-        this.curNonAnswers = [];
-
+        // Chooses 3 other "off numbers" to use in finding the wrong answers to the question.
+        // These numbers are chosen at randon between 0 and maxRange and there are no duplicate 
+        // numbers including the correct number chosen above.
         let usedNumbers = [number];
-        if (this.apiResponseMap.get(this.curQuestion.apiCall).items.length < 5) {
-            throw new Error("Go listen to more spotify you dumb!");
-        }
         while (usedNumbers.length < 4) {
             console.log("(WHILE LOOP)");
             let offNumber = Math.floor(Math.random() * maxRange);
@@ -94,6 +93,11 @@ class simpleQuestionGen {
 
         console.log("numbers: " + usedNumbers);
 
+        // reset current answer & non-answers
+        // this.curAnswer = this.findAnswer(id, number);
+        this.curNonAnswers = [];
+
+        const id = this.curQuestion.id;
         [this.curAnswer, ...this.curNonAnswers] = this.findAnswer(id, usedNumbers);
         // temp = this.findAnswer(id, usedNumbers);
         // this.curAnswer = temp.answer;
