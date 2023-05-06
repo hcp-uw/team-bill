@@ -1,4 +1,4 @@
-import {client_id, client_secret, redirect_uri, scope, AUTHORIZE, handleRedirect } from "./spotify.js";
+import {client_id, client_secret, redirect_uri, scope, AUTHORIZE, handleRedirect, refreshAccessToken } from "./spotify.js";
 import { makeQuestionGen } from "./questionGenerator.js";
 
 var access_token = null;
@@ -18,8 +18,6 @@ function onPageLoad() {
         if (access_token == null) {
             // we don't have an access token so present token section
             console.log("No access token.");
-            document.getElementById("tokenSection").style.display = "block"; // Pretty sure this is an 
-            // artifact from my test code and is not being used. Might want to delete --Zack
         } else {
             // console.log("Has access Token")
             // console.log("Access token: " + access_token);
@@ -46,3 +44,4 @@ function requestAuthorization() {
     window.location.href = url; // Show Spotify's authorization screen
 }
 document.getElementById('authorizeBtn').addEventListener('click', requestAuthorization);
+document.getElementById('refreshBtn').addEventListener('click', refreshAccessToken);
