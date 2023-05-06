@@ -51,17 +51,17 @@ class simpleQuestionGen {
      * Set answer and non answer fields to correct values
      */
     setAnswers() {
-        if (this.apiResponseMap.get(this.curQuestion.apiCall).items.length < 4) {
-            throw new Error("Go listen to more spotify you dumb!");
-        }
-
         console.log("Set Answer Below \n ------------------------");
         let maxRange = this.curQuestion.max;
         let number = 0;
-
+        
         console.log("Current Question:")
         console.log(this.curQuestion);
         const items = this.apiResponseMap.get(this.curQuestion.apiCall).items;
+
+        if (this.apiResponseMap.get(this.curQuestion.apiCall).items.length < 4) {
+            throw new Error("Go listen to more spotify you dumb!");
+        }
 
         // if maxRange is -1, set to either 20 or the length of items, which ever is smaller
         // if maxRange is not -1. set "number" to pseudo-random number within range (greater chance for lower numbers)
@@ -108,7 +108,7 @@ class simpleQuestionGen {
     /**
      * Uses the information from the Spotify API to return the answer to a given question.
      * @param {number} questionID ID of the question to get the answer for.
-     * @param {array} numbers The numeric modifier to the question. Index 0 is correct answer modifier,
+     * @param {Array<number>} numbers The numeric modifier to the question. Index 0 is correct answer modifier,
      *                        rest are non-answers.
      * @returns {Object} Returns all four answers/non-answers. {answer: "", nonAnswers: ["","",""]}
      */
@@ -118,16 +118,12 @@ class simpleQuestionGen {
 
         switch (questionID) {
             case 1:
+            case 3:
             case 11:
-                for (let i = 0; i < 4; i++) {
-                    result.push(this.apiResponseMap.get(this.curQuestion.apiCall).items[numbers[i]]);
-                }
+                result = this.getItems(numbers);
                 break;
             case 2:
-
-                for (let i = 0; i < 4; i++) {
-                    result.push(this.apiResponseMap.get("tracks-long-50").items[numbers[i]]);
-                }
+                result = this.getItems(numbers);
                 for (let i = 1; i < 4; i++) {
                     if (result[i].popularity > result[0].popularity) {
                         let temp = result[0];
@@ -137,11 +133,6 @@ class simpleQuestionGen {
                 }
                 for (let i = 0; i < 4; i++) {
                     console.log(`#${i}: Name: ${result[i].name} Popularity: ${result[i].popularity}`);
-                }
-                break;
-            case 3: 
-                for (let i = 0; i < 4; i++) {
-                    result.push(this.apiResponseMap.get("artists-long-50").items[numbers[i]]);
                 }
                 break;
             case 4:
@@ -175,6 +166,21 @@ class simpleQuestionGen {
         }
         // console.log("Result:");
         // console.log(result);
+        return result;
+    }
+
+    /**
+     * Using the current question and apiResponceMap, it finds the items at the given indexes
+     * @param {Array<number>} indexes A list of indexes (numbers) 
+     * @returns {Array<items>} Returns the items at the indexes of the API Responce for the current
+     *                         question. The order of items returned will be the same as the order
+     *                         given in indexes. 
+     */
+    getItems(indexes) {
+        let result = []
+        for (let i = 0; i < indexes.length; i++) {
+            result.push(this.apiResponseMap.get(this.curQuestion.apiCall).items[indexes[i]]);
+        }
         return result;
     }
 
