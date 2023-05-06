@@ -45,13 +45,12 @@ class simpleQuestionGen {
 
     changeQuestion = () => {
         this.pickQuestion();
-        this.setAnswer();
     }
 
     /**
      * Set answer and non answer fields to correct values
      */
-    setAnswer() {
+    setAnswers() {
         if (this.apiResponseMap.get(this.curQuestion.apiCall).items.length < 4) {
             throw new Error("Go listen to more spotify you dumb!");
         }
@@ -94,14 +93,10 @@ class simpleQuestionGen {
         console.log("numbers: " + usedNumbers);
 
         // reset current answer & non-answers
-        // this.curAnswer = this.findAnswer(id, number);
         this.curNonAnswers = [];
 
         const id = this.curQuestion.id;
         [this.curAnswer, ...this.curNonAnswers] = this.findAnswer(id, usedNumbers);
-        // temp = this.findAnswer(id, usedNumbers);
-        // this.curAnswer = temp.answer;
-        // this.curNonAnswers = temp.nonAnswer
 
         console.log("Current answer:");
         console.log(this.curAnswer);
@@ -129,6 +124,7 @@ class simpleQuestionGen {
                 }
                 break;
             case 2:
+
                 for (let i = 0; i < 4; i++) {
                     result.push(this.apiResponseMap.get("tracks-long-50").items[numbers[i]]);
                 }
@@ -152,7 +148,7 @@ class simpleQuestionGen {
                 // Which artist appears most in your top _ songs?
                 let artistMap = new Map();
                 let api = this.curQuestion.apiCall;
-                for (song in this.apiResponseMap.get(api).items.splice(0, numbers[0] + 1)) {
+                for (let song in this.apiResponseMap.get(api).items.splice(0, numbers[0] + 1)) {
                     for (artist in song.artists) {
                         let name = artist.name;
                         if (!artistMap.has(name)) {
@@ -186,12 +182,13 @@ class simpleQuestionGen {
      * Sets this.curQuestion to a question from this.questions and removes that question from the list.
      */
     pickQuestion() {
-        if (this.questions.length === 0) {
+        if (this.questions === undefined) {
+            throw new Error("QuestionGen: this.questions must be defined before calling pickQuestion");
+        } else if (this.questions.length === 0) {
             throw new Error("QuestionGen: There are no questions left in this.questions");
         }
-        if (this.questions !== undefined) {
-            this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
-        }
+        this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
+        this.setAnswers();
     }
 
     /**
