@@ -97,6 +97,10 @@ class simpleQuestionGen {
 
         const id = this.curQuestion.id;
         [this.curAnswer, ...this.curNonAnswers] = this.findAnswer(id, usedNumbers);
+        if (this.curAnswer === undefined) {
+            console.log("Answer was not able to be found. Picking new question.")
+            this.pickQuestion();
+        }
 
         console.log("Current answer:");
         console.log(this.curAnswer);
@@ -125,7 +129,9 @@ class simpleQuestionGen {
             case 2:
                 result = this.getItems(numbers);
                 for (let i = 1; i < 4; i++) {
-                    if (result[i].popularity > result[0].popularity) {
+                    if ((questionID === 2 && result[i].popularity > result[0].popularity) || 
+                        (questionID === 12 && result[i].popularity < result[0].popularity)) {
+                        // Swaping index 0 and i
                         let temp = result[0];
                         result[0] = result[i];
                         result[i] = temp;
@@ -136,6 +142,10 @@ class simpleQuestionGen {
                 }
                 break;
             case 4:
+                if (artists.length < 4) {
+                    this.pickQuestion();
+                    break;
+                }
                 // Which artist appears most in your top _ songs?
                 let artistMap = new Map();
                 let api = this.curQuestion.apiCall;
@@ -149,6 +159,7 @@ class simpleQuestionGen {
                     }
                 }
 
+                // Get max from map artistMap
                 let maxNum = 0;
                 let maxArtist = "";
                 artistMap.forEach (function(value, key) {
@@ -159,6 +170,19 @@ class simpleQuestionGen {
 
                 result.push(maxArtist);
                 // TODO: get wrong answers in a better way than just changing number.
+                let i = 0;
+                while (result.length < 4) {
+                    let artist = this.apiResponseMap.get("artists-long-50").items[i]
+                    if (result[0] !== artist) {
+                        result.push(artist);
+                    }
+                    i = i + 1;
+                }
+                break;
+            case 5:
+                if (PLAYLISTS.length < 4) {
+                    break;
+                }
                 break;
             default:
                 result = ["Correct Answer", "Bad Answer", "Terrible Answer", "Pitiful Answer"];
