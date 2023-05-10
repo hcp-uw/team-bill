@@ -183,30 +183,25 @@ class simpleQuestionGen {
                 break;
             case 5:
                 //How many different artists are in your top #_ songs?
-
+                
                 //Correct answer
-                let artists = new Array();
+                let diffArtists= new Array();
                 for(let i =0; i< this.curQuestion.number; i++) {
-                    let curTrack = this.apiResponseMap.get("tracks-long-50").items[numbers[i]];
-                    if(!(artists.includes(curTrack))) {
-                        artists.push(curTrack);
+                    const curTrack = this.apiResponseMap.get("tracks-long-50").items[numbers[i]]; //get the track at this iteration
+                    const artist = curTrack.artists[0].name; //get the primary artist of this track
+                    if(!(diffArtists.includes(artist))) {
+                        diffArtists.push(artist);
                     }     
                 }
-                let ans = artists.length();
+                const ans = diffArtists.length();
                 result.push(ans);
 
-                //slightly off answers - randomly add or subtract from correct answer by 1,2,3 
+                //Slightly off answers - randomly add or subtract from correct answer by 1,2,3 
                 for(let i= 0; i<3; i++)
                 {
-                    let choose = Math.random();
-                    if(choose<0.5) {
-                        //subtract
-                        result.push(ans - getRandomWhole(1,3));
-                    }
-                    else {
-                        //add
-                        result.push(ans + getRandomWhole(1,3));
-                    }
+                    let differences = [-3, -1, -2, 1, 2, 3];
+                    const choose = getRandomWhole(0, differences.length()+1);
+                    result.push(ans + differences[choose]);
                 }
                 break; 
             default:
@@ -260,7 +255,7 @@ class simpleQuestionGen {
     }
 
     /** 
-    * Gets a random number between a given range, inclusive on both ends
+    * Gets a random number between a given range, inclusive on front exclusive on end
     * @param {let} min minimum number of range 
     * @param {let} max maximum number of range
     * @returns {let} random number in given range
