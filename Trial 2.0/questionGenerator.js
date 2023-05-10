@@ -180,10 +180,16 @@ class simpleQuestionGen {
                 }
                 break;
             case 5:
-                if (PLAYLISTS.length < 4) {
-                    break;
+                //How many different artists are in your top #_ songs?
+                let artists= new Array();
+                for(let i =0; i< this.curQuestion.number; i++) {
+                    let curTrack = this.apiResponseMap.get("tracks-long-50").items[numbers[i]];
+                    if(!(artists.includes(curTrack))) {
+                        artists.push(curTrack);
+                    }     
                 }
-                break;
+                result.push(artists.length());
+                break; 
             default:
                 result = ["Correct Answer", "Bad Answer", "Terrible Answer", "Pitiful Answer"];
                 break;
