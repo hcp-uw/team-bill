@@ -204,6 +204,35 @@ class simpleQuestionGen {
                     result.push(ans + differences[choose]);
                 }
                 break; 
+            case 6:
+                //Which artist appears most in your playlists?
+                //?? should we include followed and created 
+                //NOTE: A track could be null, do a null check
+
+                //Correct answers
+                let length = this.apiResponseMap.get("playlists-50").total;
+                const playlists = this.apiResponseMap.get("playlists-50").items;
+                let mapArtists = new Map();
+                let max = 0; //max number of appearances
+                for(let i= 0; i<length; i++) {
+                    trackCollection = playlists.items[i].tracks;
+                    for(let j = 0; j< trackCollection.total; j++) {
+                        let trackLink = trackCollection.href;
+                        if(track !== null) {
+                            //if artist is already there, add tally
+
+                            //if artist is not already there, add with new value 1
+
+                            //check if this artist is the new max or not
+
+                        }
+                    }
+                }
+                result.push(max);
+
+                //slightly off answers - either calculate here, or in the nested loop keep the top 4 stored
+
+                break;
             default:
                 result = ["Correct Answer", "Bad Answer", "Terrible Answer", "Pitiful Answer"];
                 break;
