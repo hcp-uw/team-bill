@@ -37,6 +37,15 @@ body {
   
 }
 
+/* Style the image inside the navigation bar */
+.topnav img{
+  float: left;
+  width: 121px;
+  height: 73px;
+  padding-right: 5px;
+}
+
+
 /* Style the log in button inside the navigation bar */
 .topnav input {
 
@@ -44,8 +53,8 @@ body {
   font-weight : bold;
   color: #191919;
   text-align: center;
-  padding: .6rem 1.3rem;
-  margin: .8rem 1rem;
+  padding: .8rem 1.2rem;
+  margin: .6rem .7rem;
   text-decoration: none;
   font-size: 1.1rem;
   background-color: #f2f2f2;
@@ -70,8 +79,9 @@ body {
 
 /* Add a color to the active/current link */
 .topnav a.active {
-  background-color: #F4A261;
-  color: white;
+  background-color: #FFC7AF;
+  color: black;
+  font-weight: bold;
 }
 
 #button1 {
