@@ -45,50 +45,61 @@ class simpleQuestionGen {
 
     changeQuestion = () => {
         this.pickQuestion();
-        this.setAnswer();
     }
 
     /**
      * Set answer and non answer fields to correct values
      */
-    setAnswer() {
+    setAnswers() {
         console.log("Set Answer Below \n ------------------------");
         let maxRange = this.curQuestion.max;
         let number = 0;
-
+        
         console.log("Current Question:")
         console.log(this.curQuestion);
         const items = this.apiResponseMap.get(this.curQuestion.apiCall).items;
 
-        // if maxRange is -1, set to 20
+        if (this.apiResponseMap.get(this.curQuestion.apiCall).items.length < 4) {
+            throw new Error("Go listen to more spotify you dumb!");
+        }
+
+        // if maxRange is -1, set to either 20 or the length of items, which ever is smaller
         // if maxRange is not -1. set "number" to pseudo-random number within range (greater chance for lower numbers)
         // if items.length is less than maxRange, set maxRange to items.length
         if (maxRange === -1) {
-            number = 1;
+            number = 0;
             maxRange = Math.min(items.length, 20);
         } else {
             maxRange = Math.min(items.length, maxRange);
-            number = Math.floor(Math.pow((Math.random() * maxRange), 2) / (maxRange)) + 1;
+            number = Math.floor(Math.pow((Math.random() * maxRange), 2) / (maxRange));
         }
-        console.log("Number:" + number);
-        this.curQuestion.question = this.curQuestion.question.replace("_", number); // add chosen random number to question if necessary
+        // Adds chosen random number to the question if necessary
+        this.curQuestion.question = this.curQuestion.question.replace("_", number + 1); 
         console.log(this.curQuestion);
-        
-        const id = this.curQuestion.id;
 
-        // reset current answer & non-answers
-        this.curAnswer = this.findAnswer(id, number);
-        this.curNonAnswers = [];
-
+        // Chooses 3 other "off numbers" to use in finding the wrong answers to the question.
+        // These numbers are chosen at randon between 0 and maxRange and there are no duplicate 
+        // numbers including the correct number chosen above.
         let usedNumbers = [number];
-        while (this.curNonAnswers.length < 3) {
-            console.log("(WHILE LOOP) Used numbers so far:");
-            console.log(usedNumbers);
-            let offNumber = Math.floor(Math.random() * maxRange) + 1;
+        while (usedNumbers.length < 4) {
+            console.log("(WHILE LOOP)");
+            let offNumber = Math.floor(Math.random() * maxRange);
             if (!usedNumbers.includes(offNumber)) {
-                this.curNonAnswers.push(this.findAnswer(id, offNumber));
+                // this.curNonAnswers.push(this.findAnswer(id, offNumber));
                 usedNumbers.push(offNumber);
             }
+        }
+
+        console.log("numbers: " + usedNumbers);
+
+        // reset current answer & non-answers
+        this.curNonAnswers = [];
+
+        const id = this.curQuestion.id;
+        [this.curAnswer, ...this.curNonAnswers] = this.findAnswer(id, usedNumbers);
+        if (this.curAnswer === undefined) {
+            console.log("Answer was not able to be found. Picking new question.")
+            this.pickQuestion();
         }
 
         console.log("Current answer:");
@@ -101,50 +112,185 @@ class simpleQuestionGen {
     /**
      * Uses the information from the Spotify API to return the answer to a given question.
      * @param {number} questionID ID of the question to get the answer for.
-     * @param {number} number The numeric modifier to the question.
-     * @returns {string} Returns the answer to the question as a string.
+     * @param {Array<number>} numbers The numeric modifier to the question. Index 0 is correct answer modifier,
+     *                        rest are non-answers.
+     * @returns {Object} Returns all four answers/non-answers. {answer: "", nonAnswers: ["","",""]}
      */
-    findAnswer(questionID, number) {
+    findAnswer(questionID, numbers) {
         // TODO: add code here
+        let result = [];
 
         switch (questionID) {
             case 1:
-                let song = this.apiResponseMap.get("track-long-50").items[number-1];
-                return song.name;
+                //What is your #_ most listened to song?
+                break;
+            case 3:
+            case 11:
+                result = this.getItems(numbers);
+                break;
             case 2:
-                // TODO
-            case 3: 
-                // TODO
+                result = this.getItems(numbers);
+                for (let i = 1; i < 4; i++) {
+                    if ((questionID === 2 && result[i].popularity > result[0].popularity) || 
+                        (questionID === 12 && result[i].popularity < result[0].popularity)) {
+                        // Swaping index 0 and i
+                        let temp = result[0];
+                        result[0] = result[i];
+                        result[i] = temp;
+                    }
+                }
+                for (let i = 0; i < 4; i++) {
+                    console.log(`#${i}: Name: ${result[i].name} Popularity: ${result[i].popularity}`);
+                }
+                break;
             case 4:
-                // TODO
+                if (artists.length < 4) {
+                    this.pickQuestion();
+                    break;
+                }
+                // Which artist appears most in your top _ songs?
+                let artistMap = new Map();
+                let api = this.curQuestion.apiCall;
+                for (let song in this.apiResponseMap.get(api).items.splice(0, numbers[0] + 1)) {
+                    for (artist in song.artists) {
+                        let name = artist.name;
+                        if (!artistMap.has(name)) {
+                            artistMap.set(name, 0);
+                        }
+                        artistMap.set(name, artistMap.get(name) + 1);
+                    }
+                }
+
+                // Get max from map artistMap
+                let maxNum = 0;
+                let maxArtist = "";
+                artistMap.forEach (function(value, key) {
+                    if (maxNum < value) {
+                        maxArtist = key;
+                    }
+                });
+
+                result.push(maxArtist);
+                //wrong answers in a better way than just changing number.
+                let i = 0;
+                while (result.length < 4) {
+                    let artist = this.apiResponseMap.get("artists-long-50").items[i]
+                    if (result[0] !== artist) {
+                        result.push(artist);
+                    }
+                    i = i + 1;
+                }
+                break;
+            case 5:
+                //How many different artists are in your top #_ songs?
+                
+                //Correct answer
+                let diffArtists= new Array();
+                for(let i =0; i< this.curQuestion.number; i++) {
+                    const curTrack = this.apiResponseMap.get("tracks-long-50").items[numbers[i]]; //get the track at this iteration
+                    const artist = curTrack.artists[0].name; //get the primary artist of this track
+                    if(!(diffArtists.includes(artist))) {
+                        diffArtists.push(artist);
+                    }     
+                }
+                const ans = diffArtists.length();
+                result.push(ans);
+
+                //Slightly off answers - randomly add or subtract from correct answer by 1,2,3 
+                for(let i= 0; i<3; i++)
+                {
+                    let differences = [-3, -1, -2, 1, 2, 3];
+                    const choose = getRandomWhole(0, differences.length()+1);
+                    result.push(ans + differences[choose]);
+                }
+                break; 
+            case 6:
+                //Which artist appears most in your playlists?
+                //?? should we include followed and created 
+                //NOTE: A track could be null, do a null check
+
+                //Correct answers
+                let length = this.apiResponseMap.get("playlists-50").total;
+                const playlists = this.apiResponseMap.get("playlists-50").items;
+                let mapArtists = new Map();
+                let max = 0; //max number of appearances
+                for(let i= 0; i<length; i++) {
+                    trackCollection = playlists.items[i].tracks;
+                    for(let j = 0; j< trackCollection.total; j++) {
+                        let trackLink = trackCollection.href;
+                        if(track !== null) {
+                            //if artist is already there, add tally
+
+                            //if artist is not already there, add with new value 1
+
+                            //check if this artist is the new max or not
+
+                        }
+                    }
+                }
+                result.push(max);
+
+                //slightly off answers - either calculate here, or in the nested loop keep the top 4 stored
+
+                break;
+            default:
+                result = ["Correct Answer", "Bad Answer", "Terrible Answer", "Pitiful Answer"];
+                break;
         }
-        
-        return "ID:" + questionID +  ", number: " + number;
+        // console.log("Result:");
+        // console.log(result);
+        return result;
+    }
+
+    /**
+     * Using the current question and apiResponceMap, it finds the items at the given indexes
+     * @param {Array<number>} indexes A list of indexes (numbers) 
+     * @returns {Array<items>} Returns the items at the indexes of the API Responce for the current
+     *                         question. The order of items returned will be the same as the order
+     *                         given in indexes. 
+     */
+    getItems(indexes) {
+        let result = []
+        for (let i = 0; i < indexes.length; i++) {
+            result.push(this.apiResponseMap.get(this.curQuestion.apiCall).items[indexes[i]]);
+        }
+        return result;
     }
 
     /**
      * Sets this.curQuestion to a question from this.questions and removes that question from the list.
      */
     pickQuestion() {
-        if (this.questions.length === 0) {
+        if (this.questions === undefined) {
+            throw new Error("QuestionGen: this.questions must be defined before calling pickQuestion");
+        } else if (this.questions.length === 0) {
             throw new Error("QuestionGen: There are no questions left in this.questions");
         }
-        if (this.questions !== undefined) {
-            this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
-        }
+        this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
+        this.setAnswers();
     }
 
     /**
      * Gets data from the spotify API and stores it in apiResponseMap.
      */
     getApiData() {
-        const types = ["tracks-long-50", "artist-long-50", "playlist-50"];
+        const types = ["tracks-long-50", "artists-long-50", "playlists-50"];
         const urls = [TOPTRACKS + "?limit=50&time_range=long_term", TOPARTIST + "?limit=50&time_range=long_term", PLAYLISTS + "?limit=50"];
         for (let i = 0; i < types.length; i++) {
             const data = callApiSync(urls[i], null);
             this.apiResponseMap.set(types[i], data);
         }
         console.log(this.apiResponseMap);
+    }
+
+    /** 
+    * Gets a random number between a given range, inclusive on front exclusive on end
+    * @param {let} min minimum number of range 
+    * @param {let} max maximum number of range
+    * @returns {let} random number in given range
+    */
+    getRandomWhole(min, max) {
+        return Math.floor(Math.random() * (max-min)) + min;
     }
 }
 

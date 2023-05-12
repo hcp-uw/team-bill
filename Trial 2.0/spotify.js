@@ -1,5 +1,4 @@
 export var redirect_uri = "http://127.0.0.1:5000";
-
 export var client_id = "a0c734380e8a4301b8af9f29b139165c";
 export var client_secret = "33dad7cfdcd347b0a83d551537ffa728"; // In a real app you should not expose your client_secret to the user
 export var scope =
@@ -54,6 +53,8 @@ export function refreshAccessToken() {
     let body = "grant_type=refresh_token";
     body += "&refresh_token=" + refresh_token;
     body += "&client_id=" + client_id;
+    console.log("Refresh Access Token Body:");
+    console.log(body);
     callAuthorizationApi(body);
 }
 
@@ -117,6 +118,10 @@ export function callApiSync(url, body) {
     if (xhr.status == 200) {
         var data = JSON.parse(xhr.responseText);
         return data;
+    } else if (xhr.status == 401) {
+        console.log("Refreshing Access Token");
+        refreshAccessToken();
+        // return callApiSync(url, body);
     }
 }
 
