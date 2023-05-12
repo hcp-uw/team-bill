@@ -1,4 +1,4 @@
-import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS } from "./spotify.js";
+import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GET_PLAYLIST } from "./spotify.js";
 
 /**
  * @typedef question
@@ -36,6 +36,14 @@ class simpleQuestionGen {
         console.log(this.questions);
         this.apiResponseMap = new Map();
         this.getApiData();
+
+        // Checking Spotify Preconditions
+        if (this.apiResponseMap.get("tracks-long-50").items.length < 10 ||
+            this.apiResponseMap.get("artists-long-50").items.length < 5) {
+                throw new Error("Basic Preconitions are not met." + 
+                                " Must have more than 9 top songs and more than 4 top artists ");
+        }
+
         this.changeQuestion();
     }
 
@@ -120,15 +128,13 @@ class simpleQuestionGen {
         // TODO: add code here
         let result = [];
 
-        switch (questionID) {
-            case 1:
-                //What is your #_ most listened to song?
-                break;
-            case 3:
-            case 11:
+        switch (questionID) { // TODO: check/make preconditions for every case
+            case 1: // What is your #_ most listened to song?
+            case 3: // Who is your top artist?
+            case 11: // Who is your #_ artist?
                 result = this.getItems(numbers);
                 break;
-            case 2:
+            case 2: // Which of these songs is the most popular?
                 result = this.getItems(numbers);
                 for (let i = 1; i < 4; i++) {
                     if ((questionID === 2 && result[i].popularity > result[0].popularity) || 
@@ -143,12 +149,12 @@ class simpleQuestionGen {
                     console.log(`#${i}: Name: ${result[i].name} Popularity: ${result[i].popularity}`);
                 }
                 break;
-            case 4:
+            case 4: // Which artist appears most in your top _ songs?
+            case 8: // Zack TODO
                 if (artists.length < 4) {
                     this.pickQuestion();
                     break;
                 }
-                // Which artist appears most in your top _ songs?
                 let artistMap = new Map();
                 let api = this.curQuestion.apiCall;
                 for (let song in this.apiResponseMap.get(api).items.splice(0, numbers[0] + 1)) {
@@ -171,7 +177,7 @@ class simpleQuestionGen {
                 });
 
                 result.push(maxArtist);
-                //wrong answers in a better way than just changing number.
+                
                 let i = 0;
                 while (result.length < 4) {
                     let artist = this.apiResponseMap.get("artists-long-50").items[i]
@@ -181,10 +187,8 @@ class simpleQuestionGen {
                     i = i + 1;
                 }
                 break;
-            case 5:
-                //How many different artists are in your top #_ songs?
-                
-                //Correct answer
+            case 5: // Kristen TODO: How many different artists are in your top #_ songs?
+                // TODO: Correct answer - change to set 
                 let diffArtists= new Array();
                 for(let i =0; i< this.curQuestion.number; i++) {
                     const curTrack = this.apiResponseMap.get("tracks-long-50").items[numbers[i]]; //get the track at this iteration
@@ -196,7 +200,8 @@ class simpleQuestionGen {
                 const ans = diffArtists.length();
                 result.push(ans);
 
-                //Slightly off answers - randomly add or subtract from correct answer by 1,2,3 
+                //Slightly off answers - randomly add or subtract from correct answer by 1,2,3 (might be a prpblem with low amt)
+                //function that gives out random number function
                 for(let i= 0; i<3; i++)
                 {
                     let differences = [-3, -1, -2, 1, 2, 3];
@@ -204,34 +209,41 @@ class simpleQuestionGen {
                     result.push(ans + differences[choose]);
                 }
                 break; 
-            case 6:
-                //Which artist appears most in your playlists?
-                //?? should we include followed and created 
-                //NOTE: A track could be null, do a null check
+            case 6: // Kristen TODO: Which artist appears most in your playlists?
+                // ?? should we include followed and created 
+                // NOTE: A track could be null, do a null check
+                // TODO: change this to instead keep track of the href of each * playlist * rather than each track. Call API for each playlist.
+                    // API URL: GET_PLAYLIST + playlists[i].href
 
-                //Correct answers
+                // Correct answers
                 let length = this.apiResponseMap.get("playlists-50").total;
                 const playlists = this.apiResponseMap.get("playlists-50").items;
                 let mapArtists = new Map();
-                let max = 0; //max number of appearances
+                let max = 0; // max number of appearances
                 for(let i= 0; i<length; i++) {
                     trackCollection = playlists.items[i].tracks;
                     for(let j = 0; j< trackCollection.total; j++) {
                         let trackLink = trackCollection.href;
                         if(track !== null) {
-                            //if artist is already there, add tally
+                            // if artist is already there, add tally
 
-                            //if artist is not already there, add with new value 1
+                            // if artist is not already there, add with new value 1
 
-                            //check if this artist is the new max or not
+                            // check if this artist is the new max or not
 
                         }
                     }
                 }
                 result.push(max);
 
-                //slightly off answers - either calculate here, or in the nested loop keep the top 4 stored
+                // slightly off answers - either calculate here, or in the nested loop keep the top 4 stored
 
+                break;
+            case 7: // Kristen TODO
+                break;
+            case 9: // Helena TODO
+                break;
+            case 10: // TODO
                 break;
             default:
                 result = ["Correct Answer", "Bad Answer", "Terrible Answer", "Pitiful Answer"];
@@ -243,9 +255,9 @@ class simpleQuestionGen {
     }
 
     /**
-     * Using the current question and apiResponceMap, it finds the items at the given indexes
+     * Using the current question and apiResponseMap, it finds the items at the given indexes
      * @param {Array<number>} indexes A list of indexes (numbers) 
-     * @returns {Array<items>} Returns the items at the indexes of the API Responce for the current
+     * @returns {Array<items>} Returns the items at the indexes of the API Response for the current
      *                         question. The order of items returned will be the same as the order
      *                         given in indexes. 
      */
@@ -255,6 +267,17 @@ class simpleQuestionGen {
             result.push(this.apiResponseMap.get(this.curQuestion.apiCall).items[indexes[i]]);
         }
         return result;
+    }
+
+    /**
+     *  
+     * Gets a random number between a given range, inclusive on front exclusive on end
+     * @param {let} min minimum number of range 
+     * @param {let} max maximum number of range
+     * @returns {let} random number in given range
+     */
+    getRandomWhole(min, max) {
+        return Math.floor(Math.random() * (max-min)) + min;
     }
 
     /**
@@ -283,15 +306,22 @@ class simpleQuestionGen {
         console.log(this.apiResponseMap);
     }
 
-    /** 
-    * Gets a random number between a given range, inclusive on front exclusive on end
-    * @param {let} min minimum number of range 
-    * @param {let} max maximum number of range
-    * @returns {let} random number in given range
-    */
-    getRandomWhole(min, max) {
-        return Math.floor(Math.random() * (max-min)) + min;
+    /**
+     * 
+     */
+    getRandomTopArtist(correctArtist) {
+        let result = [correctArtist];
+        let i = 0;
+        while (result.length < 4) {
+            let artist = this.apiResponseMap.get("artists-long-50").items[i]
+            if (result[0] !== artist) {
+                result.push(artist);
+            }
+            i = i + 1;
+        }
+        return result.splice(0, 1)
     }
+
 }
 
 /**
