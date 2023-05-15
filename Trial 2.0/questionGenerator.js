@@ -1,5 +1,7 @@
 import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GET_PLAYLIST } from "./spotify.js";
 
+const DEBUG = true; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
+
 /**
  * @typedef question
  * 
@@ -156,7 +158,7 @@ class simpleQuestionGen {
                 }
                 break;
             case 4: // Which artist appears most in your top _ songs?
-            case 8: // hich album appears most in your top _ songs?
+            case 8: // Which album appears most in your top _ songs?
                 // Zack TODO
                 let itemMap = new Map();
                 const trackList = this.apiResponseMap.get("tracks-long-50").items; 
@@ -283,7 +285,45 @@ class simpleQuestionGen {
                 break;
             case 7: // Kristen TODO
                 break;
-            case 9: // Helena TODO
+            case 9: // Helena: How many of your top _ songs are explicit?
+                // Precondition check: at least top 3 songs
+                if (number[0] <= 2) {
+                    throw new Error(`Precondition not met for question ID 9. Must be at least top 3 songs to have 4 unique answers, not top ${number[0]}`);
+                }
+            
+                trackList = this.apiResponseMap.get("tracks-long-50").items; // at this point we ought to just make this its own variable in larger scope
+
+                // Precondition check: correct index less than number of top tracks
+                if (trackList.length <= numbers[0]) {
+                    throw new Error(`Precondition not met for question ID 9. The first number in numbers 
+                    must be less than the number of top tracks. In this case ${number[0]} is not less 
+                    than ${trackList.length}`);
+                }
+
+                let numExplicit = 0;
+                for (let i = 0; i < number[0]; i++) {
+                    const track = trackList[i];
+                    if (DEBUG) console.log(track.name + " is explicit?: " + track.explicit);
+                    if (track.explicit) numExplicit++;
+                }
+                if (DEBUG) console.log("expected num explicit: " + numExplicit);
+
+                result.push(numExplicit);
+
+                // TODO: make helper function to get numbers in proximity but not above/below certain mix/max?
+                let possibleAnswers = [];
+                for (let i = 0; i <= number[0]; i++) {
+                    possibleAnswers.push(i);
+                }
+                possibleAnswers.splice(possibleAnswer.indexOf(number[0]), 1);
+
+                while (result.length < 4) {
+                    const randIndex = getRandomWhole(0, possibleAnswers.length + 1);
+                    const wrongAnswer = possibleAnswers[randIndex];
+                    possibleAnswers.splice(randIndex, 1);
+                    result.push(wrongAnswer);
+                }
+                
                 break;
             case 10: // TODO
                 break;
