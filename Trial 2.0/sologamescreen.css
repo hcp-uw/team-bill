@@ -1,0 +1,160 @@
+
+h1 {
+    color: #FFFFFF;
+    font-family: 'Nunito';
+    font-size: 3.94rem;
+    text-align: center;
+    margin-top: 0px;
+}
+
+.answer-top-left{
+    background-color: #B9E2E0;
+    font-family: 'Nunito';
+    border: none;
+    color: #1D8C9F;
+    font-weight: bold;
+    padding: 1rem 8rem;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1.875rem;
+    position: absolute;
+    border-radius: 2.5rem;
+    top: 35%;
+    left: 15%;
+}
+
+.answer-top-left span {
+    font-size: 1.7rem;
+    color:#1E1E1E;
+}
+
+.answer-top-left:hover {
+    background-color: #FFC7AF;
+    color: #CE5E2E;
+}
+
+.answer-top-right{
+    background-color: #B9E2E0;
+    font-family: 'Nunito';
+    border: none;
+    color: #1D8C9F;
+    font-weight: bold;
+    padding: 1rem 8rem;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1.875rem;
+    position: absolute;
+    border-radius: 2.5rem;
+    top: 35%;
+    left: 55%;
+}
+
+.answer-top-right span {
+    font-size: 1.7rem;
+    color:#1E1E1E;
+}
+
+.answer-top-right:hover {
+    background-color: #FFC7AF;
+    color: #CE5E2E;
+}
+
+.answer-bottom-left{
+    background-color: #B9E2E0;
+    font-family: 'Nunito';
+    border: none;
+    color: #1D8C9F;
+    font-weight: bold;
+    padding: 1rem 8rem;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1.875rem;
+    position: absolute;
+    border-radius: 2.5rem;
+    top: 60%;
+    left: 15%;
+}
+
+.answer-bottom-left span {
+    font-size: 1.7rem;
+    color:#1E1E1E;
+}
+
+.answer-bottom-left:hover {
+    background-color: #FFC7AF;
+    color: #CE5E2E;
+}
+
+.answer-bottom-right{
+    background-color: #B9E2E0;
+    font-family: 'Nunito';
+    border: none;
+    color: #1D8C9F;
+    font-weight: bold;
+    padding: 1rem 8rem;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1.875rem;
+    position: absolute;
+    border-radius: 2.5rem;
+    top: 60%;
+    left: 55%;
+}
+
+.answer-bottom-right span {
+    font-size: 1.7rem;
+    color:#1E1E1E;
+}
+
+.answer-bottom-right:hover {
+    background-color: #FFC7AF;
+    color: #CE5E2E;
+}
+
+.question-number {
+    font-family: 'Nunito';
+    font-weight: bolder;
+    font-size: 1.875rem;
+    background-color: #FFFFFF;
+    color: #1E1E1E;
+    border-radius: 50%;
+    width: 4rem;
+    height: 4rem;
+    position: absolute;
+    top: 85%;
+    right: 46.5%;
+}
+
+.question-number span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.question-wave {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.left-wave {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 83%;
+    right: 35%;
+    height: 6rem;
+}
+
+.right-wave {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 83%;
+    right: 52.25%;
+    height: 6rem;
+}

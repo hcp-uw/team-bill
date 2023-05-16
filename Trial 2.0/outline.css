@@ -53,12 +53,12 @@ body {
   font-weight : bold;
   color: #191919;
   text-align: center;
-  padding: .8rem 1.2rem;
-  margin: .6rem .7rem;
+  padding: .5rem 1.2rem;
+  margin: .9rem .7rem;
   text-decoration: none;
   font-size: 1.1rem;
   background-color: #f2f2f2;
-  border-radius: 45%;
+  border-radius: 2.1875rem;
   border-color: #f2f2f2;
   border-style: solid;
   font-family: 'Nunito';
@@ -72,7 +72,7 @@ body {
 }
 
 /* Change the color of links on hover */
-.topnav a:hover {
+.topnav a:hover { 
   background-color: #ddd;
   color: black;
 }
