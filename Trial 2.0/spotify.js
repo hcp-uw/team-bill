@@ -10,7 +10,7 @@ var refresh_token = null;
 const TOKEN = "https://accounts.spotify.com/api/token";
 export const AUTHORIZE = "https://accounts.spotify.com/authorize";
 export const PLAYLISTS = "https://api.spotify.com/v1/me/playlists";
-export const TRACKS = "https://api.spotify.com/v1/playlists/{{PlaylistId}}/tracks";
+export const GET_PLAYLIST = "https://api.spotify.com/v1/playlists/"; // must concat playlist id to end 
 export const TOPTRACKS = "https://api.spotify.com/v1/me/top/tracks";
 export const TOPARTIST = "https://api.spotify.com/v1/me/top/artists";
 
