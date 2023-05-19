@@ -254,7 +254,7 @@ class simpleQuestionGen {
                 //function that gives out random number function
                 for(let i = 0; i < 3; i++) {
                     let differences = [-3, -1, -2, 1, 2, 3];
-                    const choose = getRandomWhole(0, differences.length);
+                    const choose = getRandomInt(0, differences.length);
                     result.push(ans + differences[choose]);
                 }
                 break; 
@@ -323,7 +323,7 @@ class simpleQuestionGen {
                 possibleAnswers.splice(possibleAnswer.indexOf(number[0]), 1);
 
                 while (result.length < 4) {
-                    const randIndex = getRandomWhole(0, possibleAnswers.length + 1);
+                    const randIndex = getRandomInt(0, possibleAnswers.length + 1);
                     const wrongAnswer = possibleAnswers[randIndex];
                     possibleAnswers.splice(randIndex, 1);
                     result.push(wrongAnswer);
@@ -437,14 +437,26 @@ class simpleQuestionGen {
 }
 
 /**
- *  
  * Gets a random number between a given range, inclusive on front, exclusive on end
  * @param {number} min minimum number of range (inclusive)
  * @param {number} max maximum number of range (exclusive)
  * @returns {number} random number in given range
  */
-function getRandomWhole(min, max) {
+function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max-min)) + min;
+}
+
+/**
+ * Returns a random number x around a number in a given range.
+ * @param {number} num The number that x is near to.
+ * @param {number} range How far away from num that x can be.
+ * @returns x such that num - range <= x <= num + range, x != num and x >= 0 
+ */
+function getRandomAround(num, range) {
+    const max = num + range;
+    const min = (num - range < 0) ? 0 : num - range;
+    const result = getRandomInt(min, max);
+    return (result >= num) ? result + 1 : result;
 }
 
 /**
