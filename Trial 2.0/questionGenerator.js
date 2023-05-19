@@ -58,6 +58,11 @@ class simpleQuestionGen {
 
     /**
      * Set answer and non answer fields to correct values
+     * @requires this.question is not undefinded and is a valid question.
+     * @modifies question, curAnswer, curNonAnswer
+     * @effects question will have any _ replace with the chosen number.
+     *          curAnswer will be equal to the answer to the question.
+     *          curNonAnswer will be a list of 3 non answers to the question.
      */
     setAnswers() {
         console.log("Set Answer Below \n ------------------------");
@@ -391,6 +396,11 @@ class simpleQuestionGen {
 
     /**
      * Sets this.curQuestion to a question from this.questions and removes that question from the list.
+     * @modifies questions, question, curAnswer, curNonAnswer
+     * @effects questions will have question removed from it.
+     *          question will be a randomly chosen question from questions.
+     *          curAnswer will be equal to the answer to that question.
+     *          curNonAnswer will be a list of 3 non answers to that question.
      */
     pickQuestion() {
         if (this.questions === undefined) {
@@ -409,6 +419,9 @@ class simpleQuestionGen {
 
     /**
      * Gets data from the spotify API and stores it in apiResponseMap.
+     * @modifies apiResponseMap
+     * @effects apiResponseMap stores the general API calls needed for the game with the key 
+     *          being the call descriptions
      */
     getApiData() {
         const types = ["tracks-long-50", "artists-long-50", "playlists-50"];
@@ -424,12 +437,12 @@ class simpleQuestionGen {
 }
 
 /**
-     *  
-     * Gets a random number between a given range, inclusive on front, exclusive on end
-     * @param {number} min minimum number of range (inclusive)
-     * @param {number} max maximum number of range (exclusive)
-     * @returns {number} random number in given range
-     */
+ *  
+ * Gets a random number between a given range, inclusive on front, exclusive on end
+ * @param {number} min minimum number of range (inclusive)
+ * @param {number} max maximum number of range (exclusive)
+ * @returns {number} random number in given range
+ */
 function getRandomWhole(min, max) {
     return Math.floor(Math.random() * (max-min)) + min;
 }
