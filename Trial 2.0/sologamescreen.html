@@ -16,33 +16,37 @@
               font-family: 'Nunito'; font-size: 15px;;
             }
           </style>
+
     </head>
     <body> 
-
         <div class="topnav">
             <img src="images\BillLogoUpdated.png" />
             <a href='index.html'>Home</a>
             <a href='VsBillTitlePage.html'>Vs. Bill</a>
-            <a class="active" href='vsyourselftitle.html'>Solo</a>
+            <a class="active" href='sologamescreen.html'>Solo</a>
     
             <a href="howtoplay.html">How to Play</a>
           <input id="authorizeBtn" type="button" value=" Login "><br />
         </div>
 
-        <h1>Insert Question #</h1>
+        <h1 id="question">Insert Question #</h1>
 
-        <div>
-          <button class="answer-top-left">Song Name<br><span>by Artist</span></button>
-          <button class="answer-top-right">Song Name<br><span>by Artist</span></button>
-          <button class="answer-bottom-left">Song Name<br><span>by Artist</span></button>
-          <button class="answer-bottom-right">Song Name<br><span>by Artist</span></button>
+        <div class="answer-buttons">
+          <button class="answer-top-left" onclick="checkAnswer(this)">Song Name<br></button>
+          <button class="answer-top-right" onclick="checkAnswer(this)">Song Name<br></button>
+          <button class="answer-bottom-left" onclick="checkAnswer(this)">Song Name<br></button>
+          <button class="answer-bottom-right" onclick="checkAnswer(this)">Song Name<br></button>
         </div>
 
         <div class = "question-wave">
-          <img class = "right-wave" src="images\hollowSoundWaveRight.png" alt="INSERT ALT TEXT">
-          <div class ="question-number"><span>1</span></div>
-          <img class = "left-wave" src="images\hollowSoundWaveLeft.png" alt="INSERT ALT TEXT">
+          <img class = "right-wave" src="images\hollowOrangeSoundWaveRight.png" alt="INSERT ALT TEXT"> 
+          <div id ="question-circle"><span id="question-number">0</span></div>
+          <img class = "left-wave" src="images\hollowOrangeSoundWaveLeft.png" alt="INSERT ALT TEXT">
         </div>
-        
+
+
+
     </body>
+    <script src="sologamescreen.js" onload = loadText()></script>
+
 </html>
