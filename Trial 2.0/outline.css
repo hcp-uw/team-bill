@@ -18,10 +18,10 @@ body {
   background-color: #191919;
   width: 100vw;
   overflow: hidden;
-  position:relative;
+  position: relative;
   top: -60px;
   left: -10px;
-  
+  height: 62px;
 
 }
 
@@ -30,8 +30,8 @@ body {
   float: left;
   color: #CFCFCF;
   text-align: center;
-  padding: 1.5rem 1.2rem;
-  
+  padding: 1.2rem 1.2rem;
+  margin-left: 2rem;
   text-decoration: none;
   font-size: 1.1rem;
   
@@ -40,9 +40,10 @@ body {
 /* Style the image inside the navigation bar */
 .topnav img{
   float: left;
-  width: 121px;
-  height: 73px;
-  padding-right: 5px;
+  width: 66px;
+  height: 39px;
+  margin: 11px;
+  margin-left: 2rem;
 }
 
 
@@ -53,8 +54,8 @@ body {
   font-weight : bold;
   color: #191919;
   text-align: center;
-  padding: .5rem 1.2rem;
-  margin: .9rem .7rem;
+  padding: .6rem 1.2rem;
+  margin: .65rem .7rem;
   text-decoration: none;
   font-size: 1.1rem;
   background-color: #FFC7AF;

@@ -1,6 +1,8 @@
 // [top-left, top-right, bottom-left, bottom-right] answer buttons respectively
 let correctAnswer = new Array(4); 
+// Current question number
 let questionNumber = 1;
+// Current number of correct answers
 let score = 0;
 
 // Replaces the question and all 4 answer choices with their respective text. Resets corret answer
@@ -90,6 +92,7 @@ function checkAnswer(element) {
     if (questionNumber <= 10) {
         loadText();
     } else {
+        // TODO: remove below and replace with transition to score screen
         alert("score: " + score);
     }
  }
