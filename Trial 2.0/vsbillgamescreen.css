@@ -1,0 +1,16 @@
+.gametitle {
+    font-size: 13rem;
+    text-align: center;
+    margin-top: 1rem;
+    color: white;
+}
+
+input[type=text]{
+    width: 25%;
+    box-sizing: border-box;
+    background-color: #1D8C9F;
+    color: black;
+    margin-left: auto;
+    margin-right: auto;
+    size: 10rem;
+}

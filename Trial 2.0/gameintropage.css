@@ -1,0 +1,28 @@
+/*overall stylesheet for game intro pages*/
+@font-face {
+    font-family: Nunito;
+    src: 'https://fonts.googleapis.com/css?family=Nunito';
+  }
+
+.gametitle {
+    font-size: 13rem;
+    text-align: center;
+    margin-top: 1rem;
+    color: white;
+}
+
+.playbutton {
+    background-color: #1D8C9F;
+    text-decoration-line:none;
+    border: none;
+    color: black;
+    padding: 1.2rem;
+    text-align: center;
+    font-size: 8rem;
+    border-radius: 20%;
+    width: 20rem;
+    margin-top: 5rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
