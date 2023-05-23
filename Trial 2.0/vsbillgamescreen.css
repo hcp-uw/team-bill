@@ -6,11 +6,32 @@
 }
 
 input[type=text]{
-    width: 25%;
+    width: 60%;
+    margin: auto;
     box-sizing: border-box;
+    background-color: #FFC7AF;
+    color: black;
+    height: 5rem;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10rem;
+    font-size: 2rem;
+    border-radius: 25%;
+    border-color: black;
+}
+
+input[type=submit] {
+    width: 20%;
+    margin: auto;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    height: 4rem;
+    margin-top: 5rem;
     background-color: #1D8C9F;
     color: black;
-    margin-left: auto;
-    margin-right: auto;
-    size: 10rem;
+    border-radius: 25%;
+    font-size: 2rem;
 }
