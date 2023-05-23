@@ -28,7 +28,7 @@ body {
 /* Style the links inside the navigation bar */
 .topnav a {
   float: left;
-  color: #f2f2f2;
+  color: #CFCFCF;
   text-align: center;
   padding: 1.5rem 1.2rem;
   
@@ -57,9 +57,9 @@ body {
   margin: .9rem .7rem;
   text-decoration: none;
   font-size: 1.1rem;
-  background-color: #f2f2f2;
+  background-color: #FFC7AF;
   border-radius: 2.1875rem;
-  border-color: #f2f2f2;
+  border-color: #FFC7AF;
   border-style: solid;
   font-family: 'Nunito';
 
