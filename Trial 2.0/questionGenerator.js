@@ -296,7 +296,7 @@ class simpleQuestionGen {
                     throw new Error(`Precondition not met for question ID 9. Must be at least top 3 songs to have 4 unique answers, not top ${number[0]}`);
                 }
             
-                trackList = this.apiResponseMap.get("tracks-long-50").items; // at this point we ought to just make this its own variable in larger scope
+                trackList = this.apiResponseMap.get("tracks-long-50").items; // TODO: at this point we ought to just make this its own variable in larger scope
 
                 // Precondition check: correct index less than number of top tracks
                 if (trackList.length <= numbers[0]) {
@@ -315,12 +315,12 @@ class simpleQuestionGen {
 
                 result.push(numExplicit);
 
-                // TODO: make helper function to get numbers in proximity but not above/below certain mix/max?
+                // TODO: make helper function that returns array of 3 "wrong" answers?
                 let possibleAnswers = [];
                 for (let i = 0; i <= number[0]; i++) {
                     possibleAnswers.push(i);
                 }
-                possibleAnswers.splice(possibleAnswer.indexOf(number[0]), 1);
+                possibleAnswers.splice(possibleAnswers.indexOf(numExplicit), 1);
 
                 while (result.length < 4) {
                     const randIndex = getRandomInt(0, possibleAnswers.length + 1);
@@ -410,7 +410,7 @@ class simpleQuestionGen {
         }
         const DEBUG = false;
         if (DEBUG) {
-            this.curQuestion = this.questions.splice(3, 1)[0];
+            this.curQuestion = this.questions.splice(7, 1)[0];
         } else {
             this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
         }

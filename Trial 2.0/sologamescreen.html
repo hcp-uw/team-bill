@@ -19,7 +19,7 @@
 
     </head>
     <body> 
-        <div class="topnav">
+        <div class="topnav"> <!-- TODO: there's probably a better (more semantic) element to use instead of these div tags -->
             <img src="images\BillLogoUpdated.png" />
             <a href='index.html'>Home</a>
             <a href='VsBillTitlePage.html'>Vs. Bill</a>
@@ -32,10 +32,10 @@
         <h1 id="question">Insert Question #</h1>
 
         <div class="answer-buttons">
-          <button class="answer-top-left" onclick="checkAnswer(this)">Song Name<br></button>
-          <button class="answer-top-right" onclick="checkAnswer(this)">Song Name<br></button>
-          <button class="answer-bottom-left" onclick="checkAnswer(this)">Song Name<br></button>
-          <button class="answer-bottom-right" onclick="checkAnswer(this)">Song Name<br></button>
+          <button class="answer-top-left">Song Name<br></button>
+          <button class="answer-top-right">Song Name<br></button>
+          <button class="answer-bottom-left">Song Name<br></button>
+          <button class="answer-bottom-right">Song Name<br></button>
         </div>
 
         <div class = "question-wave">
@@ -47,6 +47,6 @@
 
 
     </body>
-    <script src="sologamescreen.js" onload = loadText()></script>
+    <script src="sologamescreen.js" type="module"></script>
 
 </html>
