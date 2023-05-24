@@ -7,10 +7,16 @@ let questionNumber = 1;
 // Current number of correct answers
 let score = 0;
 // Creates a questionGenerator object
-const gen = makeQuestionGen();
+var gen;
+makeQuestionGen().then(function(value) {
+    gen = value;
+    console.log("Inside makeQuestionGen.then")
+    console.log(value);
+    onLoad();
+}) 
 
 function onLoad() {
-    loadAnswers();
+    loadText();
 
     document.getElementsByClassName('answer-top-left')[0].addEventListener('click', ( () => checkAnswer('answer-top-left')));
     document.getElementsByClassName('answer-top-right')[0].addEventListener('click', ( () => checkAnswer('answer-top-right')));
@@ -32,29 +38,26 @@ function loadAnswers() {
     // the first element of this array represents the correct answer
     correctAnswer = [false, false, false, false]; //top-left, top-right, bottom-left, bottom-right 
     // let arrAnswers = new Array("1","2","3","4"); // (replace with function calls later for answers)
-    let arrAnswers = new Array();
-    arrAnswers.push(gen.getAnswer());
-    arrAnswers.concat(gen.getNonAnswers());
-    let temp;
+    let arrAnswers = [gen.getAnswer(), ...gen.getNonAnswers()];
+    console.log(arrAnswers);
 
     let btnIDs = ["answer-top-left", "answer-top-right", "answer-bottom-left", "answer-bottom-right"];
 
-    for (let j = 0; j < 4; j++) {
-        let rand = getRandomInt(btnIds.length()); // Random number between 0-3 inclusive  
-        let answerText = document.getElementsByClassName(btnIDs.pop());
-        for (let i = 0; i < answerText.length; i++) {
-            // Checks if there is already a correct answer and if arrAnswers[rand] is the correct
-            // answer modifies the global boolean
-            if (rand === 0 && !(correctAnswer.includes(true))) {
-                correctAnswer[i] = true;
-            }
-            temp = arrAnswers[rand];
-            answerText[i].innerText = arrAnswers[rand];
+    for (let i = 0; i < 4; i++) {
+        const rand = getRandomInt(arrAnswers.length); // Random index of arrAnswers
+        console.log(rand);
+        const btn = document.getElementsByClassName(btnIDs.pop())[0];
+        if (arrAnswers[rand] === gen.getAnswer()) {
+            correctAnswer[btnIDs.length] = true; 
+            // Since the corresponding index of correctAnswers is the index of btnIDs and we just poped
+            // the current btnID that means that btnIDS.length is the index of btn.
         }
+        btn.innerText = arrAnswers.splice(rand, 1)[0];
     }
+    console.log(correctAnswer);
 }
 
-// Returns a random int between 0-max inclusive
+// Returns a random int between 0-max exclusive
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
