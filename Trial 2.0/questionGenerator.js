@@ -265,26 +265,35 @@ class simpleQuestionGen {
                 }
                 break; 
             case 6: // Kristen TODO: Which artist appears most in your playlists?
-                // ?? should we include followed and created 
-                // NOTE: A track could be null, do a null check
                 // TODO: change this to instead keep track of the href of each * playlist * rather than each track. Call API for each playlist.
                     // API URL: GET_PLAYLIST + playlists[i].href
 
+                //miserable miserable question - can we edit it to be "Top artist in *specific playlist* or something like that. This will break :,(
+
                 // Correct answers
-                let length = this.apiResponseMap.get("playlists-50").total;
                 const playlists = this.apiResponseMap.get("playlists-50").items;
                 let mapArtists = new Map();
-                let max = 0; // max number of appearances
+                let trackCollection = playlists.items[i].tracks;
+                let maxArtist = trackCollection[0]; // h
                 for(let i= 0; i<length; i++) {
                     trackCollection = playlists.items[i].tracks;
                     for(let j = 0; j< trackCollection.total; j++) {
-                        let trackLink = trackCollection.href;
+                        const data = callApiSync(trackCollection[j].href, null); //sketchy please help
+                        console.log(data);
                         if(track !== null) {
-                            // if artist is already there, add tally
+                            
+                            if(mapArtists.has(data)) {
+                                mapArtists.set(data, mapArtists.get(data)+1);
+                            }
+                            else {
+                                mapArtists.set(data, 1);
+                            }
+                            
+                            if(mapArtists.get(maxArtist) < mapArtists.get(data)) {
+                                maxArtist = data;
+                            }
 
-                            // if artist is not already there, add with new value 1
-
-                            // check if this artist is the new max or not
+                        // check if this artist is the new max or not
 
                         }
                     }
@@ -295,6 +304,7 @@ class simpleQuestionGen {
 
                 break;
             case 7: // Kristen TODO
+                
                 break;
             case 9: // Helena: How many of your top _ songs are explicit?
                 // Precondition check: at least top 3 songs
@@ -438,8 +448,6 @@ class simpleQuestionGen {
         }
         console.log(this.apiResponseMap);
     }
-
-
 }
 
 /**
