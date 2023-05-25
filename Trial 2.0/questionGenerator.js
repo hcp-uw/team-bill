@@ -303,7 +303,7 @@ class simpleQuestionGen {
                 // slightly off answers - either calculate here, or in the nested loop keep the top 4 stored
 
                 break;
-            case 7: // Kristen TODO
+            case 7: //"What is your most common genre in your top ten songs?"
                 
                 break;
             case 9: // Helena: How many of your top _ songs are explicit?
