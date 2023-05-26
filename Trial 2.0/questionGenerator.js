@@ -70,10 +70,6 @@ class simpleQuestionGen {
         let minRange = this.curQuestion.min;
         let number = 0;
         
-        if (DEBUG) {
-            console.log("Current Question:")
-            console.log(this.curQuestion);
-        } 
         const items = this.apiResponseMap.get(this.curQuestion.apiCall).items;
 
         // Checking preconditions
@@ -95,7 +91,7 @@ class simpleQuestionGen {
             number = Math.floor((Math.pow((Math.random() * (range)), 2) / (range)) + minRange);
         }
         // Adds chosen random number to the question if necessary
-        this.curQuestion.question = this.curQuestion.question.replace("_", number + 1); 
+        this.curQuestion.question = this.curQuestion.question.replace("_", number); 
         if (DEBUG) console.log(this.curQuestion);
 
         // Chooses 3 other "off numbers" to use in finding the wrong answers to the question.
@@ -369,7 +365,7 @@ class simpleQuestionGen {
                 }
 
                 let numExplicit = 0;
-                for (let i = 0; i < number[0]; i++) {
+                for (let i = 0; i < numbers[0]; i++) {
                     const track = trackList[i];
                     if (DEBUG) console.log(track.name + " is explicit?: " + track.explicit);
                     if (track.explicit) numExplicit++;
@@ -380,12 +376,12 @@ class simpleQuestionGen {
 
                 // TODO: make helper function that returns array of 3 "wrong" answers?
                 let possibleAnswers = [];
-                for (let i = 0; i <= number[0]; i++) {
+                for (let i = 0; i <= numbers[0]; i++) {
                     possibleAnswers.push(i);
                 }
                 possibleAnswers.splice(possibleAnswers.indexOf(numExplicit), 1);
 
-                while (result.length < 4) {
+                for (let i = 0; i < 3; i++) {
                     const randIndex = getRandomInt(0, possibleAnswers.length + 1);
                     const wrongAnswer = possibleAnswers[randIndex];
                     possibleAnswers.splice(randIndex, 1);
@@ -481,6 +477,10 @@ class simpleQuestionGen {
         } else {
             this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
         }
+        if (DEBUG) {
+            console.log("Current Question:")
+            console.log(this.curQuestion);
+        } 
         this.setAnswers();
     }
 
