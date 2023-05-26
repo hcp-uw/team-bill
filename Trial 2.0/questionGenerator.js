@@ -304,7 +304,24 @@ class simpleQuestionGen {
 
                 break;
             case 7: //"What is your most common genre in your top ten songs?"
-                
+                //const tracklist= this.apiResponseMap.get("tracks-long-50").items; <- global variable??
+
+                //Correct answer
+                let comGenres = new Map();
+                let maxGenre = trackList[0].album.genres[0];
+                for(let i = 0; i<10; i++) {
+                    let genre = trackList[i].album.genres[0];
+                    if(comGenres.has(genre)) { comGenres.set(genre, comGenres(genre) + 1)}
+                    else {comGenres.set(genre, 1);}
+
+                    //find max
+                    if(comGenres(maxGenre) < comGenres(genre)) { maxGenre = genre;}
+                }
+                curAnswer = maxGenre;
+
+                //Incorrect Answers
+                //Honestly we could either do the other genres of this song's album... or just find genres in top ten
+
                 break;
             case 9: // Helena: How many of your top _ songs are explicit?
                 // Precondition check: at least top 3 songs
