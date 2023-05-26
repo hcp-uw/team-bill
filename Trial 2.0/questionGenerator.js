@@ -1,6 +1,6 @@
 import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GET_PLAYLIST } from "./spotify.js";
 
-const DEBUG = true; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
+const DEBUG = false; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
 
 /**
  * @typedef question
@@ -48,7 +48,7 @@ class simpleQuestionGen {
         this.changeQuestion();
     }
 
-    getQuestion = () => { return this.curQuestion.q };
+    getQuestion = () => { return this.curQuestion.question };
     getAnswer = () => { return this.curAnswer };
     getNonAnswers = () => { return this.curNonAnswers };
 
@@ -65,13 +65,15 @@ class simpleQuestionGen {
      *          curNonAnswer will be a list of 3 non answers to the question.
      */
     setAnswers() {
-        console.log("Set Answer Below \n ------------------------");
+        if (DEBUG) console.log("Set Answer Below \n ------------------------");
         let maxRange = this.curQuestion.max;
         let minRange = this.curQuestion.min;
         let number = 0;
         
-        console.log("Current Question:")
-        console.log(this.curQuestion);
+        if (DEBUG) {
+            console.log("Current Question:")
+            console.log(this.curQuestion);
+        } 
         const items = this.apiResponseMap.get(this.curQuestion.apiCall).items;
 
         // Checking preconditions
@@ -94,14 +96,15 @@ class simpleQuestionGen {
         }
         // Adds chosen random number to the question if necessary
         this.curQuestion.question = this.curQuestion.question.replace("_", number + 1); 
-        console.log(this.curQuestion);
+        if (DEBUG) console.log(this.curQuestion);
 
         // Chooses 3 other "off numbers" to use in finding the wrong answers to the question.
         // These numbers are chosen at randon between 0 and maxRange and there are no duplicate 
         // numbers including the correct number chosen above.
         let usedNumbers = [number];
         while (usedNumbers.length < 4) {
-            console.log("(WHILE LOOP)");
+            if (DEBUG) console.log("(WHILE LOOP)");
+
             let offNumber = Math.floor(Math.random() * maxRange);
             if (!usedNumbers.includes(offNumber)) {
                 // this.curNonAnswers.push(this.findAnswer(id, offNumber));
@@ -109,7 +112,8 @@ class simpleQuestionGen {
             }
         }
 
-        console.log("numbers: " + usedNumbers);
+
+        if (DEBUG) console.log("numbers: " + usedNumbers);
 
         // reset current answer & non-answers
         this.curNonAnswers = [];
@@ -117,16 +121,18 @@ class simpleQuestionGen {
         const id = this.curQuestion.id;
         [this.curAnswer, ...this.curNonAnswers] = this.findAnswer(id, usedNumbers);
         if (this.curAnswer === undefined) {
-            console.log("Answer was not able to be found. Picking new question.")
+            if (DEBUG) console.log("Answer was not able to be found. Picking new question.")
             this.pickQuestion();
             return;
         }
 
-        console.log("Current answer:");
-        console.log(this.curAnswer);
-        console.log("Current NonAnsers:");
-        console.log(this.curNonAnswers);
-        console.log("------------------------");
+        if (DEBUG) {
+            console.log("Current answer:");
+            console.log(this.curAnswer);
+            console.log("Current NonAnsers:");
+            console.log(this.curNonAnswers);
+            console.log("------------------------");
+        }
     }
 
     /**
@@ -158,7 +164,7 @@ class simpleQuestionGen {
                     }
                 }
                 for (let i = 0; i < 4; i++) {
-                    console.log(`#${i}: Name: ${result[i].name} Popularity: ${result[i].popularity}`);
+                    if (DEBUG) console.log(`#${i}: Name: ${result[i].name} Popularity: ${result[i].popularity}`);
                     result[i] = result[i].name;
                 }
                 break;
@@ -189,7 +195,7 @@ class simpleQuestionGen {
                         }
                     } else { // questionID = 8
                         const name = track.album.name;
-                        console.log(name);
+                        if (DEBUG) console.log(name);
                         if (!itemMap.has(name)) {
                             itemMap.set(name, 0); 
                         }
@@ -259,26 +265,35 @@ class simpleQuestionGen {
                 }
                 break; 
             case 6: // Kristen TODO: Which artist appears most in your playlists?
-                // ?? should we include followed and created 
-                // NOTE: A track could be null, do a null check
                 // TODO: change this to instead keep track of the href of each * playlist * rather than each track. Call API for each playlist.
                     // API URL: GET_PLAYLIST + playlists[i].href
 
+                //miserable miserable question - can we edit it to be "Top artist in *specific playlist* or something like that. This will break :,(
+
                 // Correct answers
-                let length = this.apiResponseMap.get("playlists-50").total;
                 const playlists = this.apiResponseMap.get("playlists-50").items;
                 let mapArtists = new Map();
-                let max = 0; // max number of appearances
+                let trackCollection = playlists.items[i].tracks;
+                let maxArtist = trackCollection[0]; // h
                 for(let i= 0; i<length; i++) {
                     trackCollection = playlists.items[i].tracks;
                     for(let j = 0; j< trackCollection.total; j++) {
-                        let trackLink = trackCollection.href;
+                        const data = callApiSync(trackCollection[j].href, null); //sketchy please help
+                        console.log(data);
                         if(track !== null) {
-                            // if artist is already there, add tally
+                            
+                            if(mapArtists.has(data)) {
+                                mapArtists.set(data, mapArtists.get(data)+1);
+                            }
+                            else {
+                                mapArtists.set(data, 1);
+                            }
+                            
+                            if(mapArtists.get(maxArtist) < mapArtists.get(data)) {
+                                maxArtist = data;
+                            }
 
-                            // if artist is not already there, add with new value 1
-
-                            // check if this artist is the new max or not
+                        // check if this artist is the new max or not
 
                         }
                     }
@@ -288,15 +303,33 @@ class simpleQuestionGen {
                 // slightly off answers - either calculate here, or in the nested loop keep the top 4 stored
 
                 break;
-            case 7: // Kristen TODO
+            case 7: //"What is your most common genre in your top ten songs?"
+                //const tracklist= this.apiResponseMap.get("tracks-long-50").items; <- global variable??
+
+                //Correct answer
+                let comGenres = new Map();
+                let maxGenre = trackList[0].album.genres[0];
+                for(let i = 0; i<10; i++) {
+                    let genre = trackList[i].album.genres[0];
+                    if(comGenres.has(genre)) { comGenres.set(genre, comGenres(genre) + 1)}
+                    else {comGenres.set(genre, 1);}
+
+                    //find max
+                    if(comGenres(maxGenre) < comGenres(genre)) { maxGenre = genre;}
+                }
+                curAnswer = maxGenre;
+
+                //Incorrect Answers
+                //Honestly we could either do the other genres of this song's album... or just find genres in top ten
+
                 break;
             case 9: // Helena: How many of your top _ songs are explicit?
                 // Precondition check: at least top 3 songs
-                if (number[0] <= 2) {
+                if (numbers[0] <= 2) {
                     throw new Error(`Precondition not met for question ID 9. Must be at least top 3 songs to have 4 unique answers, not top ${number[0]}`);
                 }
             
-                trackList = this.apiResponseMap.get("tracks-long-50").items; // at this point we ought to just make this its own variable in larger scope
+                trackList = this.apiResponseMap.get("tracks-long-50").items; // TODO: at this point we ought to just make this its own variable in larger scope
 
                 // Precondition check: correct index less than number of top tracks
                 if (trackList.length <= numbers[0]) {
@@ -315,12 +348,12 @@ class simpleQuestionGen {
 
                 result.push(numExplicit);
 
-                // TODO: make helper function to get numbers in proximity but not above/below certain mix/max?
+                // TODO: make helper function that returns array of 3 "wrong" answers?
                 let possibleAnswers = [];
                 for (let i = 0; i <= number[0]; i++) {
                     possibleAnswers.push(i);
                 }
-                possibleAnswers.splice(possibleAnswer.indexOf(number[0]), 1);
+                possibleAnswers.splice(possibleAnswers.indexOf(numExplicit), 1);
 
                 while (result.length < 4) {
                     const randIndex = getRandomInt(0, possibleAnswers.length + 1);
@@ -408,9 +441,9 @@ class simpleQuestionGen {
         } else if (this.questions.length === 0) {
             throw new Error("QuestionGen: There are no questions left in this.questions");
         }
-        const DEBUG = false;
+
         if (DEBUG) {
-            this.curQuestion = this.questions.splice(3, 1)[0];
+            this.curQuestion = this.questions.splice(7, 1)[0];
         } else {
             this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
         }
@@ -432,8 +465,6 @@ class simpleQuestionGen {
         }
         console.log(this.apiResponseMap);
     }
-
-
 }
 
 /**
@@ -463,11 +494,11 @@ function getRandomAround(num, range) {
  * Factory function for a question gen.
  * @param {Array<question>} questions The list of questions to build the questionGen off of.
  * If none are given it defaults to a premade list of questions.
- * @returns {questionGen} Returns new questionGen.
+ * @returns {Promise} Returns a promise with a new questionGen.
  */
 export function makeQuestionGen() {
     // read local JSON file in javascript
-    fetch("./questions.json")
+    let myPromise = fetch("./questions.json")
     .then(function (response) {
         return response.json();
     })
@@ -476,4 +507,5 @@ export function makeQuestionGen() {
         var questions = data.questionsList;
         return new simpleQuestionGen(questions);
     })
+    return myPromise;
 }
