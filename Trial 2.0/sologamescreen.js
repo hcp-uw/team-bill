@@ -1,9 +1,13 @@
+import { makeQuestionGen } from "questionGenerator.js";
+
 // [top-left, top-right, bottom-left, bottom-right] answer buttons respectively
 let correctAnswer = new Array(4); 
 // Current question number
 let questionNumber = 1;
 // Current number of correct answers
 let score = 0;
+// Question generator
+const questionGen = makeQuestionGen();
 
 // Replaces the question and all 4 answer choices with their respective text. Resets corret answer
 function loadText() {
