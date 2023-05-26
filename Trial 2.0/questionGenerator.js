@@ -1,4 +1,4 @@
-import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GET_PLAYLIST } from "./spotify.js";
+import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GENRE_REC } from "./spotify.js";
 
 const DEBUG = true; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
 
@@ -70,10 +70,6 @@ class simpleQuestionGen {
         let minRange = this.curQuestion.min;
         let number = 0;
         
-        if (DEBUG) {
-            console.log("Current Question:")
-            console.log(this.curQuestion);
-        } 
         const items = this.apiResponseMap.get(this.curQuestion.apiCall).items;
 
         // Checking preconditions
@@ -95,7 +91,7 @@ class simpleQuestionGen {
             number = Math.floor((Math.pow((Math.random() * (range)), 2) / (range)) + minRange);
         }
         // Adds chosen random number to the question if necessary
-        this.curQuestion.question = this.curQuestion.question.replace("_", number + 1); 
+        this.curQuestion.question = this.curQuestion.question.replace("_", number); 
         if (DEBUG) console.log(this.curQuestion);
 
         // Chooses 3 other "off numbers" to use in finding the wrong answers to the question.
@@ -146,6 +142,8 @@ class simpleQuestionGen {
         // TODO: add code here
         let result = [];
         const trackList = this.apiResponseMap.get("tracks-long-50").items;
+        const artistList = this.apiResponseMap.get("artists-long-50").items;
+        const genreList = this.apiResponseMap.get("genre-recs").genres;
 
         switch (questionID) { // TODO: check/make preconditions for every case
             case 1: // What is your #_ most listened to song?
@@ -175,7 +173,6 @@ class simpleQuestionGen {
             case 8: { // Which album appears most in your top _ songs?
                 // Zack TODO
                 let itemMap = new Map();
-                const trackList = this.apiResponseMap.get("tracks-long-50").items; 
 
                 // Checking preconditions
                 if (trackList.length <= numbers[0]) {
@@ -309,24 +306,48 @@ class simpleQuestionGen {
 
                 break;
             }
-            case 7: { //"What is your most common genre in your top ten songs?"
-                //const tracklist= this.apiResponseMap.get("tracks-long-50").items; <- global variable??
-
+            case 7: { //"What is your most common genre in your top ten artists?"
                 //Correct answer
                 let comGenres = new Map();
-                let maxGenre = trackList[0].album.genres[0];
-                for(let i = 0; i<10; i++) {
-                    let genre = trackList[i].album.genres[0];
-                    if(comGenres.has(genre)) { comGenres.set(genre, comGenres(genre) + 1)}
-                    else {comGenres.set(genre, 1);}
+                let maxGenre = artistList[0].genres[0];
+                for (let i = 0; i < 6; i++) {
+                    let genre = artistList[i].genres[0];
+                    if (!comGenres.has(genre)) { 
+                        comGenres.set(genre, 0);
+                    }
+                    comGenres.set(genre, comGenres.get(genre) + 1);
 
                     //find max
-                    if(comGenres(maxGenre) < comGenres(genre)) { maxGenre = genre;}
+                    if (comGenres.get(maxGenre) < comGenres.get(genre)) maxGenre = genre;
+                    
                 }
-                curAnswer = maxGenre;
+                result.push(maxGenre);
 
                 //Incorrect Answers
-                //Honestly we could either do the other genres of this song's album... or just find genres in top ten
+                // Finding in top artist
+                for(let i = 0; i < artistList.length && result.length !== 4; i++) {
+                    if(!result.includes(artistList[i].genres[0])) {
+                        result.push(artistList[i].genres[0]);
+                    }
+                }
+                
+                // Finding in genre recs
+                if (result.length < 4) {
+                    let genres = genreList.slice(0, genreList.length);
+
+                    while (result.length < 4) {
+                        const rand = getRandomInt(0, genres.length);
+                        const genre = genres.splice(rand, 1)[0];
+                        if (!result.includes(genre)) {
+                            result.push(genre);
+                        }
+                        if (genres.length === 0) {
+                            throw new Error("Ran out of genre recs.")
+                        }
+                    }
+                    // result.length == 4
+                
+                }
 
                 break;
             }
@@ -335,8 +356,6 @@ class simpleQuestionGen {
                 if (numbers[0] <= 2) {
                     throw new Error(`Precondition not met for question ID 9. Must be at least top 3 songs to have 4 unique answers, not top ${number[0]}`);
                 }
-            
-                trackList = this.apiResponseMap.get("tracks-long-50").items; // TODO: at this point we ought to just make this its own variable in larger scope
 
                 // Precondition check: correct index less than number of top tracks
                 if (trackList.length <= numbers[0]) {
@@ -346,7 +365,7 @@ class simpleQuestionGen {
                 }
 
                 let numExplicit = 0;
-                for (let i = 0; i < number[0]; i++) {
+                for (let i = 0; i < numbers[0]; i++) {
                     const track = trackList[i];
                     if (DEBUG) console.log(track.name + " is explicit?: " + track.explicit);
                     if (track.explicit) numExplicit++;
@@ -357,12 +376,12 @@ class simpleQuestionGen {
 
                 // TODO: make helper function that returns array of 3 "wrong" answers?
                 let possibleAnswers = [];
-                for (let i = 0; i <= number[0]; i++) {
+                for (let i = 0; i <= numbers[0]; i++) {
                     possibleAnswers.push(i);
                 }
                 possibleAnswers.splice(possibleAnswers.indexOf(numExplicit), 1);
 
-                while (result.length < 4) {
+                for (let i = 0; i < 3; i++) {
                     const randIndex = getRandomInt(0, possibleAnswers.length + 1);
                     const wrongAnswer = possibleAnswers[randIndex];
                     possibleAnswers.splice(randIndex, 1);
@@ -453,10 +472,15 @@ class simpleQuestionGen {
         }
 
         if (DEBUG) {
-            this.curQuestion = this.questions.splice(7, 1)[0];
+            const questionID = 7; // The question ID you want to test
+            this.curQuestion = this.questions.splice(questionID - 1, 1)[0];
         } else {
             this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
         }
+        if (DEBUG) {
+            console.log("Current Question:")
+            console.log(this.curQuestion);
+        } 
         this.setAnswers();
     }
 
@@ -467,8 +491,8 @@ class simpleQuestionGen {
      *          being the call descriptions
      */
     getApiData() {
-        const types = ["tracks-long-50", "artists-long-50", "playlists-50"];
-        const urls = [TOPTRACKS + "?limit=50&time_range=long_term", TOPARTIST + "?limit=50&time_range=long_term", PLAYLISTS + "?limit=50"];
+        const types = ["tracks-long-50", "artists-long-50", "playlists-50", "genre-recs"];
+        const urls = [TOPTRACKS + "?limit=50&time_range=long_term", TOPARTIST + "?limit=50&time_range=long_term", PLAYLISTS + "?limit=50", GENRE_REC];
         for (let i = 0; i < types.length; i++) {
             const data = callApiSync(urls[i], null);
             this.apiResponseMap.set(types[i], data);
