@@ -7,7 +7,7 @@ let questionNumber = 1;
 // Current number of correct answers
 let score = 0;
 // Creates a questionGenerator object
-var gen;
+let gen;
 makeQuestionGen().then(function(value) {
     gen = value;
     // console.log("Inside makeQuestionGen.then")
@@ -15,6 +15,7 @@ makeQuestionGen().then(function(value) {
     onLoad();
 }) 
 
+// 
 function onLoad() {
     loadText();
 
