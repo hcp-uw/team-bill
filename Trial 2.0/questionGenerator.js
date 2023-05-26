@@ -1,6 +1,6 @@
 import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GET_PLAYLIST } from "./spotify.js";
 
-const DEBUG = false; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
+const DEBUG = true; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
 
 /**
  * @typedef question
