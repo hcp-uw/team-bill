@@ -145,14 +145,16 @@ class simpleQuestionGen {
     findAnswer(questionID, numbers) {
         // TODO: add code here
         let result = [];
+        const trackList = this.apiResponseMap.get("tracks-long-50").items;
 
         switch (questionID) { // TODO: check/make preconditions for every case
             case 1: // What is your #_ most listened to song?
             case 3: // Who is your top artist?
-            case 11: // Who is your #_ artist?
+            case 11: { // Who is your #_ artist?
                 result = this.getItems(numbers, true);
                 break;
-            case 2: // Which of these songs is the most popular?
+            }
+            case 2: { // Which of these songs is the most popular?
                 result = this.getItems(numbers, false);
                 for (let i = 1; i < 4; i++) {
                     if ((questionID === 2 && result[i].popularity > result[0].popularity) || 
@@ -168,8 +170,9 @@ class simpleQuestionGen {
                     result[i] = result[i].name;
                 }
                 break;
+            }
             case 4: // Which artist appears most in your top _ songs?
-            case 8: // Which album appears most in your top _ songs?
+            case 8: { // Which album appears most in your top _ songs?
                 // Zack TODO
                 let itemMap = new Map();
                 const trackList = this.apiResponseMap.get("tracks-long-50").items; 
@@ -243,7 +246,8 @@ class simpleQuestionGen {
                 }
                 
                 break;
-            case 5: // Kristen TODO: How many different artists are in your top #_ songs?
+            }
+            case 5: { // Kristen TODO: How many different artists are in your top #_ songs?
                 // TODO: Correct answer - change to set 
                 let diffArtists = new Array();
                 for(let i = 0; i <= numbers[0]; i++) {
@@ -264,7 +268,8 @@ class simpleQuestionGen {
                     result.push(ans + differences[choose]);
                 }
                 break; 
-            case 6: // Kristen TODO: Which artist appears most in your playlists?
+            }
+            case 6: { // Kristen TODO: Which artist appears most in your playlists?
                 // TODO: change this to instead keep track of the href of each * playlist * rather than each track. Call API for each playlist.
                     // API URL: GET_PLAYLIST + playlists[i].href
 
@@ -303,7 +308,8 @@ class simpleQuestionGen {
                 // slightly off answers - either calculate here, or in the nested loop keep the top 4 stored
 
                 break;
-            case 7: //"What is your most common genre in your top ten songs?"
+            }
+            case 7: { //"What is your most common genre in your top ten songs?"
                 //const tracklist= this.apiResponseMap.get("tracks-long-50").items; <- global variable??
 
                 //Correct answer
@@ -323,7 +329,8 @@ class simpleQuestionGen {
                 //Honestly we could either do the other genres of this song's album... or just find genres in top ten
 
                 break;
-            case 9: // Helena: How many of your top _ songs are explicit?
+            }
+            case 9: { // Helena: How many of your top _ songs are explicit?
                 // Precondition check: at least top 3 songs
                 if (numbers[0] <= 2) {
                     throw new Error(`Precondition not met for question ID 9. Must be at least top 3 songs to have 4 unique answers, not top ${number[0]}`);
@@ -363,11 +370,14 @@ class simpleQuestionGen {
                 }
                 
                 break;
-            case 10: // TODO
+            }
+            case 10: { // TODO
                 break;
-            default:
+            }
+            default: {
                 result = ["Correct Answer", "Bad Answer", "Terrible Answer", "Pitiful Answer"];
                 break;
+            }
         }
         // console.log("Result:");
         // console.log(result);
