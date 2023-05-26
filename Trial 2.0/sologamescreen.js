@@ -10,8 +10,8 @@ let score = 0;
 var gen;
 makeQuestionGen().then(function(value) {
     gen = value;
-    console.log("Inside makeQuestionGen.then")
-    console.log(value);
+    // console.log("Inside makeQuestionGen.then")
+    // console.log(value);
     onLoad();
 }) 
 
@@ -39,7 +39,7 @@ function loadAnswers() {
     correctAnswer = [false, false, false, false]; //top-left, top-right, bottom-left, bottom-right 
     // let arrAnswers = new Array("1","2","3","4"); // (replace with function calls later for answers)
     let arrAnswers = [gen.getAnswer(), ...gen.getNonAnswers()];
-    console.log(arrAnswers);
+    // console.log(arrAnswers);
 
     let btnIDs = ["answer-top-left", "answer-top-right", "answer-bottom-left", "answer-bottom-right"];
 
@@ -54,7 +54,7 @@ function loadAnswers() {
         }
         btn.innerText = arrAnswers.splice(rand, 1)[0];
     }
-    console.log(correctAnswer);
+    // console.log(correctAnswer);
 }
 
 // Returns a random int between 0-max exclusive

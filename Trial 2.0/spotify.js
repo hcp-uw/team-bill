@@ -13,6 +13,7 @@ export const PLAYLISTS = "https://api.spotify.com/v1/me/playlists";
 export const GET_PLAYLIST = "https://api.spotify.com/v1/playlists/"; // must concat playlist id to end 
 export const TOPTRACKS = "https://api.spotify.com/v1/me/top/tracks";
 export const TOPARTIST = "https://api.spotify.com/v1/me/top/artists";
+export const GENRE_REC = "https://api.spotify.com/v1/recommendations/available-genre-seeds";
 
 document.addEventListener("DOMContentLoaded", onPageLoad);
 
