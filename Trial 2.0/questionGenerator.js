@@ -40,9 +40,9 @@ class simpleQuestionGen {
 
         // Checking Basic Preconditions
         // if (this.apiResponseMap.get("tracks-long-50").items.length < 10 ||
-        //     this.apiResponseMap.get("artists-long-50").items.length < 5) {
+        //     this.apiResponseMap.get("artists-long-50").items.length < 10) {
         //         throw new Error("Basic Preconitions are not met." + 
-        //                         " Must have more than 9 top songs and more than 4 top artists ");
+        //                         " Must have at least 10 top songs and top artists ");
         // }
 
         this.changeQuestion();
@@ -117,10 +117,19 @@ class simpleQuestionGen {
         const id = this.curQuestion.id;
         [this.curAnswer, ...this.curNonAnswers] = this.findAnswer(id, usedNumbers);
         if (this.curAnswer === undefined) {
-            if (DEBUG) console.log("Answer was not able to be found. Picking new question.")
+            if (DEBUG) throw new Error(`Question ID ${id} returns undefined answer.`);
+            console.error(`Question ID ${id} returns undefined answer.`);
             this.pickQuestion();
             return;
         }
+        this.curNonAnswers.forEach(nonAns => {
+            if (nonAns === undefined) {
+                if (DEBUG) throw new Error(`Question ID ${id} returns undefined non-answer.`);
+                console.error(`Question ID ${id} returns undefined non-answer.`);
+                this.pickQuestion();
+                return;
+            }
+        });
 
         if (DEBUG) {
             console.log("Current answer:");
@@ -141,8 +150,14 @@ class simpleQuestionGen {
     findAnswer(questionID, numbers) {
         // TODO: add code here
         let result = [];
+
+        /** "items" array from top tracks API call */
         const trackList = this.apiResponseMap.get("tracks-long-50").items;
+
+        /** "items" array from top artists API call */
         const artistList = this.apiResponseMap.get("artists-long-50").items;
+
+        /** "genres" array from recommended genres API call */
         const genreList = this.apiResponseMap.get("genre-recs").genres;
 
         switch (questionID) { // TODO: check/make preconditions for every case
@@ -152,11 +167,14 @@ class simpleQuestionGen {
                 result = this.getItems(numbers, true);
                 break;
             }
-            case 2: { // Which of these songs is the most popular?
+            case 2: // Which of these songs is the most popular?
+            case 10: // Which of these artists is the most popular?
+            case 17: // Which of these songs is the least popular?
+            case 18: {// Which of these artist is the least popular?
                 result = this.getItems(numbers, false);
                 for (let i = 1; i < 4; i++) {
-                    if ((questionID === 2 && result[i].popularity > result[0].popularity) || 
-                        (questionID === 12 && result[i].popularity < result[0].popularity)) {
+                    if (((questionID === 2 || questionID == 10) && result[i].popularity > result[0].popularity) || 
+                        ((questionID === 17 || questionID === 18)&& result[i].popularity < result[0].popularity)) {
                         // Swaping index 0 and i
                         let temp = result[0];
                         result[0] = result[i];
@@ -374,7 +392,7 @@ class simpleQuestionGen {
 
                 result.push(numExplicit);
 
-                // TODO: make helper function that returns array of 3 "wrong" answers?
+                // TODO: implement this using getRandomAround (if applicable), or some other helper function we might make
                 let possibleAnswers = [];
                 for (let i = 0; i <= numbers[0]; i++) {
                     possibleAnswers.push(i);
@@ -390,7 +408,87 @@ class simpleQuestionGen {
                 
                 break;
             }
-            case 10: { // TODO
+            case 12: { // Colin: Which album is this song from?
+
+                // Precondition check: If all top songs are from the same album
+                let uniqueAlbums = 0;
+                let curAlbums = [];
+                const items = this.apiResponseMap.get(this.curQuestion.apiCall).items;
+                const maxRange = Math.min(items.length, 50);
+                for (let i = 0; i < maxRange; i++) {
+                    if (!curAlbums.includes(trackList[i].album)) {
+                        curAlbums.push(trackList[i].album);
+                        uniqueAlbums++;
+                    }
+                } 
+                if (uniqueAlbums < 4) {
+                    throw new Error(`Precondition not met for question ID 12.
+                     There are not enough unique albums. Unique Albums: ${uniqueAlbums}`);
+                } 
+
+                const track = trackList[numbers[0]];
+                result.push(track.album.name);
+                let curTrackName = trackList[numbers[1]].album.name;
+                for (let i = 1; i < 4; i++) {
+                    if (!result.includes(curTrackName)) {
+                        result.push(curTrackName);
+                    }
+                }
+                
+                let rand = getRandomInt(1, maxRange);
+                while (result.length !== 4){
+                    if (!result.includes(curTrackName)){
+                        result.push();
+                    }
+                    // if (trackList[numbers[rand]] !== undefined){
+                        curTrackName = trackList[numbers[rand]].album.name;
+                    // }
+                }
+
+                // Changes the question to include the song it is asking about
+                this.curQuestion.question = this.curQuestion.question.replace("-", trackList[numbers[0]].name); 
+
+                break;
+            }
+            case 13: // Helena: What is the shortest song in your top ten?
+            case 14: { // What is the longest song in your top ten?
+                
+                // precondition check: they have at least 10 top songs
+                if (trackList.length < 10) {
+                    if (DEBUG) throw new Error(`Question ID ${questionID}: Cannot have "top ten" without ten top songs`);
+                    break;
+                }
+                
+                // initially set correct answer to first song
+                let corrInd = 0;
+                let corrDur = trackList[corrInd].duration_ms;
+                // loop through top ten songs and update correctTrack/Dur
+                for (let i = 1; i < 10; i++) {
+                    const currDur = trackList[i].duration_ms;
+                    if ((questionID === 13 && currDur < corrDur) || (questionID === 14 && currDur > corrDur)) {
+                        corrInd = i;
+                    }
+                }
+                result[0] = trackList[corrInd].name;
+                let currNonIndexes = [corrInd];
+                for (let i = 0; i < 3; i++) {
+                    const nonIndex = getRandomAround(currNonIndexes, 1, 10);
+                    currNonIndexes.push(nonIndex);
+                    result.push(trackList[nonIndex].name);
+                }
+                
+            }
+            case 15:   // Which of these songs was released the longest time ago?
+            case 16: { // Which of these songs was released most recently?
+                // this is going to be dumb but stay with me
+                const items = this.getItems(numbers, false);
+                const urlList = [];
+                items.forEach((item) => {
+                    urlList.push(items.href);
+                });
+
+                const newItems = this.apiCallGetItems(urlList);
+
                 break;
             }
             default: {
@@ -406,13 +504,13 @@ class simpleQuestionGen {
     /**
      * Using the current question and apiResponseMap, it finds the items or names at the given indexes
      * @param {Array<number>} indexes A list of indexes (numbers) that must be valid indexes of the
-     *                                item list of the current apiCall.
+     * item list of the current apiCall.
      * @param {Boolean} getNames A boolean used to determine to return the whole item or just the 
-     *                           names
+     * names
      * @returns {Array<items>} Returns the items at the indexes of the API Response for the current
-     *                         question. If getNames is true then instead of a list of items it 
-     *                         will return a list of the name of each item. The order of items/names 
-     *                         returned will be the same as the order given in indexes. 
+     * question. If getNames is true then instead of a list of items it will return a list of the 
+     * name of each item. The order of items/names returned will be the same as the order given in 
+     * indexes. 
      */
     getItems(indexes, getNames) {
         let result = []
@@ -430,6 +528,20 @@ class simpleQuestionGen {
                 result.push(apiResponse.items[index]);
             }
         }
+        return result;
+    }
+
+    /**
+     * 
+     * @param {string[]} urlList A list of urls (strings) that are the address to the api call for
+     * a spotify item.
+     * @returns The list of spotify items returned by the api call.
+     */
+    apiCallGetItems(urlList) {
+        let result = [];
+        urlList.forEach((val) => {
+            result.push(callApiSync(val))
+        });
         return result;
     }
 
@@ -472,7 +584,7 @@ class simpleQuestionGen {
         }
 
         if (DEBUG) {
-            const questionID = 7; // The question ID you want to test
+            const questionID = 12; // The question ID you want to test
             this.curQuestion = this.questions.splice(questionID - 1, 1)[0];
         } else {
             this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
@@ -513,15 +625,55 @@ function getRandomInt(min, max) {
 
 /**
  * Returns a random number x around a number in a given range.
- * @param {number} num The number that x is near to.
- * @param {number} range How far away from num that x can be.
+ * @param {number[]} num List of numbers x should not be
+ * @param {number} min Min value x can be (inclusive)
+ * @param {number} max Max value x can be (inclusive)
  * @returns x such that num - range <= x <= num + range, x != num and x >= 0 
  */
-function getRandomAround(num, range) {
-    const max = num + range;
-    const min = (num - range < 0) ? 0 : num - range;
-    const result = getRandomInt(min, max);
-    return (result >= num) ? result + 1 : result;
+function getRandomAround(num, min, max) {
+    if (max < min) {
+        throw new Error('min must be smaller than max');
+    }
+    const possible_answers = [];
+    for (let i = min; i <= max; i++) {
+        possible_answers.push(i);
+    }
+
+    num.forEach((val) => {
+        const index = possible_answers.indexOf(val);
+        possible_answers.splice(index, 1);
+    });
+    
+    const resultIndex = getRandomInt(0, possible_answers.length);
+    return possible_answers[resultIndex];
+}
+/**
+ * Compres two dats in format "xxxx-xx-xx"
+ * @param {string} date1 
+ * @param {string} date2 
+ * @returns date1 > date2 
+ */
+function compareDates(date1, date2) {
+    const dateList1 = date1.split('-');
+    const dateList2 = date2.split('-');
+    
+    if (dateList1[0] > dateList2[0]) {
+        return true;
+    } else if (dateList1[0] < dateList2[0]) {
+        return false
+    } else {
+        if (dateList1[1] > dateList2[1]) {
+            return true;
+        } else if (dateList1[1] < dateList2[1]) {
+            return false
+        } else {
+            if (dateList1[2] > dateList2[2]) {
+                return true;
+            } else {
+                return false
+            }
+        }
+    }
 }
 
 /**

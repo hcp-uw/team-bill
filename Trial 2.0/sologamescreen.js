@@ -60,6 +60,7 @@ function checkAnswer(name) {
     }
     // Goes to the next question or final screen
     questionNumber++;
+    gen.changeQuestion();
     if (questionNumber <= 10) {
         loadText();
     } else {
