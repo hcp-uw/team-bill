@@ -49,7 +49,6 @@ body {
 
 /* Style the log in button inside the navigation bar */
 .topnav input {
-
   float: right;
   font-weight : bold;
   color: #191919;
@@ -63,7 +62,7 @@ body {
   border-color: #FFC7AF;
   border-style: solid;
   font-family: 'Nunito';
-
+  cursor: pointer;
 }
 
 /* Change the color of button on hover */

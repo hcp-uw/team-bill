@@ -7,7 +7,7 @@ h1 {
     margin-top: 0px;
 }
 
-.answer-top-left{
+#answer-top-left{
     background-color: #B9E2E0;
     font-family: 'Nunito';
     border: none;
@@ -24,12 +24,13 @@ h1 {
     left: 14%;
 }
 
-.answer-top-left:hover {
+#answer-top-left:hover {
     background-color: #1D8C9F;
     color: #B9E2E0;
+    cursor: pointer;
 }
 
-.answer-top-right{
+#answer-top-right{
     background-color: #B9E2E0;
     font-family: 'Nunito';
     border: none;
@@ -46,12 +47,13 @@ h1 {
     left: 54%;
 }
 
-.answer-top-right:hover {
+#answer-top-right:hover {
     background-color: #1D8C9F;
     color: #B9E2E0;
+    cursor: pointer;
 }
 
-.answer-bottom-left{
+#answer-bottom-left{
     background-color: #B9E2E0;
     font-family: 'Nunito';
     border: none;
@@ -68,12 +70,13 @@ h1 {
     left: 14%;
 }
 
-.answer-bottom-left:hover {
+#answer-bottom-left:hover {
     background-color: #1D8C9F;
     color: #B9E2E0;
+    cursor: pointer;
 }
 
-.answer-bottom-right{
+#answer-bottom-right{
     background-color: #B9E2E0;
     font-family: 'Nunito';
     border: none;
@@ -91,9 +94,10 @@ h1 {
 }
 
 
-.answer-bottom-right:hover {
+#answer-bottom-right:hover {
     background-color: #1D8C9F;
     color: #B9E2E0;
+    cursor: pointer;
 }
 
 /* FIX CENTERING ISSUES */
