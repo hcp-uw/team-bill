@@ -91,7 +91,7 @@ class simpleQuestionGen {
             number = Math.floor((Math.pow((Math.random() * (range)), 2) / (range)) + minRange);
         }
         // Adds chosen random number to the question if necessary
-        this.curQuestion.question = this.curQuestion.question.replace("_", number); 
+        this.curQuestion.question = this.curQuestion.question.replace("_", number + 1); 
         if (DEBUG) console.log(this.curQuestion);
 
         // Chooses 3 other "off numbers" to use in finding the wrong answers to the question.
@@ -583,7 +583,7 @@ class simpleQuestionGen {
         }
 
         if (DEBUG) {
-            const questionID = 12; // The question ID you want to test
+            const questionID = 1; // The question ID you want to test
             this.curQuestion = this.questions.splice(questionID - 1, 1)[0];
         } else {
             this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
