@@ -21,7 +21,7 @@ function onPageLoad() {
         } else {
             // console.log("Has access Token")
             // console.log("Access token: " + access_token);
-            const gen = makeQuestionGen();
+            //const gen = makeQuestionGen();
         }
     }
 }
