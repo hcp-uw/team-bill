@@ -86,7 +86,7 @@ class simpleQuestionGen {
             number = 0;
             maxRange = Math.min(items.length, 20);
         } else {
-            maxRange = Math.min(items.length, maxRange);
+            maxRange = Math.min(items.length-1, maxRange); 
             const range = maxRange - minRange + 1;
             number = Math.floor((Math.pow((Math.random() * (range)), 2) / (range)) + minRange);
         }
@@ -161,16 +161,16 @@ class simpleQuestionGen {
         const genreList = this.apiResponseMap.get("genre-recs").genres;
 
         switch (questionID) { // TODO: check/make preconditions for every case
-            case 1: // TESTING: What is your #_ most listened to song?
-            case 3: // TESTING: Who is your top artist?
-            case 11: { // TESTING: Who is your #_ artist?
+            case 1: // DONE: What is your #_ most listened to song?
+            case 3: // DONE: Who is your top artist?
+            case 11: { // DONE : Who is your #_ artist?
                 result = this.getItems(numbers, true);
                 break;
             }
-            case 2: // TESTING: Which of these songs is the most popular?
-            case 10: // TESTING: Which of these artists is the most popular?
-            case 17: // TESTING: Which of these songs is the least popular?
-            case 18: {// TESTING: Which of these artist is the least popular?
+            case 2: // DONE: Which of these songs is the most popular?
+            case 10: // DONE : Which of these artists is the most popular?
+            case 17: // DONE: Which of these songs is the least popular?
+            case 18: {// DONE: Which of these artist is the least popular?
                 result = this.getItems(numbers, false);
                 for (let i = 1; i < 4; i++) {
                     if (((questionID === 2 || questionID == 10) && result[i].popularity > result[0].popularity) || 
@@ -187,8 +187,8 @@ class simpleQuestionGen {
                 }
                 break;
             }
-            case 4: //TESTING: Which artist appears most in your top _ songs?
-            case 8: { // TESTING: Which album appears most in your top _ songs?
+            case 4: //TESTING Zack: Which artist appears most in your top _ songs?
+            case 8: { // TESTING Zack: Which album appears most in your top _ songs?
                 // Zack TODO
                 let itemMap = new Map();
 
@@ -262,7 +262,7 @@ class simpleQuestionGen {
                 
                 break;
             }
-            case 5: { // TESTING: How many different artists are in your top #_ songs?
+            case 5: { // TESTING Kristen: How many different artists are in your top #_ songs?
                 // TODO: Correct answer - change to set 
                 let diffArtists = new Array();
                 for(let i = 0; i <= numbers[0]; i++) {
@@ -283,7 +283,7 @@ class simpleQuestionGen {
                 }
                 break; 
             }
-            case 6: { // Kristen TODO: Which artist appears most in your playlists?
+            case 6: { // Kristen TODO: ?
                 // TODO: change this to instead keep track of the href of each * playlist * rather than each track. Call API for each playlist.
                     // API URL: GET_PLAYLIST + playlists[i].href
 
@@ -368,7 +368,7 @@ class simpleQuestionGen {
 
                 break;
             }
-            case 9: { // TESTING: How many of your top _ songs are explicit?
+            case 9: { // TESTING Helena: How many of your top _ songs are explicit?
                 // Precondition check: at least top 3 songs
                 if (numbers[0] <= 2) {
                     throw new Error(`Precondition not met for question ID 9. Must be at least top 3 songs to have 4 unique answers, not top ${number[0]}`);
@@ -407,7 +407,7 @@ class simpleQuestionGen {
                 
                 break;
             }
-            case 12: { // TESTING: Which album is this song from?
+            case 12: { // TESTING Kristen: Which album is this song from?
 
                 // Precondition check: If all top songs are from the same album
                 let uniqueAlbums = 0;
@@ -449,8 +449,8 @@ class simpleQuestionGen {
 
                 break;
             }
-            case 13: // TESTING: What is the shortest song in your top ten?
-            case 14: { // TESTING: What is the longest song in your top ten?
+            case 13: // TESTING Helena: What is the shortest song in your top ten?
+            case 14: { // TESTING Helena: What is the longest song in your top ten?
                 
                 // precondition check: they have at least 10 top songs
                 if (trackList.length < 10) {
@@ -583,7 +583,7 @@ class simpleQuestionGen {
         }
 
         if (DEBUG) {
-            const questionID = 1; // The question ID you want to test
+            const questionID = 18; // The question ID you want to test
             this.curQuestion = this.questions.splice(questionID - 1, 1)[0];
         } else {
             this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
