@@ -408,9 +408,20 @@ class simpleQuestionGen {
                 
                 break;
             }
-            case 12: { // TESTING Kristen: Which album is this song from?
+            case 12: { // WRITING: Which album is - from?
+                let trackNum = getRandomInt(0,10);
+                let trackName = trackList[trackNum].name;
+                this.curQuestion.question = this.curQuestion.question.replace("-", "\"" + trackName + "\" by " + trackList[trackNum].artists[0].name); 
 
-                // Precondition check: If all top songs are from the same album
+                result.push(trackList[trackNum].album.name);
+
+                //wrong answers can be other albums by artist, and then 
+
+                result.push("wrong");
+                result.push("wrongest");
+                result.push("wronger");
+
+                /*// Precondition check: If all top songs are from the sa me album 
                 let uniqueAlbums = 0;
                 let curAlbums = [];
                 const items = this.apiResponseMap.get(this.curQuestion.apiCall).items;
@@ -420,9 +431,10 @@ class simpleQuestionGen {
                         curAlbums.push(trackList[i].album);
                         uniqueAlbums++;
                     }
-                } 
+                }  
                 if (uniqueAlbums < 4) {
-                    throw new Error(`Precondition not met for question ID 12.
+                    throw new Error(`
+                    Precondition not met for question ID 12.
                      There are not enough unique albums. Unique Albums: ${uniqueAlbums}`);
                 } 
 
@@ -446,7 +458,7 @@ class simpleQuestionGen {
                 }
 
                 // Changes the question to include the song it is asking about
-                this.curQuestion.question = this.curQuestion.question.replace("-", trackList[numbers[0]].name); 
+                this.curQuestion.question = this.curQuestion.question.replace("-", trackList[numbers[0]].name);*/
 
                 break;
             }
@@ -584,7 +596,7 @@ class simpleQuestionGen {
         }
 
         if (DEBUG) {
-            const questionID = 5; // The question ID you want to test
+            const questionID = 12; // The question ID you want to test
             this.curQuestion = this.questions.splice(questionID - 1, 1)[0];
         } else {
             this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
