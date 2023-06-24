@@ -262,8 +262,8 @@ class simpleQuestionGen {
                 
                 break;
             }
-            case 5: { // TESTING Kristen: How many different artists are in your top #_ songs?
-                // TODO: Correct answer - change to set 
+            case 5: { // DONE: How many different artists are in your top #_ songs?
+                 
                 let diffArtists = new Array();
                 for(let i = 0; i <= numbers[0]; i++) {
                     const curTrack = this.apiResponseMap.get("tracks-long-50").items[i]; //get the track at this iteration
@@ -276,10 +276,11 @@ class simpleQuestionGen {
                 result.push(ans);
 
                 //function that gives out random number function
-                for(let i = 0; i < 3; i++) {
-                    let differences = [-3, -1, -2, 1, 2, 3];
-                    const choose = getRandomInt(0, differences.length);
-                    result.push(ans + differences[choose]);
+                while(result.length < 4) {
+                    let randN = getRandomAround(result, ans-3, ans+3) 
+                    if(randN> 0) {
+                        result.push(randN);
+                    }
                 }
                 break; 
             }
@@ -583,7 +584,7 @@ class simpleQuestionGen {
         }
 
         if (DEBUG) {
-            const questionID = 18; // The question ID you want to test
+            const questionID = 5; // The question ID you want to test
             this.curQuestion = this.questions.splice(questionID - 1, 1)[0];
         } else {
             this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
