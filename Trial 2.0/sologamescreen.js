@@ -52,7 +52,7 @@ function getRandomInt(max) {
 
 // Checks if clicked button was the correct answer
 function checkAnswer(name) {
-    if (document.getElementById(name).innerText === gen.getAnswer()) {
+    if (document.getElementById(name).innerText == gen.getAnswer()) {
         alert("you got it right");
         score++;
     } else {

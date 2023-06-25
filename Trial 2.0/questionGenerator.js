@@ -354,40 +354,30 @@ class simpleQuestionGen {
             case 9: { // TESTING Helena: How many of your top _ songs are explicit?
                 // Precondition check: at least top 3 songs
                 if (numbers[0] <= 2) {
-                    throw new Error(`Precondition not met for question ID 9. Must be at least top 3 songs to have 4 unique answers, not top ${number[0]}`);
+                    throw new Error(
+                    `Precondition not met for question ID 9. Must be at least top 3 songs to have 4 unique answers, not top ${number[0]}`
+                    );
                 }
-
+        
                 // Precondition check: correct index less than number of top tracks
                 if (trackList.length <= numbers[0]) {
                     throw new Error(`Precondition not met for question ID 9. The first number in numbers 
-                    must be less than the number of top tracks. In this case ${number[0]} is not less 
-                    than ${trackList.length}`);
+                            must be less than the number of top tracks. In this case ${number[0]} is not less 
+                            than ${trackList.length}`);
                 }
-
+        
                 let numExplicit = 0;
                 for (let i = 0; i < numbers[0]; i++) {
                     const track = trackList[i];
-                    if (DEBUG) console.log(track.name + " is explicit?: " + track.explicit);
                     if (track.explicit) numExplicit++;
                 }
-                if (DEBUG) console.log("expected num explicit: " + numExplicit);
-
+        
                 result.push(numExplicit);
-
-                // TODO: implement this using getRandomAround (if applicable), or some other helper function we might make
-                let possibleAnswers = [];
-                for (let i = 0; i <= numbers[0]; i++) {
-                    possibleAnswers.push(i);
-                }
-                possibleAnswers.splice(possibleAnswers.indexOf(numExplicit), 1);
-
+        
                 for (let i = 0; i < 3; i++) {
-                    const randIndex = getRandomInt(0, possibleAnswers.length + 1);
-                    const wrongAnswer = possibleAnswers[randIndex];
-                    possibleAnswers.splice(randIndex, 1);
+                    const wrongAnswer = getRandomAround(result, 0, numbers[0]);
                     result.push(wrongAnswer);
                 }
-                
                 break;
             }
             case 12: { // WRITING: Which album is - from?
