@@ -284,43 +284,25 @@ class simpleQuestionGen {
                 }
                 break; 
             }
-            case 6: { // Kristen TODO: ?
-                // TODO: change this to instead keep track of the href of each * playlist * rather than each track. Call API for each playlist.
-                    // API URL: GET_PLAYLIST + playlists[i].href
-
-                //miserable miserable question - can we edit it to be "Top artist in *specific playlist* or something like that. This will break :,(
-
-                // Correct answers
+            case 6: { // DONE: How many songs in your playlist named - ?
+                
+                //Correct Answer + Change question
                 const playlists = this.apiResponseMap.get("playlists-50").items;
-                let mapArtists = new Map();
-                let trackCollection = playlists.items[i].tracks;
-                let maxArtist = trackCollection[0]; // h
-                for(let i= 0; i<length; i++) {
-                    trackCollection = playlists.items[i].tracks;
-                    for(let j = 0; j< trackCollection.total; j++) {
-                        const data = callApiSync(trackCollection[j].href, null); //sketchy please help
-                        console.log(data);
-                        if(track !== null) {
-                            
-                            if(mapArtists.has(data)) {
-                                mapArtists.set(data, mapArtists.get(data)+1);
-                            }
-                            else {
-                                mapArtists.set(data, 1);
-                            }
-                            
-                            if(mapArtists.get(maxArtist) < mapArtists.get(data)) {
-                                maxArtist = data;
-                            }
-
-                        // check if this artist is the new max or not
-
-                        }
-                    }
+                let playN = getRandomInt(0, playlists.length);
+                let playlist = playlists[playN];
+                this.curQuestion.question = this.curQuestion.question.replace("- ", "\"" +playlist.name + "\""); 
+                let numTracks = playlist.tracks.total;
+                result.push(numTracks);
+                
+                let min = numTracks-5;
+                if(min<0) {
+                    min = 0;
                 }
-                result.push(max);
 
-                // slightly off answers - either calculate here, or in the nested loop keep the top 4 stored
+                //Incorrect answers
+                while(result.length < 4) {
+                    result.push(getRandomAround(result, min, numTracks+5));
+                }
 
                 break;
             }
@@ -613,7 +595,7 @@ class simpleQuestionGen {
         }
 
         if (DEBUG) {
-            const questionID = 12; // The question ID you want to test
+            const questionID = 6; // The question ID you want to test
             this.curQuestion = this.questions.splice(questionID - 1, 1)[0];
         } else {
             this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];

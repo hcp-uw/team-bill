@@ -5,7 +5,7 @@
         {"question": "Who is your top artist?",                             "id": 3, "apiCall": "artists-long-50", "max": -1, "min": 0},
         {"question": "Which artist appears most in your top _ songs?",      "id": 4, "apiCall": "tracks-long-50", "max": 20, "min": 4},
         {"question": "How many different artists are in your top #_ songs?", "id": 5, "apiCall": "tracks-long-50", "max": 20, "min": 0},
-        {"question": "Which artist appears most in your playlists?",        "id": 6, "apiCall": "playlists-50", "max": -1, "min": 0},
+        {"question": "How many songs are there in your playlist named - ?",  "id": 6, "apiCall": "playlists-50", "max": -1, "min": 0},
         {"question": "What is your most common genre in your top ten artists?", "id": 7, "apiCall": "tracks-long-50", "max": 5, "min": 0},
         {"question": "Which album appears most in your top _ songs?",       "id": 8, "apiCall": "tracks-long-50", "max": 20, "min": 4},
         {"question": "How many of your top _ songs are explicit?",          "id": 9, "apiCall": "tracks-long-50", "max": 20, "min": 4},
