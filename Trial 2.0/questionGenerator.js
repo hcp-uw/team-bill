@@ -187,8 +187,8 @@ class simpleQuestionGen {
                 }
                 break;
             }
-            case 4: //TESTING Zack: Which artist appears most in your top _ songs?
-            case 8: { // TESTING Zack: Which album appears most in your top _ songs?
+            case 4: //TESTING: Which artist appears most in your top _ songs?
+            case 8: { // TESTING: Which album appears most in your top _ songs?
                 // Zack TODO
                 let itemMap = new Map();
 
