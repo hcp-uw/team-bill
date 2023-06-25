@@ -39,11 +39,11 @@ class simpleQuestionGen {
         this.getApiData();
 
         // Checking Basic Preconditions
-        // if (this.apiResponseMap.get("tracks-long-50").items.length < 10 ||
-        //     this.apiResponseMap.get("artists-long-50").items.length < 10) {
-        //         throw new Error("Basic Preconitions are not met." + 
-        //                         " Must have at least 10 top songs and top artists ");
-        // }
+        if (this.apiResponseMap.get("tracks-long-50").items.length < 10 ||
+             this.apiResponseMap.get("artists-long-50").items.length < 10) {
+                throw new Error("Basic Preconitions are not met." + 
+                                " Must have at least 10 top songs and top artists ");
+        }
 
         this.changeQuestion();
     }
@@ -90,6 +90,7 @@ class simpleQuestionGen {
             const range = maxRange - minRange + 1;
             number = Math.floor((Math.pow((Math.random() * (range)), 2) / (range)) + minRange);
         }
+        //Add any question changes here
         // Adds chosen random number to the question if necessary
         this.curQuestion.question = this.curQuestion.question.replace("_", number + 1); 
         if (DEBUG) console.log(this.curQuestion);
@@ -117,14 +118,12 @@ class simpleQuestionGen {
         const id = this.curQuestion.id;
         [this.curAnswer, ...this.curNonAnswers] = this.findAnswer(id, usedNumbers);
         if (this.curAnswer === undefined) {
-            if (DEBUG) throw new Error(`Question ID ${id} returns undefined answer.`);
             console.error(`Question ID ${id} returns undefined answer.`);
             this.pickQuestion();
             return;
         }
         this.curNonAnswers.forEach(nonAns => {
             if (nonAns === undefined) {
-                if (DEBUG) throw new Error(`Question ID ${id} returns undefined non-answer.`);
                 console.error(`Question ID ${id} returns undefined non-answer.`);
                 this.pickQuestion();
                 return;
@@ -188,11 +187,11 @@ class simpleQuestionGen {
                 break;
             }
             case 4: //TESTING: Which artist appears most in your top _ songs?
-            case 8: { // TESTING: Which album appears most in your top _ songs?
-                // Zack TODO
+            case 8: { // TESTING: Which album appears most in your top _ songs? 
+                //TODO: Why is there an error
                 let itemMap = new Map();
 
-                // Checking preconditions
+                // Checking preconditions: 
                 if (trackList.length <= numbers[0]) {
                     throw new Error(`Precondition not met for question ID 8. The first number in numbers 
                     must be less than the number of top tracks. In this case ${number[0]} is not less 
@@ -284,11 +283,17 @@ class simpleQuestionGen {
                 }
                 break; 
             }
-            case 6: { // WRITING: How many songs are there in your playlist named - ?
+            case 6: { // DONE: How many songs are there in your playlist named - ?
+                
+                const playlists = this.apiResponseMap.get("playlists-50").items;
+
                 //Precondition: must have some number of playlists 
+                if(playlists.length<=0) {
+                    console.error("User does not have enough playlists");
+                    break;
+                }
 
                 //Correct Answer + Change question
-                const playlists = this.apiResponseMap.get("playlists-50").items;
                 let playN = getRandomInt(0, playlists.length);
                 let playlist = playlists[playN];
                 this.curQuestion.question = this.curQuestion.question.replace("- ", "\"" +playlist.name + "\""); 
@@ -457,12 +462,6 @@ class simpleQuestionGen {
             case 13: // DONE: What is the shortest song in your top ten?
             case 14: { // DONE: What is the longest song in your top ten?
                 
-                // precondition check: they have at least 10 top songs
-                if (trackList.length < 10) {
-                    throw new Error(`Question ID ${questionID}: Cannot have "top ten" without ten top songs`);
-                    break;
-                }
-                
                 // initially set correct answer to first song
                 let corrInd = 0;
                 let corrDur = trackList[corrInd].duration_ms;
@@ -608,7 +607,7 @@ class simpleQuestionGen {
         }
 
         if (DEBUG) {
-            const questionID = 12; // The question ID you want to test
+            const questionID = 6; // The question ID you want to test
             this.curQuestion = this.questions.splice(questionID - 1, 1)[0];
         } else {
             this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
@@ -627,8 +626,8 @@ class simpleQuestionGen {
      *          being the call descriptions
      */
     getApiData() {
-        const types = ["tracks-long-50", "artists-long-50", "playlists-50", "genre-recs"];
-        const urls = [TOPTRACKS + "?limit=50&time_range=long_term", TOPARTIST + "?limit=50&time_range=long_term", PLAYLISTS + "?limit=50", GENRE_REC];
+        const types = ["tracks-long-50", "artists-long-50", "playlists-50", "genre-recs", "tracks-short-50", "artists-short-50"];
+        const urls = [TOPTRACKS + "?limit=50&time_range=long_term", TOPARTIST + "?limit=50&time_range=long_term", PLAYLISTS + "?limit=50", GENRE_REC, TOPTRACKS + "?limit=50&time_range=short_term", TOPARTIST + "?limit=50&time_range=short_term"];
         for (let i = 0; i < types.length; i++) {
             const data = callApiSync(urls[i], null);
             this.apiResponseMap.set(types[i], data);

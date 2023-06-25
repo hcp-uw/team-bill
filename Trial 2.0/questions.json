@@ -1,8 +1,8 @@
 {
     "questionsList":[
-        {"question": "What is your #_ most listened to song?",              "id": 1, "apiCall": "tracks-long-50", "max": 20, "min":0},
+        {"question": "What is your #_ most listened to song of all time?",  "id": 1, "apiCall": "tracks-long-50", "max": 20, "min":0},
         {"question": "Which of these songs is the most popular?",           "id": 2, "apiCall": "tracks-long-50", "max": 40, "min": 0}, 
-        {"question": "Who is your top artist?",                             "id": 3, "apiCall": "artists-long-50", "max": -1, "min": 0},
+        {"question": "Who is your top artist of all time?",                             "id": 3, "apiCall": "artists-long-50", "max": -1, "min": 0},
         {"question": "Which artist appears most in your top _ songs?",      "id": 4, "apiCall": "tracks-long-50", "max": 20, "min": 4},
         {"question": "How many different artists are in your top #_ songs?", "id": 5, "apiCall": "tracks-long-50", "max": 20, "min": 0},
         {"question": "How many songs are there in your playlist named - ?",  "id": 6, "apiCall": "playlists-50", "max": -1, "min": 0},
@@ -10,13 +10,23 @@
         {"question": "Which album appears most in your top _ songs?",       "id": 8, "apiCall": "tracks-long-50", "max": 20, "min": 4},
         {"question": "How many of your top _ songs are explicit?",          "id": 9, "apiCall": "tracks-long-50", "max": 35, "min": 4},
         {"question": "Which of these artists is the most popular?",         "id": 10, "apiCall": "artists-long-50", "max": 50, "min": 4},
-        {"question": "Who is your #_ top artist?",                          "id": 11, "apiCall": "artists-long-50", "max": 20, "min": 0},
+        {"question": "Who is your #_ top artist of all time?",               "id": 11, "apiCall": "artists-long-50", "max": 20, "min": 0},
         {"question": "Which album is - from?",                              "id": 12, "apiCall": "tracks-long-50", "max": 50, "min": 0},
         {"question": "What is the shortest song in your top ten?",          "id": 13, "apiCall": "tracks-long-50", "max": 20, "min": 0},
         {"question": "What is the longest song in your top ten?",           "id": 14, "apiCall": "tracks-long-50", "max": 20, "min": 0},
         {"question": "Which of these songs was released the longest time ago?", "id": 15, "apiCall": "tracks-long-50", "max": 50, "min": 4},
         {"question": "Which of these songs was released most recently?",    "id": 16,"apiCall": "tracks-long-50", "max": 50, "min": 4},
-        {"question": "Which of these songs is the least popular?",    "id": 17,"apiCall": "tracks-long-50", "max": 40, "min": 0},
-        {"question": "Which of these artist is the least popular?",    "id": 18,"apiCall": "artists-long-50", "max": 40, "min": 0}
+        {"question": "Which of these songs is the least popular?",         "id": 17,"apiCall": "tracks-long-50", "max": 40, "min": 0},
+        {"question": "Which of these artists is the least popular?",        "id": 18,"apiCall": "artists-long-50", "max": 40, "min": 0},
+        {"question": "What is your #_ most listened to song in the last 4 weeks?", "id": 19, "apiCall": "tracks-short-50", "max": 20, "min":0},
+        {"question": "What year was - released?",                          "id": 20, "apiCall": "tracks-long-50", "max": 50, "min":0},
+        {"question": "Who is your top artist within the last 4 weeks?",     "id": 21, "apiCall": "artists-short-50", "max": 20, "min":0},
+        {"question": "Who is your #_ top artist in the last 4 weeks?",      "id": 22, "apiCall": "artists-short-50", "max": 20, "min": 0},
+        {"question": "Which of these albums is the most popular?",          "id": 23, "apiCall": "tracks-long-50", "max": 20, "min": 0},
+        {"question": "Which of these albums is the  least popular?",        "id": 24, "apiCall": "tracks-long-50", "max": 20, "min": 0},
+        {"question": "Which of these songs is the loudest according to spotify?",  "id": 25, "apiCall": "tracks-long-50", "max": 20, "min": 0},
+        {"question": "Which of these songs has the highest BPM?",            "id": 26, "apiCall": "tracks-long-50", "max": 20, "min": 0},
+        {"question": "Which of these songs has the lowest BPM?",             "id": 27, "apiCall": "tracks-long-50", "max": 20, "min": 0}
+
     ]
 }
