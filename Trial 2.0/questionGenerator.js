@@ -284,8 +284,9 @@ class simpleQuestionGen {
                 }
                 break; 
             }
-            case 6: { // DONE: How many songs in your playlist named - ?
-                
+            case 6: { // WRITING: How many songs are there in your playlist named - ?
+                //Precondition: must have some number of playlists 
+
                 //Correct Answer + Change question
                 const playlists = this.apiResponseMap.get("playlists-50").items;
                 let playN = getRandomInt(0, playlists.length);
@@ -380,7 +381,7 @@ class simpleQuestionGen {
                 }
                 break;
             }
-            case 12: { // WRITING: Which album is - from?
+            case 12: { // WRITING: Which album is - from by ?
                 let trackNum = getRandomInt(0,10);
                 let trackName = trackList[trackNum].name;
                 this.curQuestion.question = this.curQuestion.question.replace("-", "\"" + trackName + "\" by " + trackList[trackNum].artists[0].name); 
@@ -390,15 +391,15 @@ class simpleQuestionGen {
 
                 
                 //wrong answers can be other albums by artist, and then 
-                /*const artistAlbums = callApiSync("https://api.spotify.com/v1/artists/"+ trackList[trackNum].artists[0].id + "/albums", null);
-                console.log("https://api.spotify.com/v1/artists/"+ trackList[trackNum].artists[0].id + "/albums");
+                const artistAlbums = callApiSync("https://api.spotify.com/v1/artists/"+ trackList[trackNum].artists[0].id + "/albums");
+                
                 //get albums from artist 
                 for(let i = 0; i<artistAlbums.length; i++) {
                     if(artistAlbums[i] != album) {
                         console.log("NAME HERE: " + artistAlbums[i].name);
                         result.push(artistAlbums[i].name);
                     }
-                }*/
+                }
                 
                 let items = this.apiResponseMap.get("tracks-long-50").items;
                 //if ran out of albums from artist, go to top songs 
