@@ -412,14 +412,31 @@ class simpleQuestionGen {
                 let trackNum = getRandomInt(0,10);
                 let trackName = trackList[trackNum].name;
                 this.curQuestion.question = this.curQuestion.question.replace("-", "\"" + trackName + "\" by " + trackList[trackNum].artists[0].name); 
+                let album = trackList[trackNum].album.name;
 
-                result.push(trackList[trackNum].album.name);
+                result.push(album);
 
                 //wrong answers can be other albums by artist, and then 
+                const artistAlbums= callApiSync("https://api.spotify.com/v1/artists/"+ trackList[trackNum].id + "/albums", null);
 
-                result.push("wrong");
+                //get albums from artist 
+                for(let i = 0; i<artistAlbums.length; i++) {
+                    if(artistAlbums[i] !== album && result.length<4) {
+                        result.push(artistAlbums[i]);
+                    }
+                }
+                
+                let items = this.apiResponseMap.get("tracks-long-50").items;
+                //if ran out of albums from artist, go to top songs 
+                let c = 0;
+                while(result.length < 4) {
+                    items[c].album.name;
+                    c++;
+                }
+                
+                /*result.push("wrong");
                 result.push("wrongest");
-                result.push("wronger");
+                result.push("wronger");*/
 
                 /*// Precondition check: If all top songs are from the sa me album 
                 let uniqueAlbums = 0;
