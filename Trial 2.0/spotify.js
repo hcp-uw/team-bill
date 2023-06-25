@@ -124,6 +124,9 @@ export function callApiSync(url, body) {
         refreshAccessToken();
         // return callApiSync(url, body);
     }
+    else { 
+        console.log("Status: " + xhr.status + "\nResponse Text: " + xhr.responseText + "\nStatus Text: " + xhr.statusText);
+    }
 }
 
 export function callTopTracks(callbackFunction) {
