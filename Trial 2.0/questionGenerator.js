@@ -482,17 +482,36 @@ class simpleQuestionGen {
                 }
                 break;
             }
-            case 15: // Which of these songs was released the longest time ago?
-            case 16: { // Which of these songs was released most recently?
-                // this is going to be dumb but stay with me
-                const items = this.getItems(numbers, false);
-                const urlList = [];
-                items.forEach((item) => {
-                    urlList.push(items.href);
-                });
-
-                const newItems = this.apiCallGetItems(urlList);
-
+            case 15: // TESTING: Which of these songs was released the longest time ago?
+            case 16: { // TESTING: Which of these songs was released most recently?
+                // Gets list of items we are working with.
+                result = this.getItems(numbers, false); 
+                // This is a compare function that takes in songs and compares them based on date 
+                // published.
+                let compareSongDates = (a, b) => {
+                    let date1 = a.album.release_date;
+                    let date2 = b.album.release_date;
+                    // Depending on if the case is 15 or 16 changes if it compares in ascending or 
+                    // descending order.
+                    if (questionID === 15) {
+                        return compareDates(date2, date1);
+                    } else {
+                        return compareDates(date1, date2);
+                    }
+                }
+                // Loops through songs moving the 'smallest' one in terms of the compare function
+                // above to the front of the list.
+                for (let i = 1; i < 4; i++) {
+                    if (compareSongDates(result[0], result[i]) < 0) {
+                        let temp = result[0];
+                        result[0] = result[i];
+                        result[i] = temp;
+                    }
+                }
+                // Converts the list it items in a list of song names.
+                for (let i = 0; i < 4; i++) {
+                    result[i] = result[i].name;
+                }
                 break;
             }
             default: {
@@ -651,34 +670,43 @@ function getRandomAround(num, min, max) {
     const resultIndex = getRandomInt(0, possible_answers.length);
     return possible_answers[resultIndex];
 }
+
 /**
  * Compres two dats in format "xxxx-xx-xx"
  * @param {string} date1 
  * @param {string} date2 
- * @returns date1 > date2 
+ * @returns 1  if date1 > date2
+ *          -1 if date1 < date2
+ *          0  if date1 = date2
  */
 function compareDates(date1, date2) {
+    if (date1 === undefined || date2 === undefined) {
+        throw new Error("date1 and date2 cannot be undefined.");
+    }
     const dateList1 = date1.split('-');
     const dateList2 = date2.split('-');
     
     if (dateList1[0] > dateList2[0]) {
-        return true;
+        return 1;
     } else if (dateList1[0] < dateList2[0]) {
-        return false
+        return -1
     } else {
         if (dateList1[1] > dateList2[1]) {
-            return true;
+            return 1;
         } else if (dateList1[1] < dateList2[1]) {
-            return false
+            return -1
         } else {
             if (dateList1[2] > dateList2[2]) {
-                return true;
+                return 1;
+            } else if (dateList1[2] < dateList2[2]) {
+                return -1
             } else {
-                return false
+                return 0
             }
         }
     }
 }
+
 
 /**
  * Factory function for a question gen.
