@@ -398,15 +398,17 @@ class simpleQuestionGen {
 
                 result.push(album);
 
+                
                 //wrong answers can be other albums by artist, and then 
-                const artistAlbums= callApiSync("https://api.spotify.com/v1/artists/"+ trackList[trackNum].id + "/albums", null);
-
+                /*const artistAlbums = callApiSync("https://api.spotify.com/v1/artists/"+ trackList[trackNum].artists[0].id + "/albums", null);
+                console.log("https://api.spotify.com/v1/artists/"+ trackList[trackNum].artists[0].id + "/albums");
                 //get albums from artist 
                 for(let i = 0; i<artistAlbums.length; i++) {
-                    if(artistAlbums[i] !== album && result.length<4) {
-                        result.push(artistAlbums[i]);
+                    if(artistAlbums[i] != album) {
+                        console.log("NAME HERE: " + artistAlbums[i].name);
+                        result.push(artistAlbums[i].name);
                     }
-                }
+                }*/
                 
                 let items = this.apiResponseMap.get("tracks-long-50").items;
                 //if ran out of albums from artist, go to top songs 
@@ -414,7 +416,7 @@ class simpleQuestionGen {
                 while(result.length < 4) {
                     items[c].album.name;
                     c++;
-                }
+                } 
                 
                 /*result.push("wrong");
                 result.push("wrongest");
@@ -595,7 +597,7 @@ class simpleQuestionGen {
         }
 
         if (DEBUG) {
-            const questionID = 6; // The question ID you want to test
+            const questionID = 12; // The question ID you want to test
             this.curQuestion = this.questions.splice(questionID - 1, 1)[0];
         } else {
             this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
