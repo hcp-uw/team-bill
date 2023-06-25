@@ -351,7 +351,7 @@ class simpleQuestionGen {
 
                 break;
             }
-            case 9: { // TESTING Helena: How many of your top _ songs are explicit?
+            case 9: { // DONE: How many of your top _ songs are explicit?
                 // Precondition check: at least top 3 songs
                 if (numbers[0] <= 2) {
                     throw new Error(
@@ -453,12 +453,12 @@ class simpleQuestionGen {
 
                 break;
             }
-            case 13: // TESTING Helena: What is the shortest song in your top ten?
-            case 14: { // TESTING Helena: What is the longest song in your top ten?
+            case 13: // DONE: What is the shortest song in your top ten?
+            case 14: { // DONE: What is the longest song in your top ten?
                 
                 // precondition check: they have at least 10 top songs
                 if (trackList.length < 10) {
-                    if (DEBUG) throw new Error(`Question ID ${questionID}: Cannot have "top ten" without ten top songs`);
+                    throw new Error(`Question ID ${questionID}: Cannot have "top ten" without ten top songs`);
                     break;
                 }
                 
@@ -470,6 +470,7 @@ class simpleQuestionGen {
                     const currDur = trackList[i].duration_ms;
                     if ((questionID === 13 && currDur < corrDur) || (questionID === 14 && currDur > corrDur)) {
                         corrInd = i;
+                        corrDur = currDur;
                     }
                 }
                 result[0] = trackList[corrInd].name;
