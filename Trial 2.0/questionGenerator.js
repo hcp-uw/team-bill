@@ -386,7 +386,7 @@ class simpleQuestionGen {
                 }
                 break;
             }
-            case 12: { // WRITING: Which album is - from by ?
+            case 12: { // DONE: Which album is - from by ?
                 let trackNum = getRandomInt(0,10);
                 let trackName = trackList[trackNum].name;
                 this.curQuestion.question = this.curQuestion.question.replace("-", "\"" + trackName + "\" by " + trackList[trackNum].artists[0].name); 
@@ -394,7 +394,6 @@ class simpleQuestionGen {
 
                 result.push(album);
 
-                
                 //wrong answers can be other albums by artist, and then 
                 const artistAlbums = callApiSync("https://api.spotify.com/v1/artists/"+ trackList[trackNum].artists[0].id + "/albums");
                 
@@ -406,17 +405,12 @@ class simpleQuestionGen {
                     }
                 }
                 
-                let items = this.apiResponseMap.get("tracks-long-50").items;
-                //if ran out of albums from artist, go to top songs 
-                let c = 0;
+                var c = 0;
                 while(result.length < 4) {
-                    items[c].album.name;
+                    let test = trackList[c];
+                    result.push(test.album.name);
                     c++;
                 } 
-                
-                /*result.push("wrong");
-                result.push("wrongest");
-                result.push("wronger");*/
 
                 /*// Precondition check: If all top songs are from the sa me album 
                 let uniqueAlbums = 0;
@@ -607,7 +601,7 @@ class simpleQuestionGen {
         }
 
         if (DEBUG) {
-            const questionID = 6; // The question ID you want to test
+            const questionID = 12; // The question ID you want to test
             this.curQuestion = this.questions.splice(questionID - 1, 1)[0];
         } else {
             this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
