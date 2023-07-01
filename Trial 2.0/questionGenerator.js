@@ -508,6 +508,36 @@ class simpleQuestionGen {
                 }
                 break;
             }
+            case 20: { // TESTING Helena: What year was - released?
+                const trackItem = trackList[getRandomInt(this.curQuestion.min, this.curQuestion.max)];
+                if (DEBUG) console.log(trackItem);
+                this.curQuestion.question = this.curQuestion.question.replace("-", "\"" + trackItem.name + "\" by " + trackItem.artists[0].name);
+
+                let trackYear = trackItem.album.release_date;
+                trackYear = trackYear.substring(0, trackYear.indexOf("-"));
+                trackYear = parseInt(trackYear);
+
+                let currYear = new Date().getFullYear();
+
+                // get lower and upper year bounds. Ideally get range of 15 years
+                // above and below actual track year, but if the track year is
+                // within 15 years to the current year (based on user's local time),
+                // then increase lower bound to maintain overall range of 30 years.
+                const rangeNum = 15; // <-- edit as needed to adjust range
+                let extra = Math.max(0, rangeNum - (currYear - trackYear));
+                let lowerBoundYear = trackYear - rangeNum - extra;
+                let upperBoundYear = Math.min(trackYear + rangeNum, currYear);
+
+                if (DEBUG) console.log("Lower: " + lowerBoundYear + " // Upper: " + upperBoundYear);
+
+                result.push(trackYear);
+                for (let i = 0; i < 3; i++) {
+                    const wrongAnswer = getRandomAround(result, lowerBoundYear, upperBoundYear);
+                    result.push(wrongAnswer);
+                }
+
+                break;
+            }
             default: {
                 result = ["Correct Answer", "Bad Answer", "Terrible Answer", "Pitiful Answer"];
                 break;
@@ -601,7 +631,7 @@ class simpleQuestionGen {
         }
 
         if (DEBUG) {
-            const questionID = 12; // The question ID you want to test
+            const questionID = 20; // The question ID you want to test
             this.curQuestion = this.questions.splice(questionID - 1, 1)[0];
         } else {
             this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
