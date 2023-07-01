@@ -39,11 +39,11 @@ class simpleQuestionGen {
         this.getApiData();
 
         // Checking Basic Preconditions
-        if (this.apiResponseMap.get("tracks-long-50").items.length < 10 ||
-             this.apiResponseMap.get("artists-long-50").items.length < 10) {
-                throw new Error("Basic Preconitions are not met." + 
-                                " Must have at least 10 top songs and top artists ");
-        }
+        // if (this.apiResponseMap.get("tracks-long-50").items.length < 10 ||
+        //      this.apiResponseMap.get("artists-long-50").items.length < 10) {
+        //         throw new Error("Basic Preconitions are not met." + 
+        //                         " Must have at least 10 top songs and top artists ");
+        // }
 
         this.changeQuestion();
     }
@@ -171,7 +171,10 @@ class simpleQuestionGen {
         switch (questionID) { // TODO: check/make preconditions for every case
             case 1: // DONE: What is your #_ most listened to song?
             case 3: // DONE: Who is your top artist?
-            case 11: { // DONE : Who is your #_ artist?
+            case 11: // DONE: Who is your #_ artist?
+            case 18: // TESTING: What is your #_ most listened to song in the last 4 weeks?
+            case 21: // TESTING: Who is your top artist within the last 4 weeks?
+            case 22: { // TESTING: Who is your #_ top artist in the last 4 weeks?
                 result = this.getItems(numbers, true);
                 break;
             }
@@ -214,6 +217,7 @@ class simpleQuestionGen {
                         for (let j = 0; j < track.artists.length; j++) {
                             const artist = track.artists[j];
                             const name = artist.name;
+                            if (DEBUG) console.log(name);
                             if (!itemMap.has(name)) {
                                 itemMap.set(name, 0); 
                             }
@@ -395,8 +399,8 @@ class simpleQuestionGen {
                 }
                 break;
             }
-            case 12: { // DONE: Which album is - from by ?
-                let trackNum = getRandomInt(0,10);
+            case 12: { // TESTING: Which album is - from by ?
+                let trackNum = getRandomInt(this.curQuestion.min,this.curQuestion.max);
                 let trackName = trackList[trackNum].name;
                 this.curQuestion.question = this.curQuestion.question.replace("-", "\"" + trackName + "\" by " + trackList[trackNum].artists[0].name); 
                 let album = trackList[trackNum].album.name;
@@ -640,7 +644,7 @@ class simpleQuestionGen {
         }
 
         if (DEBUG) {
-            const questionID = 20; // The question ID you want to test
+            const questionID = 8; // The question ID you want to test
             this.curQuestion = this.questions.splice(questionID - 1, 1)[0];
         } else {
             this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
