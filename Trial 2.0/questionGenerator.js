@@ -151,10 +151,19 @@ class simpleQuestionGen {
         let result = [];
 
         /** "items" array from top tracks API call */
-        const trackList = this.apiResponseMap.get("tracks-long-50").items;
+        let trackList;
 
         /** "items" array from top artists API call */
-        const artistList = this.apiResponseMap.get("artists-long-50").items;
+        let artistList;
+
+        // TESTING - Make sure it switches to correct api call.
+        if (this.curQuestion.apiCall.endsWith('long-50')) {
+            trackList = this.apiResponseMap.get("tracks-long-50").items;
+            artistList = this.apiResponseMap.get("artists-long-50").items;
+        } else {
+            trackList = this.apiResponseMap.get("tracks-short-50").items;
+            artistList = this.apiResponseMap.get("artists-short-50").items;
+        }
 
         /** "genres" array from recommended genres API call */
         const genreList = this.apiResponseMap.get("genre-recs").genres;
