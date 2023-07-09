@@ -16,7 +16,7 @@ body {
 .topnav {
   position: sticky;
   background-color: #191919;
-  width: 100vw;
+  width: 110vw;
   overflow: hidden;
   position: relative;
   top: -60px;
