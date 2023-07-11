@@ -24,9 +24,9 @@
         {"question": "Who is your #_ top artist in the last 4 weeks?",      "id": 22, "apiCall": "artists-short-50", "max": 20, "min": 0},
         {"question": "Which of these albums is the most popular?",          "id": 23, "apiCall": "tracks-long-50", "max": 20, "min": 0},
         {"question": "Which of these albums is the  least popular?",        "id": 24, "apiCall": "tracks-long-50", "max": 20, "min": 0},
-        {"question": "Which of these songs is the loudest according to spotify?",  "id": 25, "apiCall": "tracks-long-50", "max": 20, "min": 0},
-        {"question": "Which of these songs has the highest BPM?",            "id": 26, "apiCall": "tracks-long-50", "max": 20, "min": 0},
-        {"question": "Which of these songs has the lowest BPM?",             "id": 27, "apiCall": "tracks-long-50", "max": 20, "min": 0}
+        {"question": "Which of these songs is the loudest according to Spotify?",  "id": 25, "apiCall": "tracks-long-50", "max": 50, "min": 0},
+        {"question": "Which of these songs has the highest BPM?",            "id": 26, "apiCall": "tracks-long-50", "max": 50, "min": 0},
+        {"question": "Which of these songs has the lowest BPM?",             "id": 27, "apiCall": "tracks-long-50", "max": 50, "min": 0}
 
     ]
 }
