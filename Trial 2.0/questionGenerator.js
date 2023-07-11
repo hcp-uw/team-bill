@@ -178,14 +178,44 @@ class simpleQuestionGen {
                 result = this.getItems(numbers, true);
                 break;
             }
-            case 2: // DONE: Which of these songs is the most popular?
+            case 2:  // DONE: Which of these songs is the most popular?
             case 10: // DONE : Which of these artists is the most popular?
             case 17: // DONE: Which of these songs is the least popular?
-            case 18: {// DONE: Which of these artist is the least popular?
-                result = this.getItems(numbers, false);
+            case 18: // DONE: Which of these artist is the least popular?
+            case 23: // TESTING: Which of these albums is the most popular?
+            case 24: { // TESTING: Which of these albums is the least popular?
+                if (questionID === 23 || questionID === 24) {
+                    let urlList = [];
+                    
+                    // Using numbers to make it more randomized than top 4 albums.
+                    for (let i = 0; i < numbers.length; i++) {
+                        const num = numbers[i];
+                        const url = trackList[num].album.href;
+                        if (!urlList.includes(url)) {
+                            urlList.push(url);
+                        }
+                    }
+
+                    // In case there are duplicate albums, we go down the rest of the track list.
+                    for (let i = 0; urlList.length < 4 && i < trackList.length; i++) {
+                        const url = trackList[i].album.href;
+                        if (!urlList.includes(url)) {
+                            urlList.push(url);
+                        }
+                    }
+
+                    if (urlList.length !== 4) {
+                        return []; // If not enough ablums are found.
+                    } else {
+                        result = this.apiCallGetItems(urlList);
+                    }
+                } else {
+                    result = this.getItems(numbers, false);
+                }
+
                 for (let i = 1; i < 4; i++) {
-                    if (((questionID === 2 || questionID == 10) && result[i].popularity > result[0].popularity) || 
-                        ((questionID === 17 || questionID === 18)&& result[i].popularity < result[0].popularity)) {
+                    if (((questionID === 2 || questionID == 10 || questionID == 23) && result[i].popularity > result[0].popularity) || 
+                        ((questionID === 17 || questionID === 18 || questionID == 24)&& result[i].popularity < result[0].popularity)) {
                         // Swaping index 0 and i
                         let temp = result[0];
                         result[0] = result[i];
@@ -605,7 +635,7 @@ class simpleQuestionGen {
         }
 
         if (DEBUG) {
-            const questionID = 16; // The question ID you want to test
+            const questionID = 24; // The question ID you want to test
             this.curQuestion = this.questions.splice(questionID - 1, 1)[0];
         } else {
             this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
