@@ -542,6 +542,52 @@ class simpleQuestionGen {
 
                 break;
             }
+            case 25: // TESTING Helena: Which of these songs is the loudest according to Spotify?
+            case 26: // TESTING: Which of these songs has the highest BPM?
+            case 27: { // TESTING: Which of these songs has the lowest BPM?
+                let audioFeatures = []; 
+                let names = [];
+                numbers.forEach(num => {
+                    const id = trackList[num].id;
+                    const audio = callApiSync("https://api.spotify.com/v1/audio-features/" + id);
+                    audioFeatures.push(audio);
+                    names.push(trackList[num].name);
+                });
+                if (DEBUG) console.log(names);
+                if (DEBUG) console.log(audioFeatures);
+
+                let ind = 0; // set initial max/min to be the first index (0)
+                if (questionID === 25) {
+                    let db = audioFeatures[0].loudness;
+                    if (DEBUG) console.log("Loudness of " + names[0] + ": " + db);
+                    for (let i = 1; i < 4; i++) {
+                        let currDb = audioFeatures[i].loudness;
+                        if (DEBUG) console.log("Loudness of " + names[i] + ": " + currDb);
+                        if (currDb > db) {
+                            ind = i;
+                            db = currDb;
+                        }
+                    }
+                } else {
+                    let bpm = audioFeatures[0].tempo;
+                    if (DEBUG) console.log("BPM of " + names[0] + ": " + bpm);
+                    for (let i = 1; i < 4; i++) {
+                        let currBpm = audioFeatures[i].tempo;
+                        if (DEBUG) console.log("BPM of " + names[i] + ": " + currBpm);
+                        if (questionID === 26 && currBpm > bpm || questionID === 27 && currBpm < bpm) {
+                            ind = i;
+                            bpm = currBpm;
+                        }
+                    }
+                }
+
+                result[0] = names.splice(ind, 1);
+                names.forEach(name => {
+                    result.push(name);
+                })
+
+                break;
+            }
             default: {
                 result = ["Correct Answer", "Bad Answer", "Terrible Answer", "Pitiful Answer"];
                 break;
@@ -635,7 +681,7 @@ class simpleQuestionGen {
         }
 
         if (DEBUG) {
-            const questionID = 24; // The question ID you want to test
+            const questionID = 25; // The question ID you want to test
             this.curQuestion = this.questions.splice(questionID - 1, 1)[0];
         } else {
             this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
