@@ -114,7 +114,7 @@ export function callApiSync(url, body) {
     xhr.open("GET", url, false);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("Authorization", "Bearer " + access_token);
-    xhr.send(body);
+    xhr.send(body); // FYI, if the request is set to "GET", the body will automatically be set to null no matter what is put here
 
     if (xhr.status == 200) {
         var data = JSON.parse(xhr.responseText);
