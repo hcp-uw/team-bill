@@ -11,7 +11,7 @@
         {"question": "How many of your top _ songs are explicit?",          "id": 9, "apiCall": "tracks-long-50", "max": 35, "min": 4},
         {"question": "Which of these artists is the most popular?",         "id": 10, "apiCall": "artists-long-50", "max": 50, "min": 4},
         {"question": "Who is your #_ top artist of all time?",               "id": 11, "apiCall": "artists-long-50", "max": 20, "min": 0},
-        {"question": "Which album is - from?",                              "id": 12, "apiCall": "tracks-long-50", "max": 50, "min": 0},
+        {"question": "Which album is the song - from?",                              "id": 12, "apiCall": "tracks-long-50", "max": 50, "min": 0},
         {"question": "What is the shortest song in your top ten?",          "id": 13, "apiCall": "tracks-long-50", "max": 20, "min": 0},
         {"question": "What is the longest song in your top ten?",           "id": 14, "apiCall": "tracks-long-50", "max": 20, "min": 0},
         {"question": "Which of these songs was released the longest time ago?", "id": 15, "apiCall": "tracks-long-50", "max": 50, "min": 4},

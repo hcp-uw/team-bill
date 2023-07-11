@@ -411,58 +411,19 @@ class simpleQuestionGen {
                 const artistAlbums = callApiSync("https://api.spotify.com/v1/artists/"+ trackList[trackNum].artists[0].id + "/albums");
                 
                 //get albums from artist 
-                for(let i = 0; i<artistAlbums.length; i++) {
+                for (let i = 0; i < artistAlbums.length; i++) {
                     if(artistAlbums[i] != album) {
                         console.log("NAME HERE: " + artistAlbums[i].name);
                         result.push(artistAlbums[i].name);
                     }
                 }
                 
-                var c = 0;
-                while(result.length < 4) {
-                    let test = trackList[c];
-                    result.push(test.album.name);
-                    c++;
-                } 
-
-                /*// Precondition check: If all top songs are from the sa me album 
-                let uniqueAlbums = 0;
-                let curAlbums = [];
-                const items = this.apiResponseMap.get(this.curQuestion.apiCall).items;
-                const maxRange = Math.min(items.length, 50);
-                for (let i = 0; i < maxRange; i++) {
-                    if (!curAlbums.includes(trackList[i].album)) {
-                        curAlbums.push(trackList[i].album);
-                        uniqueAlbums++;
-                    }
-                }  
-                if (uniqueAlbums < 4) {
-                    throw new Error(`
-                    Precondition not met for question ID 12.
-                     There are not enough unique albums. Unique Albums: ${uniqueAlbums}`);
-                } 
-
-                const track = trackList[numbers[0]];
-                result.push(track.album.name);
-                let curTrackName = trackList[numbers[1]].album.name;
-                for (let i = 1; i < 4; i++) {
-                    if (!result.includes(curTrackName)) {
-                        result.push(curTrackName);
+                for (let i = 0; result.length < 4; i++) {
+                    let curAlbum = trackList[i].album.name;
+                    if (!result.includes(curAlbum)) {
+                        result.push(curAlbum);
                     }
                 }
-                
-                let rand = getRandomInt(1, maxRange);
-                while (result.length !== 4){
-                    if (!result.includes(curTrackName)){
-                        result.push();
-                    }
-                    // if (trackList[numbers[rand]] !== undefined){
-                        curTrackName = trackList[numbers[rand]].album.name;
-                    // }
-                }
-
-                // Changes the question to include the song it is asking about
-                this.curQuestion.question = this.curQuestion.question.replace("-", trackList[numbers[0]].name);*/
 
                 break;
             }
@@ -489,8 +450,8 @@ class simpleQuestionGen {
                 }
                 break;
             }
-            case 15: // TESTING: Which of these songs was released the longest time ago?
-            case 16: { // TESTING: Which of these songs was released most recently?
+            case 15: // DONE: Which of these songs was released the longest time ago?
+            case 16: { // DONE: Which of these songs was released most recently?
                 // Gets list of items we are working with.
                 result = this.getItems(numbers, false); 
                 // This is a compare function that takes in songs and compares them based on date 
@@ -644,7 +605,7 @@ class simpleQuestionGen {
         }
 
         if (DEBUG) {
-            const questionID = 8; // The question ID you want to test
+            const questionID = 16; // The question ID you want to test
             this.curQuestion = this.questions.splice(questionID - 1, 1)[0];
         } else {
             this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
