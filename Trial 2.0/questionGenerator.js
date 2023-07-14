@@ -434,7 +434,10 @@ class simpleQuestionGen {
                 let trackName = trackList[trackNum].name;
                 this.curQuestion.question = this.curQuestion.question.replace("-", "\"" + trackName + "\" by " + trackList[trackNum].artists[0].name); 
                 let album = trackList[trackNum].album.name;
-
+                if (album.album_type === "single"  || album.album_type === "compilation") {
+                    console.error(`This is a single and will not work for the question`);
+                    return;
+                }
                 result.push(album);
 
                 //wrong answers can be other albums by artist, and then 
