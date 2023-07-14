@@ -20,7 +20,7 @@
         {"question": "Which of these artists is the least popular?",        "id": 18,"apiCall": "artists-long-50", "max": 40, "min": 0},
         {"question": "What is your #_ most listened to song in the last 4 weeks?", "id": 19, "apiCall": "tracks-short-50", "max": 20, "min":0},
         {"question": "What year was - released?",                          "id": 20, "apiCall": "tracks-long-50", "max": 50, "min":0},
-        {"question": "Who is your top artist within the last 4 weeks?",     "id": 21, "apiCall": "artists-short-50", "max": 20, "min":0},
+        {"question": "Who is your top artist within the last 4 weeks?",     "id": 21, "apiCall": "artists-short-50", "max": -1, "min":0},
         {"question": "Who is your #_ top artist in the last 4 weeks?",      "id": 22, "apiCall": "artists-short-50", "max": 20, "min": 0},
         {"question": "Which of these albums is the most popular?",          "id": 23, "apiCall": "tracks-long-50", "max": 20, "min": 0},
         {"question": "Which of these albums is the  least popular?",        "id": 24, "apiCall": "tracks-long-50", "max": 20, "min": 0},
