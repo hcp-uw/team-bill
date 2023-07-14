@@ -1,7 +1,7 @@
 import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GENRE_REC } from "./spotify.js";
 
 const DEBUG = true; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
-const QUESTION_ID = 19; // The question ID you want to test
+const QUESTION_ID = 23; // The question ID you want to test
 
 /**
  * @typedef question
@@ -75,7 +75,9 @@ class simpleQuestionGen {
 
         // Checking preconditions
         if (this.apiResponseMap.get(this.curQuestion.apiCall).items.length < 4) {
-            throw new Error("Go listen to more spotify you dumb!");
+            console.error("Go listen to more spotify you dumb!");
+            this.pickQuestion();
+            return;
         } else if (maxRange < minRange && maxRange !== -1) {
             throw new Error("Question is defined wrongly. max should be larger than min unless max = -1");
         }
