@@ -433,24 +433,30 @@ class simpleQuestionGen {
                 let trackNum = getRandomInt(this.curQuestion.min,this.curQuestion.max);
                 let trackName = trackList[trackNum].name;
                 this.curQuestion.question = this.curQuestion.question.replace("-", "\"" + trackName + "\" by " + trackList[trackNum].artists[0].name); 
-                let album = trackList[trackNum].album.name;
-                if (album.album_type === "single"  || album.album_type === "compilation") {
+                let album = trackList[trackNum].album;
+
+                console.log("This album is a: " + album.album_type);
+                if (album.album_type === "SINGLE"  || album.album_type === "COMPILATION") {
                     console.error(`This is a single and will not work for the question`);
-                    return;
+                    break;
                 }
-                result.push(album);
+
+                result.push(album.name);
 
                 //wrong answers can be other albums by artist, and then 
                 const artistAlbums = callApiSync("https://api.spotify.com/v1/artists/"+ trackList[trackNum].artists[0].id + "/albums");
                 
+                console.log(artistAlbums);
+
                 //get albums from artist 
                 for (let i = 0; i < artistAlbums.length; i++) {
-                    if(artistAlbums[i] != album) {
+                    if(artistAlbums[i] != album.name) {
                         console.log("NAME HERE: " + artistAlbums[i].name);
                         result.push(artistAlbums[i].name);
                     }
                 }
                 
+                //Get from users top songs
                 for (let i = 0; result.length < 4; i++) {
                     let curAlbum = trackList[i].album.name;
                     if (!result.includes(curAlbum)) {
@@ -684,7 +690,7 @@ class simpleQuestionGen {
         }
 
         if (DEBUG) {
-            const questionID = 25; // The question ID you want to test
+            const questionID = 12; // The question ID you want to test
             this.curQuestion = this.questions.splice(questionID - 1, 1)[0];
         } else {
             this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
