@@ -530,7 +530,14 @@ class simpleQuestionGen {
                 this.curQuestion.question = this.curQuestion.question.replace("-", "\"" + trackItem.name + "\" by " + trackItem.artists[0].name);
 
                 let trackYear = trackItem.album.release_date;
-                trackYear = trackYear.substring(0, trackYear.indexOf("-"));
+                if (DEBUG) console.log("Release date of " + trackItem.name + ": " + trackYear);
+                if (trackYear === undefined) {
+                    if (DEBUG) console.error("Release date for " + trackItem.name + " is undefined.");
+                    break;
+                }
+                if (trackItem.album.release_date_precision !== "year") {
+                    trackYear = trackYear.substring(0, trackYear.indexOf("-"));
+                }
                 trackYear = parseInt(trackYear);
 
                 let currYear = new Date().getFullYear();
