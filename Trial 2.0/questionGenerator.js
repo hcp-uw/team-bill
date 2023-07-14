@@ -1,7 +1,7 @@
 import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GENRE_REC } from "./spotify.js";
 
 const DEBUG = true; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
-const QUESTION_ID = 12; // The question ID you want to test
+const QUESTION_ID = 19; // The question ID you want to test
 
 /**
  * @typedef question
@@ -170,10 +170,11 @@ class simpleQuestionGen {
         const genreList = this.apiResponseMap.get("genre-recs").genres;
 
         switch (questionID) { // TODO: check/make preconditions for every case
+            
             case 1: // DONE: What is your #_ most listened to song?
             case 3: // DONE: Who is your top artist?
             case 11: // DONE: Who is your #_ artist?
-            case 18: // TESTING: What is your #_ most listened to song in the last 4 weeks?
+            case 19: // TESTING: What is your #_ most listened to song in the last 4 weeks?
             case 21: // TESTING: Who is your top artist within the last 4 weeks?
             case 22: { // TESTING: Who is your #_ top artist in the last 4 weeks?
                 result = this.getItems(numbers, true);
@@ -229,9 +230,8 @@ class simpleQuestionGen {
                 }
                 break;
             }
-            case 4: //TESTING: Which artist appears most in your top _ songs?
-            case 8: { // TESTING: Which album appears most in your top _ songs? 
-                //TODO: Why is there an error
+            case 4: //DONE: Which artist appears most in your top _ songs?
+            case 8: { // DONE: Which album appears most in your top _ songs? 
                 let itemMap = new Map();
 
                 // Checking preconditions: 
@@ -522,6 +522,8 @@ class simpleQuestionGen {
                 }
                 break;
             }
+
+            
             case 20: { // TESTING Helena: What year was - released?
                 const trackItem = trackList[getRandomInt(this.curQuestion.min, this.curQuestion.max)];
                 if (DEBUG) console.log(trackItem);
