@@ -1,7 +1,7 @@
 import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GENRE_REC } from "./spotify.js";
 
-const DEBUG = true; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
-const QUESTION_ID = 23; // The question ID you want to test
+const DEBUG = false; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
+const QUESTION_ID = 21; // The question ID you want to test
 
 /**
  * @typedef question
@@ -277,10 +277,10 @@ class simpleQuestionGen {
                 });
 
                 if (maxNum === 1) {
-                    result.push("None, They're all even");
+                    result.push("It's a tie!");
                 } else {
                     result.push(maxItem);
-                    result.push("None, They're all even");
+                    result.push("It's a tie!");
                 }
 
                 if (questionID === 4) {
@@ -524,8 +524,6 @@ class simpleQuestionGen {
                 }
                 break;
             }
-
-            
             case 20: { // TESTING Helena: What year was - released?
                 const trackItem = trackList[getRandomInt(this.curQuestion.min, this.curQuestion.max)];
                 if (DEBUG) console.log(trackItem);
