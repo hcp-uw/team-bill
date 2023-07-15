@@ -26,7 +26,7 @@
         {"question": "Which of these albums is the least popular among Spotify users?", "id": 24, "apiCall": "tracks-long-50", "max": 20, "min": 0},
         {"question": "Which of these songs is the loudest according to Spotify?", "id": 25, "apiCall": "tracks-long-50", "max": 50, "min": 0},
         {"question": "Which of these songs has the highest BPM?",           "id": 26, "apiCall": "tracks-long-50", "max": 50, "min": 0},
-        {"question": "Which of these songs has the lowest BPM?",            "id": 27, "apiCall": "tracks-long-50", "max": 50, "min": 0}
-
+        {"question": "Which of these songs has the lowest BPM?",            "id": 27, "apiCall": "tracks-long-50", "max": 50, "min": 0},
+        {"question": "Which of these songs is the quietest according to Spotify?", "id": 28, "apiCall": "tracks-long-50", "max": 50, "min": 0}
     ]
 }
