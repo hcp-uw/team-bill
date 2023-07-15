@@ -1,6 +1,6 @@
 import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GENRE_REC } from "./spotify.js";
 
-const DEBUG = false; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
+const DEBUG = true; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
 const QUESTION_ID = 21; // The question ID you want to test
 
 /**
@@ -563,7 +563,8 @@ class simpleQuestionGen {
             }
             case 25: // TESTING Helena: Which of these songs is the loudest according to Spotify?
             case 26: // TESTING: Which of these songs has the highest BPM?
-            case 27: { // TESTING: Which of these songs has the lowest BPM?
+            case 27: // TESTING: Which of these songs has the lowest BPM?
+            case 28: { // TESTING: Which of these songs is the quietest according to Spotify?
                 let audioFeatures = []; 
                 let names = [];
                 numbers.forEach(num => {
@@ -576,13 +577,13 @@ class simpleQuestionGen {
                 if (DEBUG) console.log(audioFeatures);
 
                 let ind = 0; // set initial max/min to be the first index (0)
-                if (questionID === 25) {
+                if (questionID === 25 || questionID === 28) {
                     let db = audioFeatures[0].loudness;
                     if (DEBUG) console.log("Loudness of " + names[0] + ": " + db);
                     for (let i = 1; i < 4; i++) {
                         let currDb = audioFeatures[i].loudness;
                         if (DEBUG) console.log("Loudness of " + names[i] + ": " + currDb);
-                        if (currDb > db) {
+                        if (questionID === 25 && currDb > db || questionID === 28 && currDb < db) {
                             ind = i;
                             db = currDb;
                         }
