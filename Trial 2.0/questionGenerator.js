@@ -740,6 +740,33 @@ function getRandomInt(min, max) {
 }
 
 /**
+ * Gets a random number between a given range, inclusive on front, exclusive on end.
+ * Excludes numbers within the given array.
+ * @param {number} min minimum number of range (inclusive)
+ * @param {number} max maximum number of range (exclusive)
+ * @param {array} exclude numbers that should not be returned
+ * @returns {number} Random number in given range. Cannot be any of the numbers in "exclude". Could be undefined.
+ */
+function getRandomInt(min, max, exclude) {
+    // works by making array of all possible answers and getting rid of the "exclude" numbers,
+    // then choosing randomly from that array
+    let possibleAnswers = [];
+    for (let i = min; i < max; i++) {
+        possibleAnswers.push(i);
+    }
+    exclude.forEach(num => {
+        const index = possibleAnswers.indexOf(num);
+        if (index >= 0) possibleAnswers.splice(possibleAnswers.indexOf(num), 1);
+    });
+    if (possibleAnswers.length === 0) {
+        return undefined;
+    } else {
+        let randomIndex = Math.floor(Math.random() * (possibleAnswers.length));
+        return possibleAnswers[randomIndex];
+    }
+}
+
+/**
  * Returns a random number x around a number in a given range.
  * @param {number[]} num List of numbers x should not be
  * @param {number} min Min value x can be (inclusive)
