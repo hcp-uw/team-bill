@@ -209,13 +209,17 @@ class simpleQuestionGen {
                     }
 
                     if (urlList.length !== 4) {
-                        return []; // If not enough ablums are found.
+                        return []; // If not enough albums are found.
                     } else {
                         result = this.apiCallGetItems(urlList);
                     }
                 } else {
                     result = this.getItems(numbers, false);
                 }
+
+                // if popularity of any of the options is way too low, assume there is some error with Spotify's data
+                // and replace it with another random option
+                // TODO !!!! Can use overloaded getRandomInt function that takes three params (min, max, exclude)
 
                 for (let i = 1; i < 4; i++) {
                     if (((questionID === 2 || questionID == 10 || questionID == 23) && result[i].popularity > result[0].popularity) || 
