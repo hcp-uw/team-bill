@@ -1,7 +1,7 @@
 import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GENRE_REC } from "./spotify.js";
 
 const DEBUG = true; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
-const QUESTION_ID = 20; // The question ID you want to test
+const QUESTION_ID = 2; // The question ID you want to test
 
 /**
  * @typedef question
@@ -222,7 +222,7 @@ class simpleQuestionGen {
                 // TODO: can instead find another random option if we decide we don't want to skip from the get-go
                 for (let i = 0; i < result.length; i++) {
                     if (DEBUG) console.log(`Name: ${result[i].name} Popularity: ${result[i].popularity}`);
-                    if (result[i].popularity < 5) {
+                    if (result[i].popularity < 15) {
                         console.error("Popularity is too low, skipping question...");
                         return [];
                     }
