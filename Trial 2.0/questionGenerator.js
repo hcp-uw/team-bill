@@ -569,8 +569,8 @@ class simpleQuestionGen {
                     upperBound = currYear;
                 } else {
                     let range = Math.floor(yearDiff/4 + 3); // calculates the range to use for lower/upper bounds
-                    lowerBound = currYear - range;
-                    upperBound = currYear + range;
+                    lowerBound = trackYear - range;
+                    upperBound = trackYear + range;
                 }
 
                 // OLDER CODE: TODO DELETE ONCE NEWER CODE IS TESTED
