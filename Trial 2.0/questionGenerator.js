@@ -336,6 +336,12 @@ class simpleQuestionGen {
             case 6: { // DONE: How many songs are there in your playlist named - ?
                 
                 const playlists = this.apiResponseMap.get("playlists-50").items;
+                var userId = callApiSync("https://api.spotify.com/v1/me").id;
+                for(let i = 0; i<playlists.length; i++) {
+                    if(playlists[i].owner.id !== userId) {
+                        playlists.splice[i, 1]; 
+                    }
+                }
 
                 //Precondition: must have some number of playlists 
                 if(playlists.length<=0) {
@@ -346,7 +352,7 @@ class simpleQuestionGen {
                 //Correct Answer + Change question
                 let playN = getRandomInt(0, playlists.length);
                 let playlist = playlists[playN];
-                this.curQuestion.question = this.curQuestion.question.replace("- ", "\"" +playlist.name + "\""); 
+                this.curQuestion.question = this.curQuestion.question.replace("- ", "\"" + playlist.name + "\""); 
                 let numTracks = playlist.tracks.total;
                 result.push(numTracks);
                 
