@@ -834,6 +834,17 @@ function compareDates(date1, date2) {
     }
 }
 
+/**
+ * Used to return a scaled number y; for instance, where a greater x corresponds to a greater y
+ * Returns y where y = floor(x/a + b)
+ * @param {number} x 
+ * @param {number} a 
+ * @param {number} b 
+ * @returns y where y = floor(x/a + b)
+ */
+function getScaledNum(x, a, b) {
+    return Math.floor(x/a + b);
+}
 
 /**
  * Factory function for a question gen.
