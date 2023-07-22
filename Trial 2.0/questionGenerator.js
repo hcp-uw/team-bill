@@ -552,16 +552,39 @@ class simpleQuestionGen {
 
                 let currYear = new Date().getFullYear();
 
-                // get lower and upper year bounds. Ideally get range of 15 years
-                // above and below actual track year, but if the track year is
-                // within 15 years to the current year (based on user's local time),
-                // then increase lower bound to maintain overall range of 30 years.
-                const rangeNum = 15; // <-- edit as needed to adjust range
-                let extra = Math.max(0, rangeNum - (currYear - trackYear));
-                let lowerBoundYear = trackYear - rangeNum - extra;
-                let upperBoundYear = Math.min(trackYear + rangeNum, currYear);
+                const yearDiff = currYear - trackYear;
 
-                if (DEBUG) console.log("Lower: " + lowerBoundYear + " // Upper: " + upperBoundYear);
+                // error if trackYear is greater/after currYear
+                if (yearDiff < 0) {
+                    if (DEBUG) throw new Error("Track's release year is greater than the current year. Curr year: " + currYear + ". Track year: " + trackYear + ".");
+                    console.error("Track's release year is greater than the current year. Curr year: " + currYear + ". Track year: " + trackYear + ".");
+                    break;
+                }
+
+                let lowerBound;
+                let upperBound;
+                // we calculate lower/uppper bound range using y = floor(x/4 + 3), where y = range and x = yearDiff.
+                // if yearDiff <= 2, range should be 3. This is an edge case where yearDiff < range, so handle it separately.
+                if (yearDiff <= 2) {
+                    lowerBound = currYear - 6;
+                    upperBound = currYear;
+                }
+
+                let range = Math.floor(yearDiff/4 + 3); // calculates the range to use for lower/upper bounds. Greater range for older songs.
+                
+                
+                
+
+                // // get lower and upper year bounds. Ideally get range of 15 years
+                // // above and below actual track year, but if the track year is
+                // // within 15 years to the current year (based on user's local time),
+                // // then increase lower bound to maintain overall range of 30 years.
+                // const rangeNum = 15; // <-- edit as needed to adjust range
+                // let extra = Math.max(0, rangeNum - (currYear - trackYear));
+                // let lowerBoundYear = trackYear - rangeNum - extra;
+                // let upperBoundYear = Math.min(trackYear + rangeNum, currYear);
+
+                // if (DEBUG) console.log("Lower: " + lowerBoundYear + " // Upper: " + upperBoundYear);
 
                 result.push(trackYear);
                 for (let i = 0; i < 3; i++) {
@@ -750,34 +773,7 @@ function getRandomInt(min, max) {
 }
 
 /**
- * Gets a random number between a given range, inclusive on front, exclusive on end.
- * Excludes numbers within the given array.
- * @param {number} min minimum number of range (inclusive)
- * @param {number} max maximum number of range (exclusive)
- * @param {array} exclude numbers that should not be returned
- * @returns {number} Random number in given range. Cannot be any of the numbers in "exclude". Could be undefined.
- */
-function getRandomInt(min, max, exclude) {
-    // works by making array of all possible answers and getting rid of the "exclude" numbers,
-    // then choosing randomly from that array
-    let possibleAnswers = [];
-    for (let i = min; i < max; i++) {
-        possibleAnswers.push(i);
-    }
-    exclude.forEach(num => {
-        const index = possibleAnswers.indexOf(num);
-        if (index >= 0) possibleAnswers.splice(possibleAnswers.indexOf(num), 1);
-    });
-    if (possibleAnswers.length === 0) {
-        return undefined;
-    } else {
-        let randomIndex = Math.floor(Math.random() * (possibleAnswers.length));
-        return possibleAnswers[randomIndex];
-    }
-}
-
-/**
- * Returns a random number x around a number in a given range.
+ * Returns a random number x around a number in a given range. Could return undefined if there are no possible answers.
  * @param {number[]} num List of numbers x should not be
  * @param {number} min Min value x can be (inclusive)
  * @param {number} max Max value x can be (inclusive)
@@ -787,22 +783,24 @@ function getRandomAround(num, min, max) {
     if (max < min) {
         throw new Error('min must be smaller than max');
     }
-    const possible_answers = [];
-    for (let i = min; i <= max; i++) {
-        possible_answers.push(i);
+    let possibleAnswers = [];
+    for (let i = min; i < max; i++) {
+        possibleAnswers.push(i);
     }
-
-    num.forEach((val) => {
-        const index = possible_answers.indexOf(val);
-        possible_answers.splice(index, 1);
+    num.forEach(val => {
+        const index = possibleAnswers.indexOf(val);
+        if (index >= 0) possibleAnswers.splice(index, 1);
     });
-    
-    const resultIndex = getRandomInt(0, possible_answers.length);
-    return possible_answers[resultIndex];
+    if (possibleAnswers.length === 0) {
+        return undefined;
+    } else {
+        const resultIndex = getRandomInt(0, possible_answers.length);
+        return possible_answers[resultIndex];
+    }
 }
 
 /**
- * Compres two dats in format "xxxx-xx-xx"
+ * Compares two dates in format "xxxx-xx-xx"
  * @param {string} date1 
  * @param {string} date2 
  * @returns 1  if date1 > date2
