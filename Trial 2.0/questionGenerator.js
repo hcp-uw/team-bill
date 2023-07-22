@@ -1,7 +1,7 @@
 import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GENRE_REC } from "./spotify.js";
 
 const DEBUG = true; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
-const QUESTION_ID = 9; // The question ID you want to test
+const QUESTION_ID = 20; // The question ID you want to test
 
 /**
  * @typedef question
@@ -583,11 +583,11 @@ class simpleQuestionGen {
                 // let lowerBoundYear = trackYear - rangeNum - extra;
                 // let upperBoundYear = Math.min(trackYear + rangeNum, currYear);
 
-                if (DEBUG) console.log("Lower bound: " + lowerBoundYear + " // Upper bound: " + upperBoundYear);
+                if (DEBUG) console.log("Lower bound: " + lowerBound + " // Upper bound: " + upperBound);
 
                 result.push(trackYear);
                 for (let i = 0; i < 3; i++) {
-                    const wrongAnswer = getRandomAround(result, lowerBoundYear, upperBoundYear);
+                    const wrongAnswer = getRandomAround(result, lowerBound, upperBound);
                     result.push(wrongAnswer);
                 }
 
