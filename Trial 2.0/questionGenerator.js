@@ -218,8 +218,15 @@ class simpleQuestionGen {
                 }
 
                 // if popularity of any of the options is way too low, assume there is some error with Spotify's data
-                // and replace it with another random option
-                // TODO !!!! Can use getRandomAround
+                // and skip the question
+                // TODO: can instead find another random option if we decide we don't want to skip from the get-go
+                for (let i = 0; i < result.length; i++) {
+                    if (DEBUG) console.log(`Name: ${result[i].name} Popularity: ${result[i].popularity}`);
+                    if (result[i].popularity < 5) {
+                        console.error("Popularity is too low, skipping question...");
+                        return [];
+                    }
+                }
 
                 for (let i = 1; i < 4; i++) {
                     if (((questionID === 2 || questionID == 10 || questionID == 23) && result[i].popularity > result[0].popularity) || 
@@ -231,7 +238,6 @@ class simpleQuestionGen {
                     }
                 }
                 for (let i = 0; i < 4; i++) {
-                    if (DEBUG) console.log(`#${i}: Name: ${result[i].name} Popularity: ${result[i].popularity}`);
                     result[i] = result[i].name;
                 }
                 break;
@@ -346,7 +352,7 @@ class simpleQuestionGen {
                 //Precondition: must have some number of playlists 
                 if(playlists.length<=0) {
                     console.error("User does not have enough playlists");
-                    break;
+                    return [];
                 }
 
                 //Correct Answer + Change question
@@ -451,7 +457,7 @@ class simpleQuestionGen {
                 console.log("This album is a: " + album.album_type);
                 if (album.album_type === "SINGLE"  || album.album_type === "COMPILATION") {
                     console.error(`This is a single and will not work for the question`);
-                    break;
+                    return [];
                 }
 
                 result.push(album.name);
@@ -542,7 +548,7 @@ class simpleQuestionGen {
                 let trackYear = trackItem.album.release_date;
                 if (trackYear === undefined) {
                     if (DEBUG) console.error("Release date for " + trackItem.name + " is undefined.");
-                    break;
+                    return [];
                 }
                 if (trackItem.album.release_date_precision !== "year") {
                     trackYear = trackYear.substring(0, trackYear.indexOf("-"));
@@ -557,7 +563,7 @@ class simpleQuestionGen {
                 if (yearDiff < 0) {
                     if (DEBUG) throw new Error("Track's release year is greater than the current year. Curr year: " + currYear + ". Track year: " + trackYear + ".");
                     console.error("Track's release year is greater than the current year. Curr year: " + currYear + ". Track year: " + trackYear + ".");
-                    break;
+                    return [];
                 }
 
                 let lowerBound;
