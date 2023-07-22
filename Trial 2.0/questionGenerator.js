@@ -1,7 +1,7 @@
 import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GENRE_REC } from "./spotify.js";
 
 const DEBUG = true; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
-const QUESTION_ID = 21; // The question ID you want to test
+const QUESTION_ID = 9; // The question ID you want to test
 
 /**
  * @typedef question
@@ -793,8 +793,8 @@ function getRandomAround(num, min, max) {
     if (possibleAnswers.length === 0) {
         return undefined;
     } else {
-        const resultIndex = getRandomInt(0, possible_answers.length);
-        return possible_answers[resultIndex];
+        const resultIndex = getRandomInt(0, possibleAnswers.length);
+        return possibleAnswers[resultIndex];
     }
 }
 
