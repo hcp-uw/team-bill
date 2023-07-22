@@ -219,7 +219,7 @@ class simpleQuestionGen {
 
                 // if popularity of any of the options is way too low, assume there is some error with Spotify's data
                 // and replace it with another random option
-                // TODO !!!! Can use overloaded getRandomInt function that takes three params (min, max, exclude)
+                // TODO !!!! Can use getRandomAround
 
                 for (let i = 1; i < 4; i++) {
                     if (((questionID === 2 || questionID == 10 || questionID == 23) && result[i].popularity > result[0].popularity) || 
@@ -540,7 +540,6 @@ class simpleQuestionGen {
                 this.curQuestion.question = this.curQuestion.question.replace("-", "\"" + trackItem.name + "\" by " + trackItem.artists[0].name);
 
                 let trackYear = trackItem.album.release_date;
-                if (DEBUG) console.log("Release date of " + trackItem.name + ": " + trackYear);
                 if (trackYear === undefined) {
                     if (DEBUG) console.error("Release date for " + trackItem.name + " is undefined.");
                     break;
@@ -549,8 +548,8 @@ class simpleQuestionGen {
                     trackYear = trackYear.substring(0, trackYear.indexOf("-"));
                 }
                 trackYear = parseInt(trackYear);
-
-                let currYear = new Date().getFullYear();
+                const currYear = new Date().getFullYear();
+                if (DEBUG) console.log("Curr year: " + currYear + " // Track release year: " + trackYear);
 
                 const yearDiff = currYear - trackYear;
 
@@ -564,17 +563,17 @@ class simpleQuestionGen {
                 let lowerBound;
                 let upperBound;
                 // we calculate lower/uppper bound range using y = floor(x/4 + 3), where y = range and x = yearDiff.
-                // if yearDiff <= 2, range should be 3. This is an edge case where yearDiff < range, so handle it separately.
                 if (yearDiff <= 2) {
+                    // if yearDiff <= 2, range should be 3. This is an edge case where yearDiff < range, so handle it separately.
                     lowerBound = currYear - 6;
                     upperBound = currYear;
+                } else {
+                    let range = Math.floor(yearDiff/4 + 3); // calculates the range to use for lower/upper bounds
+                    lowerBound = currYear - range;
+                    upperBound = currYear + range;
                 }
 
-                let range = Math.floor(yearDiff/4 + 3); // calculates the range to use for lower/upper bounds. Greater range for older songs.
-                
-                
-                
-
+                // OLDER CODE: TODO DELETE ONCE NEWER CODE IS TESTED
                 // // get lower and upper year bounds. Ideally get range of 15 years
                 // // above and below actual track year, but if the track year is
                 // // within 15 years to the current year (based on user's local time),
@@ -584,7 +583,7 @@ class simpleQuestionGen {
                 // let lowerBoundYear = trackYear - rangeNum - extra;
                 // let upperBoundYear = Math.min(trackYear + rangeNum, currYear);
 
-                // if (DEBUG) console.log("Lower: " + lowerBoundYear + " // Upper: " + upperBoundYear);
+                if (DEBUG) console.log("Lower bound: " + lowerBoundYear + " // Upper bound: " + upperBoundYear);
 
                 result.push(trackYear);
                 for (let i = 0; i < 3; i++) {
