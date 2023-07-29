@@ -23,7 +23,7 @@
       <!-- <script src="navbar.js" onload="loadNav()"></script> -->
         <div class="topnav">
           <!-- // TODO: there's probably a better (more semantic) element to use instead of these div tags -->
-            <img src="images\BillLogoUpdated.png" />
+            <a href="index.html"> <img src="images\BillLogoUpdated.png" /> </a>
             <a href='index.html'>Home</a>
             <a href='VsBillTitlePage.html'>Vs. Bill</a>
             <a class="active" href='sologamescreen.html'>Solo</a>
@@ -32,18 +32,18 @@
           <input id="authorizeBtn" type="button" value=" Login "><br />
         </div> 
 
-        <h1 id="question">Insert Question #</h1>
+        <h1 id="question">Loading Question...</h1>
 
-        <div class="answer-buttons">
-          <button id="answer-top-left">Song Name<br></button>
-          <button id="answer-top-right">Song Name<br></button>
-          <button id="answer-bottom-left">Song Name<br></button>
-          <button id="answer-bottom-right">Song Name<br></button>
+        <div class="container">
+          <button class="button" id="answer-top-left">Loading Song...<br></button>
+          <button class="button" id="answer-top-right">Loading Song...<br></button>
+          <button class="button" id="answer-bottom-left">Loading Song...<br></button>
+          <button class="button" id="answer-bottom-right">Loading Song...<br></button>
         </div>
 
         <div class = "question-wave">
           <img class = "right-wave" src="images\hollowOrangeSoundWaveRight.png" alt="INSERT ALT TEXT"> 
-          <div id ="question-circle"><span id="question-number">0</span></div>
+          <div id ="question-circle"><span id="question-number">1</span></div>
           <img class = "left-wave" src="images\hollowOrangeSoundWaveLeft.png" alt="INSERT ALT TEXT">
         </div>
 
