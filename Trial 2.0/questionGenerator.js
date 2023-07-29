@@ -1,7 +1,7 @@
 import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GENRE_REC } from "./spotify.js";
 
 const DEBUG = true; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
-const QUESTION_ID = 2; // The question ID you want to test
+const QUESTION_ID = 29; // The question ID you want to test
 
 /**
  * @typedef question
@@ -618,31 +618,49 @@ class simpleQuestionGen {
 
                 let ind = 0; // set initial max/min to be the first index (0)
                 if (questionID === 25 || questionID === 28) {
-                    let db = audioFeatures[0].loudness;
-                    if (DEBUG) console.log("Loudness of " + tracks[0].name + ": " + db);
+                    let ans = audioFeatures[0].loudness;
+                    if (DEBUG) console.log("Loudness of " + tracks[0].name + ": " + ans);
                     for (let i = 1; i < 4; i++) {
-                        let currDb = audioFeatures[i].loudness;
-                        if (DEBUG) console.log("Loudness of " + tracks[i].name + ": " + currDb);
-                        if (questionID === 25 && currDb > db || questionID === 28 && currDb < db) {
+                        let cur = audioFeatures[i].loudness;
+                        if (DEBUG) console.log("Loudness of " + tracks[i].name + ": " + cur);
+                        if (questionID === 25 && cur > ans || questionID === 28 && cur < ans) {
                             ind = i;
-                            db = currDb;
+                            ans = cur;
                         }
                     }
                 } else if (questionID === 26 || questionID === 27) {
-                    let bpm = audioFeatures[0].tempo;
-                    if (DEBUG) console.log("BPM of " + tracks[0].name + ": " + bpm);
+                    let ans = audioFeatures[0].tempo;
+                    if (DEBUG) console.log("BPM of " + tracks[0].name + ": " + ans);
                     for (let i = 1; i < 4; i++) {
-                        let currBpm = audioFeatures[i].tempo;
-                        if (DEBUG) console.log("BPM of " + tracks[i].name + ": " + currBpm);
-                        if (questionID === 26 && currBpm > bpm || questionID === 27 && currBpm < bpm) {
+                        let cur = audioFeatures[i].tempo;
+                        if (DEBUG) console.log("BPM of " + tracks[i].name + ": " + cur);
+                        if (questionID === 26 && cur > ans || questionID === 27 && cur < ans) {
                             ind = i;
-                            bpm = currBpm;
+                            ans = cur;
                         }
                     }
                 } else if (questionID === 29) {
-
+                    let ans = audioFeatures[0].speechiness;
+                    if (DEBUG) console.log("Sspeechiness of " + tracks[0].name + ": " + ans);
+                    for (let i = 1; i < 4; i++) {
+                        let cur = audioFeatures[i].speechiness;
+                        if (DEBUG) console.log("Speechiness of " + tracks[i].name + ": " + cur);
+                        if (cur > ans) {
+                            ind = i;
+                            ans = cur;
+                        }
+                    }
                 } else { // if (questionID === 30 || questionID === 31)
-
+                    let ans = audioFeatures[0].valence;
+                    if (DEBUG) console.log("Valence of " + tracks[0].name + ": " + ans);
+                    for (let i = 1; i < 4; i++) {
+                        let cur = audioFeatures[i].valence;
+                        if (DEBUG) console.log("Valence of " + tracks[i].name + ": " + cur);
+                        if (questionID === 30 && cur > ans || questionID === 31 && cur < ans) {
+                            ind = i;
+                            ans = cur;
+                        }
+                    }
                 }
 
                 let corTrack = tracks.splice(ind, 1)[0];
