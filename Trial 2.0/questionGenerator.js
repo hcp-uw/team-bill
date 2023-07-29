@@ -630,53 +630,44 @@ class simpleQuestionGen {
                 if (DEBUG) console.log("Tracks", tracks);
                 if (DEBUG) console.log("Audio features", audioFeatures);
 
-                let feature = "";
-                if (questionID === 25 || questionID === 28) feature = "loudness";
+                let feature = ""; // in switch, set this to the Spotify API property for each question case
+                let findMax = false; // false if we are finding a min for the curQuestion, true if max
+                switch(questionID) {
+                    case 25:
+                        findMax = true;
+                    case 28:
+                        feature = "loudness";
+                        break;
 
+                    case 26:
+                        findMax = true;
+                    case 27:
+                        feature = "tempo";
+                        break;
+
+                    case 29:
+                        feature = "speechiness";
+                        findMax = true;
+                        break;
+
+                    case 30:
+                        findMax = true;
+                    case 31:
+                        feature = "valence";
+                        break;
+                    default:
+                        throw new Error("add code for question ID " + questionID);
+                }
+                
                 let ind = 0; // set initial max/min to be the first index (0)
-                if (questionID === 25 || questionID === 28) {
-                    let ans = audioFeatures[0][feature];
-                    if (DEBUG) console.log(feature + " of " + tracks[0].name + ": " + ans);
-                    for (let i = 1; i < 4; i++) {
-                        let cur = audioFeatures[i][feature];
-                        if (DEBUG) console.log(feature + " of " + tracks[i].name + ": " + cur);
-                        if (questionID === 25 && cur > ans || questionID === 28 && cur < ans) {
-                            ind = i;
-                            ans = cur;
-                        }
-                    }
-                } else if (questionID === 26 || questionID === 27) {
-                    let ans = audioFeatures[0].tempo;
-                    if (DEBUG) console.log("BPM of " + tracks[0].name + ": " + ans);
-                    for (let i = 1; i < 4; i++) {
-                        let cur = audioFeatures[i].tempo;
-                        if (DEBUG) console.log("BPM of " + tracks[i].name + ": " + cur);
-                        if (questionID === 26 && cur > ans || questionID === 27 && cur < ans) {
-                            ind = i;
-                            ans = cur;
-                        }
-                    }
-                } else if (questionID === 29) {
-                    let ans = audioFeatures[0].speechiness;
-                    if (DEBUG) console.log("Sspeechiness of " + tracks[0].name + ": " + ans);
-                    for (let i = 1; i < 4; i++) {
-                        let cur = audioFeatures[i].speechiness;
-                        if (DEBUG) console.log("Speechiness of " + tracks[i].name + ": " + cur);
-                        if (cur > ans) {
-                            ind = i;
-                            ans = cur;
-                        }
-                    }
-                } else { // if (questionID === 30 || questionID === 31)
-                    let ans = audioFeatures[0].valence;
-                    if (DEBUG) console.log("Valence of " + tracks[0].name + ": " + ans);
-                    for (let i = 1; i < 4; i++) {
-                        let cur = audioFeatures[i].valence;
-                        if (DEBUG) console.log("Valence of " + tracks[i].name + ": " + cur);
-                        if (questionID === 30 && cur > ans || questionID === 31 && cur < ans) {
-                            ind = i;
-                            ans = cur;
-                        }
+                let ans = audioFeatures[0][feature];
+                if (DEBUG) console.log(feature + " of " + tracks[0].name + ": " + ans);
+                for (let i = 1; i < 4; i++) {
+                    let cur = audioFeatures[i][feature];
+                    if (DEBUG) console.log(feature + " of " + tracks[i].name + ": " + cur);
+                    if (findMax && cur > ans || !findMax && cur < ans) {
+                        ind = i;
+                        ans = cur;
                     }
                 }
 
