@@ -1,10 +1,17 @@
+.topnav {
+    margin-bottom: 0px;
+}
+
 
 h1 {
     color: #FFFFFF;
     font-family: 'Nunito';
     font-size: 3.94rem;
+    /* font-size: 8vh; */
     text-align: center;
     margin-top: 0px;
+    max-width: 100%;
+    max-height: 5vh;
 }
 
 #answer-top-left{
@@ -15,18 +22,19 @@ h1 {
     font-weight: bold;
     width: 32.5%;
     height: 18%;
+    border-radius: 2.5rem;
+    font-size: 2.5rem;
     text-align: center;
     text-decoration: none;
-    font-size: 2.5rem;
     position: absolute;
-    border-radius: 2.5rem;
     top: 35%;
     left: 14%;
 }
 
 #answer-top-left:hover {
     background-color: #1D8C9F;
-    color: #B9E2E0;
+    /* color: #B9E2E0; */
+    color: white;
     cursor: pointer;
 }
 
@@ -49,7 +57,8 @@ h1 {
 
 #answer-top-right:hover {
     background-color: #1D8C9F;
-    color: #B9E2E0;
+    /* color: #B9E2E0; */
+    color: white;
     cursor: pointer;
 }
 
@@ -72,7 +81,8 @@ h1 {
 
 #answer-bottom-left:hover {
     background-color: #1D8C9F;
-    color: #B9E2E0;
+    /* color: #B9E2E0; */
+    color: white;
     cursor: pointer;
 }
 
@@ -96,7 +106,8 @@ h1 {
 
 #answer-bottom-right:hover {
     background-color: #1D8C9F;
-    color: #B9E2E0;
+    /* color: #B9E2E0; */
+    color: white;
     cursor: pointer;
 }
 

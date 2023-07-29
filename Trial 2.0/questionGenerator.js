@@ -1,6 +1,7 @@
 import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GENRE_REC } from "./spotify.js";
 
 const DEBUG = true; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
+const QUESTION_ID = 12; // The question ID you want to test
 
 /**
  * @typedef question
@@ -74,7 +75,9 @@ class simpleQuestionGen {
 
         // Checking preconditions
         if (this.apiResponseMap.get(this.curQuestion.apiCall).items.length < 4) {
-            throw new Error("Go listen to more spotify you dumb!");
+            console.error("Go listen to more spotify you dumb!");
+            this.pickQuestion();
+            return;
         } else if (maxRange < minRange && maxRange !== -1) {
             throw new Error("Question is defined wrongly. max should be larger than min unless max = -1");
         }
@@ -169,23 +172,65 @@ class simpleQuestionGen {
         const genreList = this.apiResponseMap.get("genre-recs").genres;
 
         switch (questionID) { // TODO: check/make preconditions for every case
+            
             case 1: // DONE: What is your #_ most listened to song?
             case 3: // DONE: Who is your top artist?
             case 11: // DONE: Who is your #_ artist?
-            case 18: // TESTING: What is your #_ most listened to song in the last 4 weeks?
+            case 19: // TESTING: What is your #_ most listened to song in the last 4 weeks?
             case 21: // TESTING: Who is your top artist within the last 4 weeks?
             case 22: { // TESTING: Who is your #_ top artist in the last 4 weeks?
                 result = this.getItems(numbers, true);
                 break;
             }
-            case 2: // DONE: Which of these songs is the most popular?
+            case 2:  // DONE: Which of these songs is the most popular?
             case 10: // DONE : Which of these artists is the most popular?
             case 17: // DONE: Which of these songs is the least popular?
-            case 18: {// DONE: Which of these artist is the least popular?
-                result = this.getItems(numbers, false);
+            case 18: // DONE: Which of these artist is the least popular?
+            case 23: // TESTING: Which of these albums is the most popular?
+            case 24: { // TESTING: Which of these albums is the least popular?
+                if (questionID === 23 || questionID === 24) {
+                    let urlList = [];
+                    
+                    // Using numbers to make it more randomized than top 4 albums.
+                    for (let i = 0; i < numbers.length; i++) {
+                        const num = numbers[i];
+                        const url = trackList[num].album.href;
+                        if (!urlList.includes(url)) {
+                            urlList.push(url);
+                        }
+                    }
+
+                    // In case there are duplicate albums, we go down the rest of the track list.
+                    for (let i = 0; urlList.length < 4 && i < trackList.length; i++) {
+                        const url = trackList[i].album.href;
+                        if (!urlList.includes(url)) {
+                            urlList.push(url);
+                        }
+                    }
+
+                    if (urlList.length !== 4) {
+                        return []; // If not enough albums are found.
+                    } else {
+                        result = this.apiCallGetItems(urlList);
+                    }
+                } else {
+                    result = this.getItems(numbers, false);
+                }
+
+                // if popularity of any of the options is way too low, assume there is some error with Spotify's data
+                // and skip the question
+                // TODO: can instead find another random option if we decide we don't want to skip from the get-go
+                for (let i = 0; i < result.length; i++) {
+                    if (DEBUG) console.log(`Name: ${result[i].name} Popularity: ${result[i].popularity}`);
+                    if (result[i].popularity < 5) {
+                        console.error("Popularity is too low, skipping question...");
+                        return [];
+                    }
+                }
+
                 for (let i = 1; i < 4; i++) {
-                    if (((questionID === 2 || questionID == 10) && result[i].popularity > result[0].popularity) || 
-                        ((questionID === 17 || questionID === 18)&& result[i].popularity < result[0].popularity)) {
+                    if (((questionID === 2 || questionID == 10 || questionID == 23) && result[i].popularity > result[0].popularity) || 
+                        ((questionID === 17 || questionID === 18 || questionID == 24)&& result[i].popularity < result[0].popularity)) {
                         // Swaping index 0 and i
                         let temp = result[0];
                         result[0] = result[i];
@@ -193,14 +238,12 @@ class simpleQuestionGen {
                     }
                 }
                 for (let i = 0; i < 4; i++) {
-                    if (DEBUG) console.log(`#${i}: Name: ${result[i].name} Popularity: ${result[i].popularity}`);
                     result[i] = result[i].name;
                 }
                 break;
             }
-            case 4: //TESTING: Which artist appears most in your top _ songs?
-            case 8: { // TESTING: Which album appears most in your top _ songs? 
-                //TODO: Why is there an error
+            case 4: //DONE: Which artist appears most in your top _ songs?
+            case 8: { // DONE: Which album appears most in your top _ songs? 
                 let itemMap = new Map();
 
                 // Checking preconditions: 
@@ -244,10 +287,10 @@ class simpleQuestionGen {
                 });
 
                 if (maxNum === 1) {
-                    result.push("None, They're all even");
+                    result.push("It's a tie!");
                 } else {
                     result.push(maxItem);
-                    result.push("None, They're all even");
+                    result.push("It's a tie!");
                 }
 
                 if (questionID === 4) {
@@ -299,28 +342,35 @@ class simpleQuestionGen {
             case 6: { // DONE: How many songs are there in your playlist named - ?
                 
                 const playlists = this.apiResponseMap.get("playlists-50").items;
+                var userId = callApiSync("https://api.spotify.com/v1/me").id;
+                for(let i = 0; i<playlists.length; i++) {
+                    if(playlists[i].owner.id !== userId) {
+                        playlists.splice[i, 1]; 
+                    }
+                }
 
                 //Precondition: must have some number of playlists 
                 if(playlists.length<=0) {
                     console.error("User does not have enough playlists");
-                    break;
+                    return [];
                 }
 
                 //Correct Answer + Change question
                 let playN = getRandomInt(0, playlists.length);
                 let playlist = playlists[playN];
-                this.curQuestion.question = this.curQuestion.question.replace("- ", "\"" +playlist.name + "\""); 
+                this.curQuestion.question = this.curQuestion.question.replace("- ", "\"" + playlist.name + "\""); 
                 let numTracks = playlist.tracks.total;
                 result.push(numTracks);
                 
-                let min = numTracks-5;
+                let min = getScaledNum(numTracks,3,0);
                 if(min<0) {
                     min = 0;
                 }
 
                 //Incorrect answers
                 while(result.length < 4) {
-                    result.push(getRandomAround(result, min, numTracks+5));
+                    let max = getScaledNum(numTracks,3,numTracks);
+                    result.push(getRandomAround(result, min, max));
                 }
 
                 break;
@@ -403,66 +453,49 @@ class simpleQuestionGen {
                 let trackNum = getRandomInt(this.curQuestion.min,this.curQuestion.max);
                 let trackName = trackList[trackNum].name;
                 this.curQuestion.question = this.curQuestion.question.replace("-", "\"" + trackName + "\" by " + trackList[trackNum].artists[0].name); 
-                let album = trackList[trackNum].album.name;
+                let album = trackList[trackNum].album;
 
-                result.push(album);
+                if (album.album_type === "SINGLE"  || album.album_type === "COMPILATION") {
+                    console.error(`This is a single and will not work for the question`);
+                    return [];
+                }
+
+                result.push(album.name);
 
                 //wrong answers can be other albums by artist, and then 
-                const artistAlbums = callApiSync("https://api.spotify.com/v1/artists/"+ trackList[trackNum].artists[0].id + "/albums");
+                var artistAlbums = callApiSync("https://api.spotify.com/v1/artists/"+ trackList[trackNum].artists[0].id + "/albums");
                 
+                artistAlbums = artistAlbums.items;
+            
+                for(let i =0; i<artistAlbums.length; i++) {
+
+                    if(artistAlbums[i].artists[0] !== album.artists[0]) {
+                        artistAlbums.splice(i, 1);
+                    }
+                    else if(artistAlbums[i].album_type === "SINGLE" || artistAlbums[i].album_type === "COMPILATION") { 
+                        artistAlbums.splice(i, 1); 
+                    }
+                    else if(artistAlbums[i].name.toLowerCase.includes("live") || artistAlbums[i].name.toLowerCase.includes("remix")) { 
+                        artistAlbums.splice(i, 1);
+                    }
+
+                }
+
                 //get albums from artist 
-                for(let i = 0; i<artistAlbums.length; i++) {
-                    if(artistAlbums[i] != album) {
+                for (let i = 0; i < artistAlbums.length; i++) {
+                    if(artistAlbums[i] != album.name) {
                         console.log("NAME HERE: " + artistAlbums[i].name);
                         result.push(artistAlbums[i].name);
                     }
                 }
                 
-                var c = 0;
-                while(result.length < 4) {
-                    let test = trackList[c];
-                    result.push(test.album.name);
-                    c++;
-                } 
-
-                /*// Precondition check: If all top songs are from the sa me album 
-                let uniqueAlbums = 0;
-                let curAlbums = [];
-                const items = this.apiResponseMap.get(this.curQuestion.apiCall).items;
-                const maxRange = Math.min(items.length, 50);
-                for (let i = 0; i < maxRange; i++) {
-                    if (!curAlbums.includes(trackList[i].album)) {
-                        curAlbums.push(trackList[i].album);
-                        uniqueAlbums++;
-                    }
-                }  
-                if (uniqueAlbums < 4) {
-                    throw new Error(`
-                    Precondition not met for question ID 12.
-                     There are not enough unique albums. Unique Albums: ${uniqueAlbums}`);
-                } 
-
-                const track = trackList[numbers[0]];
-                result.push(track.album.name);
-                let curTrackName = trackList[numbers[1]].album.name;
-                for (let i = 1; i < 4; i++) {
-                    if (!result.includes(curTrackName)) {
-                        result.push(curTrackName);
+                //Get from users top songs
+                for (let i = 0; result.length < 4; i++) {
+                    let curAlbum = trackList[i].album.name;
+                    if (!result.includes(curAlbum)) {
+                        result.push(curAlbum);
                     }
                 }
-                
-                let rand = getRandomInt(1, maxRange);
-                while (result.length !== 4){
-                    if (!result.includes(curTrackName)){
-                        result.push();
-                    }
-                    // if (trackList[numbers[rand]] !== undefined){
-                        curTrackName = trackList[numbers[rand]].album.name;
-                    // }
-                }
-
-                // Changes the question to include the song it is asking about
-                this.curQuestion.question = this.curQuestion.question.replace("-", trackList[numbers[0]].name);*/
 
                 break;
             }
@@ -489,8 +522,8 @@ class simpleQuestionGen {
                 }
                 break;
             }
-            case 15: // TESTING: Which of these songs was released the longest time ago?
-            case 16: { // TESTING: Which of these songs was released most recently?
+            case 15: // DONE: Which of these songs was released the longest time ago?
+            case 16: { // DONE: Which of these songs was released most recently?
                 // Gets list of items we are working with.
                 result = this.getItems(numbers, false); 
                 // This is a compare function that takes in songs and compares them based on date 
@@ -527,27 +560,103 @@ class simpleQuestionGen {
                 this.curQuestion.question = this.curQuestion.question.replace("-", "\"" + trackItem.name + "\" by " + trackItem.artists[0].name);
 
                 let trackYear = trackItem.album.release_date;
-                trackYear = trackYear.substring(0, trackYear.indexOf("-"));
+                if (trackYear === undefined) {
+                    if (DEBUG) console.error("Release date for " + trackItem.name + " is undefined.");
+                    return [];
+                }
+                if (trackItem.album.release_date_precision !== "year") {
+                    trackYear = trackYear.substring(0, trackYear.indexOf("-"));
+                }
                 trackYear = parseInt(trackYear);
+                const currYear = new Date().getFullYear();
+                if (DEBUG) console.log("Curr year: " + currYear + " // Track release year: " + trackYear);
 
-                let currYear = new Date().getFullYear();
+                const yearDiff = currYear - trackYear;
 
-                // get lower and upper year bounds. Ideally get range of 15 years
-                // above and below actual track year, but if the track year is
-                // within 15 years to the current year (based on user's local time),
-                // then increase lower bound to maintain overall range of 30 years.
-                const rangeNum = 15; // <-- edit as needed to adjust range
-                let extra = Math.max(0, rangeNum - (currYear - trackYear));
-                let lowerBoundYear = trackYear - rangeNum - extra;
-                let upperBoundYear = Math.min(trackYear + rangeNum, currYear);
+                // error if trackYear is greater/after currYear
+                if (yearDiff < 0) {
+                    if (DEBUG) throw new Error("Track's release year is greater than the current year. Curr year: " + currYear + ". Track year: " + trackYear + ".");
+                    console.error("Track's release year is greater than the current year. Curr year: " + currYear + ". Track year: " + trackYear + ".");
+                    return [];
+                }
 
-                if (DEBUG) console.log("Lower: " + lowerBoundYear + " // Upper: " + upperBoundYear);
+                let lowerBound;
+                let upperBound;
+                // we calculate lower/uppper bound range using y = floor(x/4 + 3), where y = range and x = yearDiff.
+                if (yearDiff <= 2) {
+                    // if yearDiff <= 2, range should be 3. This is an edge case where yearDiff < range, so handle it separately.
+                    lowerBound = currYear - 6;
+                    upperBound = currYear;
+                } else {
+                    let range = Math.floor(yearDiff/4 + 3); // calculates the range to use for lower/upper bounds
+                    lowerBound = trackYear - range;
+                    upperBound = trackYear + range;
+                }
+
+                // OLDER CODE: TODO DELETE ONCE NEWER CODE IS TESTED
+                // // get lower and upper year bounds. Ideally get range of 15 years
+                // // above and below actual track year, but if the track year is
+                // // within 15 years to the current year (based on user's local time),
+                // // then increase lower bound to maintain overall range of 30 years.
+                // const rangeNum = 15; // <-- edit as needed to adjust range
+                // let extra = Math.max(0, rangeNum - (currYear - trackYear));
+                // let lowerBoundYear = trackYear - rangeNum - extra;
+                // let upperBoundYear = Math.min(trackYear + rangeNum, currYear);
+
+                if (DEBUG) console.log("Lower bound: " + lowerBound + " // Upper bound: " + upperBound);
 
                 result.push(trackYear);
                 for (let i = 0; i < 3; i++) {
-                    const wrongAnswer = getRandomAround(result, lowerBoundYear, upperBoundYear);
+                    const wrongAnswer = getRandomAround(result, lowerBound, upperBound);
                     result.push(wrongAnswer);
                 }
+
+                break;
+            }
+            case 25: // TESTING Helena: Which of these songs is the loudest according to Spotify?
+            case 26: // TESTING: Which of these songs has the highest BPM?
+            case 27: // TESTING: Which of these songs has the lowest BPM?
+            case 28: { // TESTING: Which of these songs is the quietest according to Spotify?
+                let audioFeatures = []; 
+                let names = [];
+                numbers.forEach(num => {
+                    const id = trackList[num].id;
+                    const audio = callApiSync("https://api.spotify.com/v1/audio-features/" + id);
+                    audioFeatures.push(audio);
+                    names.push(trackList[num].name);
+                });
+                if (DEBUG) console.log(names);
+                if (DEBUG) console.log(audioFeatures);
+
+                let ind = 0; // set initial max/min to be the first index (0)
+                if (questionID === 25 || questionID === 28) {
+                    let db = audioFeatures[0].loudness;
+                    if (DEBUG) console.log("Loudness of " + names[0] + ": " + db);
+                    for (let i = 1; i < 4; i++) {
+                        let currDb = audioFeatures[i].loudness;
+                        if (DEBUG) console.log("Loudness of " + names[i] + ": " + currDb);
+                        if (questionID === 25 && currDb > db || questionID === 28 && currDb < db) {
+                            ind = i;
+                            db = currDb;
+                        }
+                    }
+                } else {
+                    let bpm = audioFeatures[0].tempo;
+                    if (DEBUG) console.log("BPM of " + names[0] + ": " + bpm);
+                    for (let i = 1; i < 4; i++) {
+                        let currBpm = audioFeatures[i].tempo;
+                        if (DEBUG) console.log("BPM of " + names[i] + ": " + currBpm);
+                        if (questionID === 26 && currBpm > bpm || questionID === 27 && currBpm < bpm) {
+                            ind = i;
+                            bpm = currBpm;
+                        }
+                    }
+                }
+
+                result[0] = names.splice(ind, 1);
+                names.forEach(name => {
+                    result.push(name);
+                })
 
                 break;
             }
@@ -644,8 +753,7 @@ class simpleQuestionGen {
         }
 
         if (DEBUG) {
-            const questionID = 8; // The question ID you want to test
-            this.curQuestion = this.questions.splice(questionID - 1, 1)[0];
+            this.curQuestion = this.questions.splice(QUESTION_ID - 1, 1)[0];
         } else {
             this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
         }
@@ -684,7 +792,7 @@ function getRandomInt(min, max) {
 }
 
 /**
- * Returns a random number x around a number in a given range.
+ * Returns a random number x around a number in a given range. Could return undefined if there are no possible answers.
  * @param {number[]} num List of numbers x should not be
  * @param {number} min Min value x can be (inclusive)
  * @param {number} max Max value x can be (inclusive)
@@ -694,22 +802,24 @@ function getRandomAround(num, min, max) {
     if (max < min) {
         throw new Error('min must be smaller than max');
     }
-    const possible_answers = [];
-    for (let i = min; i <= max; i++) {
-        possible_answers.push(i);
+    let possibleAnswers = [];
+    for (let i = min; i < max; i++) {
+        possibleAnswers.push(i);
     }
-
-    num.forEach((val) => {
-        const index = possible_answers.indexOf(val);
-        possible_answers.splice(index, 1);
+    num.forEach(val => {
+        const index = possibleAnswers.indexOf(val);
+        if (index >= 0) possibleAnswers.splice(index, 1);
     });
-    
-    const resultIndex = getRandomInt(0, possible_answers.length);
-    return possible_answers[resultIndex];
+    if (possibleAnswers.length === 0) {
+        return undefined;
+    } else {
+        const resultIndex = getRandomInt(0, possibleAnswers.length);
+        return possibleAnswers[resultIndex];
+    }
 }
 
 /**
- * Compres two dats in format "xxxx-xx-xx"
+ * Compares two dates in format "xxxx-xx-xx"
  * @param {string} date1 
  * @param {string} date2 
  * @returns 1  if date1 > date2
@@ -744,6 +854,17 @@ function compareDates(date1, date2) {
     }
 }
 
+/**
+ * Used to return a scaled number y; for instance, where a greater x corresponds to a greater y
+ * Returns y where y = floor(x/a + b)
+ * @param {number} x 
+ * @param {number} a 
+ * @param {number} b 
+ * @returns y where y = floor(x/a + b)
+ */
+function getScaledNum(x, a, b) {
+    return Math.floor(x/a + b);
+}
 
 /**
  * Factory function for a question gen.

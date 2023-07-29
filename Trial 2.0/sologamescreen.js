@@ -14,7 +14,6 @@ makeQuestionGen().then(function(value) {
 // 
 function onLoad() {
     loadText();
-
     document.getElementById('answer-top-left').addEventListener('click', ( () => checkAnswer('answer-top-left')));
     document.getElementById('answer-top-right').addEventListener('click', ( () => checkAnswer('answer-top-right')));
     document.getElementById('answer-bottom-left').addEventListener('click', ( () => checkAnswer('answer-bottom-left')));
@@ -28,15 +27,16 @@ function loadText() {
     loadAnswers();
 }
 
-// Replaces all answer text with 3 wrong answers and 1 correct answer chosen randomly. Changes the
-// global correct answer boolean to correctly represent right and wrong answers
+// Replaces all answer text with 3 wrong answers and 1 correct answer chosen randomly
 function loadAnswers() {
     let arrAnswers = [gen.getAnswer(), ...gen.getNonAnswers()];
     let btnIDs = ["answer-top-left", "answer-top-right", "answer-bottom-left", "answer-bottom-right"];
-
     for (let i = 0; i < 4; i++) {
         const rand = getRandomInt(arrAnswers.length); // Random index of arrAnswers
         const btn = document.getElementById(btnIDs.pop());
+        // Reset the button colors and borders from previous question
+        btn.style.backgroundColor = "#B9E2E0";
+        btn.style.border = "0px";
         if (arrAnswers[rand] === gen.getAnswer()) {
             // Since the corresponding index of correctAnswers is the index of btnIDs and we just poped
             // the current btnID that means that btnIDS.length is the index of btn.
@@ -52,19 +52,34 @@ function getRandomInt(max) {
 
 // Checks if clicked button was the correct answer
 function checkAnswer(name) {
+    //add a border to the chosen button answer
+    document.getElementById(name).style.border = "3px solid white";
+    let btnIDs = ["answer-top-left", "answer-top-right", "answer-bottom-left", "answer-bottom-right"];
     if (document.getElementById(name).innerText == gen.getAnswer()) {
-        alert("you got it right");
         score++;
-    } else {
-        alert("wrong");
     }
-    // Goes to the next question or final screen
-    questionNumber++;
-    gen.changeQuestion();
-    if (questionNumber <= 10) {
-        loadText();
-    } else {
-        // TODO: remove below and replace with transition to score screen
-        alert("score: " + score);
+    for (let i = 0; i < 4; i++) {
+        console.log(btnIDs[i]);
+        if (document.getElementById(btnIDs[i]).innerText == gen.getAnswer()) {
+            document.getElementById(btnIDs[i]).style.backgroundColor="#a0ebb4";
+            //change color right
+        } else {
+            document.getElementById(btnIDs[i]).style.backgroundColor="#FFC7AF";
+            // change color wrong
+        }
     }
+
+    // Sets a delay so that the player can see the correct answer and their picked answer
+    setTimeout(function() {
+        // Goes to the next question or final screen
+        questionNumber++;
+        gen.changeQuestion();
+        if (questionNumber <= 10) {
+            loadText();
+        } else {
+            // TODO: remove below and replace with transition to score screen
+            alert("score: " + score);
+        }
+    }, 1000);
+
  }
