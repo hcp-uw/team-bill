@@ -1,7 +1,7 @@
 import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GENRE_REC } from "./spotify.js";
 
 const DEBUG = true; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
-const QUESTION_ID = 29; // The question ID you want to test
+const QUESTION_ID = 12; // The question ID you want to test
 
 /**
  * @typedef question
@@ -134,9 +134,10 @@ class simpleQuestionGen {
         });
 
         if (DEBUG) {
-            console.log("\n");
-            console.log("Current answer:", this.curAnswer);
-            console.log("Current NonAnsers:", this.curNonAnswers);
+            console.log("Current answer:");
+            console.log(this.curAnswer);
+            console.log("Current NonAnsers:");
+            console.log(this.curNonAnswers);
             console.log("------------------------");
         }
     }
@@ -221,7 +222,7 @@ class simpleQuestionGen {
                 // TODO: can instead find another random option if we decide we don't want to skip from the get-go
                 for (let i = 0; i < result.length; i++) {
                     if (DEBUG) console.log(`Name: ${result[i].name} Popularity: ${result[i].popularity}`);
-                    if (result[i].popularity < 15) {
+                    if (result[i].popularity < 5) {
                         console.error("Popularity is too low, skipping question...");
                         return [];
                     }
@@ -361,14 +362,15 @@ class simpleQuestionGen {
                 let numTracks = playlist.tracks.total;
                 result.push(numTracks);
                 
-                let min = numTracks-5;
+                let min = getScaledNum(numTracks,3,0);
                 if(min<0) {
                     min = 0;
                 }
 
                 //Incorrect answers
                 while(result.length < 4) {
-                    result.push(getRandomAround(result, min, numTracks+5));
+                    let max = getScaledNum(numTracks,3,numTracks);
+                    result.push(getRandomAround(result, min, max));
                 }
 
                 break;
@@ -419,16 +421,16 @@ class simpleQuestionGen {
                 break;
             }
             case 9: { // DONE: How many of your top _ songs are explicit?
-                // Check: at least top 3 songs
+                // Precondition check: at least top 3 songs
                 if (numbers[0] <= 2) {
                     throw new Error(
-                    `Error for question ID 9. Must be at least top 3 songs to have 4 unique answers, not top ${number[0]}`
+                    `Precondition not met for question ID 9. Must be at least top 3 songs to have 4 unique answers, not top ${number[0]}`
                     );
                 }
         
-                // Check: correct index less than number of top tracks
+                // Precondition check: correct index less than number of top tracks
                 if (trackList.length <= numbers[0]) {
-                    throw new Error(`Error for question ID 9. The first number in numbers array
+                    throw new Error(`Precondition not met for question ID 9. The first number in numbers 
                             must be less than the number of top tracks. In this case ${number[0]} is not less 
                             than ${trackList.length}`);
                 }
@@ -453,7 +455,6 @@ class simpleQuestionGen {
                 this.curQuestion.question = this.curQuestion.question.replace("-", "\"" + trackName + "\" by " + trackList[trackNum].artists[0].name); 
                 let album = trackList[trackNum].album;
 
-                console.log("This album is a: " + album.album_type);
                 if (album.album_type === "SINGLE"  || album.album_type === "COMPILATION") {
                     console.error(`This is a single and will not work for the question`);
                     return [];
@@ -462,9 +463,20 @@ class simpleQuestionGen {
                 result.push(album.name);
 
                 //wrong answers can be other albums by artist, and then 
-                const artistAlbums = callApiSync("https://api.spotify.com/v1/artists/"+ trackList[trackNum].artists[0].id + "/albums");
+                var artistAlbums = callApiSync("https://api.spotify.com/v1/artists/"+ trackList[trackNum].artists[0].id + "/albums");
                 
-                console.log(artistAlbums);
+                artistAlbums = artistAlbums.items;
+            
+                for(let i =0; i<artistAlbums.length; i++) {
+
+                    if(artistAlbums[i].artists[0] !== album.artists[0]) {
+                        artistAlbums.splice(i, 1);
+                    }
+                    else if(artistAlbums[i].album_type === "SINGLE" || artistAlbums[i].album_type === "COMPILATION") { 
+                        artistAlbums.splice(i, 1); 
+                    }
+
+                }
 
                 //get albums from artist 
                 for (let i = 0; i < artistAlbums.length; i++) {
@@ -601,74 +613,47 @@ class simpleQuestionGen {
             case 25: // TESTING Helena: Which of these songs is the loudest according to Spotify?
             case 26: // TESTING: Which of these songs has the highest BPM?
             case 27: // TESTING: Which of these songs has the lowest BPM?
-            case 28: // TESTING: Which of these songs is the quietest according to Spotify?
-            case 29: // TESTING: Which of these contains the most spoken words according to Spotify?
-            case 30: // TESTING: Which of these songs is the most upbeat according to Spotify?
-            case 31: {  // TESTING: Which of these songs is the most negative according to Spotify?
-                let audioFeatures = []; // the audio features response for each of the 4 songs (in order)
-                let tracks = []; // the track object for each of the 4 songs (in order)
+            case 28: { // TESTING: Which of these songs is the quietest according to Spotify?
+                let audioFeatures = []; 
+                let names = [];
                 numbers.forEach(num => {
                     const id = trackList[num].id;
                     const audio = callApiSync("https://api.spotify.com/v1/audio-features/" + id);
                     audioFeatures.push(audio);
-                    tracks.push(trackList[num]);
+                    names.push(trackList[num].name);
                 });
-                if (DEBUG) console.log("Tracks", tracks);
-                if (DEBUG) console.log("Audio features", audioFeatures);
+                if (DEBUG) console.log(names);
+                if (DEBUG) console.log(audioFeatures);
 
                 let ind = 0; // set initial max/min to be the first index (0)
                 if (questionID === 25 || questionID === 28) {
-                    let ans = audioFeatures[0].loudness;
-                    if (DEBUG) console.log("Loudness of " + tracks[0].name + ": " + ans);
+                    let db = audioFeatures[0].loudness;
+                    if (DEBUG) console.log("Loudness of " + names[0] + ": " + db);
                     for (let i = 1; i < 4; i++) {
-                        let cur = audioFeatures[i].loudness;
-                        if (DEBUG) console.log("Loudness of " + tracks[i].name + ": " + cur);
-                        if (questionID === 25 && cur > ans || questionID === 28 && cur < ans) {
+                        let currDb = audioFeatures[i].loudness;
+                        if (DEBUG) console.log("Loudness of " + names[i] + ": " + currDb);
+                        if (questionID === 25 && currDb > db || questionID === 28 && currDb < db) {
                             ind = i;
-                            ans = cur;
+                            db = currDb;
                         }
                     }
-                } else if (questionID === 26 || questionID === 27) {
-                    let ans = audioFeatures[0].tempo;
-                    if (DEBUG) console.log("BPM of " + tracks[0].name + ": " + ans);
+                } else {
+                    let bpm = audioFeatures[0].tempo;
+                    if (DEBUG) console.log("BPM of " + names[0] + ": " + bpm);
                     for (let i = 1; i < 4; i++) {
-                        let cur = audioFeatures[i].tempo;
-                        if (DEBUG) console.log("BPM of " + tracks[i].name + ": " + cur);
-                        if (questionID === 26 && cur > ans || questionID === 27 && cur < ans) {
+                        let currBpm = audioFeatures[i].tempo;
+                        if (DEBUG) console.log("BPM of " + names[i] + ": " + currBpm);
+                        if (questionID === 26 && currBpm > bpm || questionID === 27 && currBpm < bpm) {
                             ind = i;
-                            ans = cur;
-                        }
-                    }
-                } else if (questionID === 29) {
-                    let ans = audioFeatures[0].speechiness;
-                    if (DEBUG) console.log("Sspeechiness of " + tracks[0].name + ": " + ans);
-                    for (let i = 1; i < 4; i++) {
-                        let cur = audioFeatures[i].speechiness;
-                        if (DEBUG) console.log("Speechiness of " + tracks[i].name + ": " + cur);
-                        if (cur > ans) {
-                            ind = i;
-                            ans = cur;
-                        }
-                    }
-                } else { // if (questionID === 30 || questionID === 31)
-                    let ans = audioFeatures[0].valence;
-                    if (DEBUG) console.log("Valence of " + tracks[0].name + ": " + ans);
-                    for (let i = 1; i < 4; i++) {
-                        let cur = audioFeatures[i].valence;
-                        if (DEBUG) console.log("Valence of " + tracks[i].name + ": " + cur);
-                        if (questionID === 30 && cur > ans || questionID === 31 && cur < ans) {
-                            ind = i;
-                            ans = cur;
+                            bpm = currBpm;
                         }
                     }
                 }
 
-                let corTrack = tracks.splice(ind, 1)[0];
-                result[0] = corTrack.name;
-                tracks.forEach(track => {
-                    result.push(track.name);
+                result[0] = names.splice(ind, 1);
+                names.forEach(name => {
+                    result.push(name);
                 })
-                console.log(result);
 
                 break;
             }
@@ -704,7 +689,7 @@ class simpleQuestionGen {
                                 ${index} was not a valid input.`);
             }
             if (getNames) {
-                result.push([apiResponse.items[index].name, apiResponse.items[index].artists[0].name]);
+                result.push(apiResponse.items[index].name);
             } else {
                 result.push(apiResponse.items[index]);
             }
@@ -770,7 +755,8 @@ class simpleQuestionGen {
             this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
         }
         if (DEBUG) {
-            console.log("Current Question:", this.curQuestion);
+            console.log("Current Question:")
+            console.log(this.curQuestion);
         } 
         this.setAnswers();
     }
