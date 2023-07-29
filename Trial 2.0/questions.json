@@ -29,7 +29,7 @@
         {"question": "Which of these songs has the lowest BPM?",            "id": 27, "apiCall": "tracks-long-50", "max": 50, "min": 0},
         {"question": "Which of these songs is the quietest according to Spotify?", "id": 28, "apiCall": "tracks-long-50", "max": 50, "min": 0},
         {"question": "Which of these contains the most spoken words according to Spotify?", "id": 29, "apiCall": "tracks-long-50", "max": 50, "min": 0},
-        {"question": "Which of these songs is the most upbeat according to Spotify?", "id": 30, "apiCall": "tracks-long-50", "max": 50, "min": 0},
-        {"question": "Which of these songs is the most negative according to Spotify?", "id": 31, "apiCall": "tracks-long-50", "max": 50, "min": 0}
+        {"question": "Which of these songs sounds the most upbeat according to Spotify?", "id": 30, "apiCall": "tracks-long-50", "max": 50, "min": 0},
+        {"question": "Which of these songs sounds the most negative according to Spotify?", "id": 31, "apiCall": "tracks-long-50", "max": 50, "min": 0}
     ]
 }
