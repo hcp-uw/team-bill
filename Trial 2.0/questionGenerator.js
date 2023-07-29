@@ -1,7 +1,7 @@
 import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GENRE_REC } from "./spotify.js";
 
 const DEBUG = true; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
-const QUESTION_ID = 29; // The question ID you want to test
+const QUESTION_ID = 25; // The question ID you want to test
 
 /**
  * @typedef question
@@ -361,14 +361,15 @@ class simpleQuestionGen {
                 let numTracks = playlist.tracks.total;
                 result.push(numTracks);
                 
-                let min = numTracks-5;
+                let min = getScaledNum(numTracks,3,0);
                 if(min<0) {
                     min = 0;
                 }
 
                 //Incorrect answers
                 while(result.length < 4) {
-                    result.push(getRandomAround(result, min, numTracks+5));
+                    let max = getScaledNum(numTracks,3,numTracks);
+                    result.push(getRandomAround(result, min, max));
                 }
 
                 break;
@@ -453,7 +454,6 @@ class simpleQuestionGen {
                 this.curQuestion.question = this.curQuestion.question.replace("-", "\"" + trackName + "\" by " + trackList[trackNum].artists[0].name); 
                 let album = trackList[trackNum].album;
 
-                console.log("This album is a: " + album.album_type);
                 if (album.album_type === "SINGLE"  || album.album_type === "COMPILATION") {
                     console.error(`This is a single and will not work for the question`);
                     return [];
@@ -462,9 +462,23 @@ class simpleQuestionGen {
                 result.push(album.name);
 
                 //wrong answers can be other albums by artist, and then 
-                const artistAlbums = callApiSync("https://api.spotify.com/v1/artists/"+ trackList[trackNum].artists[0].id + "/albums");
+                var artistAlbums = callApiSync("https://api.spotify.com/v1/artists/"+ trackList[trackNum].artists[0].id + "/albums");
                 
-                console.log(artistAlbums);
+                artistAlbums = artistAlbums.items;
+            
+                for(let i =0; i<artistAlbums.length; i++) {
+
+                    if(artistAlbums[i].artists[0] !== album.artists[0]) {
+                        artistAlbums.splice(i, 1);
+                    }
+                    else if(artistAlbums[i].album_type === "SINGLE" || artistAlbums[i].album_type === "COMPILATION") { 
+                        artistAlbums.splice(i, 1); 
+                    }
+                    else if(artistAlbums[i].name.toLowerCase.includes("live") || artistAlbums[i].name.toLowerCase.includes("remix")) { 
+                        artistAlbums.splice(i, 1);
+                    }
+
+                }
 
                 //get albums from artist 
                 for (let i = 0; i < artistAlbums.length; i++) {
@@ -616,13 +630,16 @@ class simpleQuestionGen {
                 if (DEBUG) console.log("Tracks", tracks);
                 if (DEBUG) console.log("Audio features", audioFeatures);
 
+                let feature = "";
+                if (questionID === 25 || questionID === 28) feature = "loudness";
+
                 let ind = 0; // set initial max/min to be the first index (0)
                 if (questionID === 25 || questionID === 28) {
-                    let ans = audioFeatures[0].loudness;
-                    if (DEBUG) console.log("Loudness of " + tracks[0].name + ": " + ans);
+                    let ans = audioFeatures[0][feature];
+                    if (DEBUG) console.log(feature + " of " + tracks[0].name + ": " + ans);
                     for (let i = 1; i < 4; i++) {
-                        let cur = audioFeatures[i].loudness;
-                        if (DEBUG) console.log("Loudness of " + tracks[i].name + ": " + cur);
+                        let cur = audioFeatures[i][feature];
+                        if (DEBUG) console.log(feature + " of " + tracks[i].name + ": " + cur);
                         if (questionID === 25 && cur > ans || questionID === 28 && cur < ans) {
                             ind = i;
                             ans = cur;
@@ -704,7 +721,7 @@ class simpleQuestionGen {
                                 ${index} was not a valid input.`);
             }
             if (getNames) {
-                result.push([apiResponse.items[index].name, apiResponse.items[index].artists[0].name]);
+                result.push(apiResponse.items[index].name);
             } else {
                 result.push(apiResponse.items[index]);
             }
