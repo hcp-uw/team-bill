@@ -2,7 +2,7 @@
     "questionsList":[
         {"question": "What is your #_ most listened to song of all time?",  "id": 1, "apiCall": "tracks-long-50", "max": 20, "min":0},
         {"question": "Which of these songs is the most popular?",           "id": 2, "apiCall": "tracks-long-50", "max": 40, "min": 0}, 
-        {"question": "Who is your top artist of all time?",                             "id": 3, "apiCall": "artists-long-50", "max": -1, "min": 0},
+        {"question": "Who is your top artist of all time?",                 "id": 3, "apiCall": "artists-long-50", "max": -1, "min": 0},
         {"question": "Which artist appears most in your top _ songs?",      "id": 4, "apiCall": "tracks-long-50", "max": 20, "min": 4},
         {"question": "How many different artists are in your top #_ songs?", "id": 5, "apiCall": "tracks-long-50", "max": 20, "min": 0},
         {"question": "How many songs are there in your playlist named - ?", "id": 6, "apiCall": "playlists-50", "max": -1, "min": 0},
@@ -27,6 +27,9 @@
         {"question": "Which of these songs is the loudest according to Spotify?", "id": 25, "apiCall": "tracks-long-50", "max": 50, "min": 0},
         {"question": "Which of these songs has the highest BPM?",           "id": 26, "apiCall": "tracks-long-50", "max": 50, "min": 0},
         {"question": "Which of these songs has the lowest BPM?",            "id": 27, "apiCall": "tracks-long-50", "max": 50, "min": 0},
-        {"question": "Which of these songs is the quietest according to Spotify?", "id": 28, "apiCall": "tracks-long-50", "max": 50, "min": 0}
+        {"question": "Which of these songs is the quietest according to Spotify?", "id": 28, "apiCall": "tracks-long-50", "max": 50, "min": 0},
+        {"question": "Which of these contains the most spoken words according to Spotify?", "id": 29, "apiCall": "tracks-long-50", "max": 50, "min": 0},
+        {"question": "Which of these songs is the most upbeat according to Spotify?", "id": 30, "apiCall": "tracks-long-50", "max": 50, "min": 0},
+        {"question": "Which of these songs is the most negative according to Spotify?", "id": 31, "apiCall": "tracks-long-50", "max": 50, "min": 0}
     ]
 }
