@@ -10,6 +10,7 @@ html {
 body {
   padding-top: 3rem;
   background-color: #000000;
+  font-family: 'Nunito', sans-serif;
 }
 
 /* Add a black background color to the top navigation */
@@ -22,7 +23,7 @@ body {
   top: -60px;
   left: -10px;
   height: 62px;
-
+  margin-bottom: 0px;
 }
 
 /* Style the links inside the navigation bar */
