@@ -134,10 +134,9 @@ class simpleQuestionGen {
         });
 
         if (DEBUG) {
-            console.log("Current answer:");
-            console.log(this.curAnswer);
-            console.log("Current NonAnsers:");
-            console.log(this.curNonAnswers);
+            console.log("\n");
+            console.log("Current answer:", this.curAnswer);
+            console.log("Current NonAnsers:", this.curNonAnswers);
             console.log("------------------------");
         }
     }
@@ -753,8 +752,7 @@ class simpleQuestionGen {
             this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
         }
         if (DEBUG) {
-            console.log("Current Question:")
-            console.log(this.curQuestion);
+            console.log("Current Question:", this.curQuestion);
         } 
         this.setAnswers();
     }
