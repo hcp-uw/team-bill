@@ -420,16 +420,16 @@ class simpleQuestionGen {
                 break;
             }
             case 9: { // DONE: How many of your top _ songs are explicit?
-                // Precondition check: at least top 3 songs
+                // Check: at least top 3 songs
                 if (numbers[0] <= 2) {
                     throw new Error(
-                    `Precondition not met for question ID 9. Must be at least top 3 songs to have 4 unique answers, not top ${number[0]}`
+                    `Error for question ID 9. Must be at least top 3 songs to have 4 unique answers, not top ${number[0]}`
                     );
                 }
         
-                // Precondition check: correct index less than number of top tracks
+                // Check: correct index less than number of top tracks
                 if (trackList.length <= numbers[0]) {
-                    throw new Error(`Precondition not met for question ID 9. The first number in numbers 
+                    throw new Error(`Error for question ID 9. The first number in numbers array
                             must be less than the number of top tracks. In this case ${number[0]} is not less 
                             than ${trackList.length}`);
                 }
@@ -602,47 +602,56 @@ class simpleQuestionGen {
             case 25: // TESTING Helena: Which of these songs is the loudest according to Spotify?
             case 26: // TESTING: Which of these songs has the highest BPM?
             case 27: // TESTING: Which of these songs has the lowest BPM?
-            case 28: { // TESTING: Which of these songs is the quietest according to Spotify?
-                let audioFeatures = []; 
-                let names = [];
+            case 28: // TESTING: Which of these songs is the quietest according to Spotify?
+            case 29: // TESTING: Which of these contains the most spoken words according to Spotify?
+            case 30: // TESTING: Which of these songs is the most upbeat according to Spotify?
+            case 31: {  // TESTING: Which of these songs is the most negative according to Spotify?
+                let audioFeatures = []; // the audio features response for each of the 4 songs (in order)
+                let tracks = []; // the track object for each of the 4 songs (in order)
                 numbers.forEach(num => {
                     const id = trackList[num].id;
                     const audio = callApiSync("https://api.spotify.com/v1/audio-features/" + id);
                     audioFeatures.push(audio);
-                    names.push(trackList[num].name);
+                    tracks.push(trackList[num]);
                 });
-                if (DEBUG) console.log(names);
-                if (DEBUG) console.log(audioFeatures);
+                if (DEBUG) console.log("Tracks", tracks);
+                if (DEBUG) console.log("Audio features", audioFeatures);
 
                 let ind = 0; // set initial max/min to be the first index (0)
                 if (questionID === 25 || questionID === 28) {
                     let db = audioFeatures[0].loudness;
-                    if (DEBUG) console.log("Loudness of " + names[0] + ": " + db);
+                    if (DEBUG) console.log("Loudness of " + tracks[0].name + ": " + db);
                     for (let i = 1; i < 4; i++) {
                         let currDb = audioFeatures[i].loudness;
-                        if (DEBUG) console.log("Loudness of " + names[i] + ": " + currDb);
+                        if (DEBUG) console.log("Loudness of " + tracks[i].name + ": " + currDb);
                         if (questionID === 25 && currDb > db || questionID === 28 && currDb < db) {
                             ind = i;
                             db = currDb;
                         }
                     }
-                } else {
+                } else if (questionID === 26 || questionID === 27) {
                     let bpm = audioFeatures[0].tempo;
-                    if (DEBUG) console.log("BPM of " + names[0] + ": " + bpm);
+                    if (DEBUG) console.log("BPM of " + tracks[0].name + ": " + bpm);
                     for (let i = 1; i < 4; i++) {
                         let currBpm = audioFeatures[i].tempo;
-                        if (DEBUG) console.log("BPM of " + names[i] + ": " + currBpm);
+                        if (DEBUG) console.log("BPM of " + tracks[i].name + ": " + currBpm);
                         if (questionID === 26 && currBpm > bpm || questionID === 27 && currBpm < bpm) {
                             ind = i;
                             bpm = currBpm;
                         }
                     }
+                } else if (questionID === 29) {
+
+                } else { // if (questionID === 30 || questionID === 31)
+
                 }
 
-                result[0] = names.splice(ind, 1);
-                names.forEach(name => {
-                    result.push(name);
+                let corTrack = tracks.splice(ind, 1)[0];
+                result[0] = corTrack.name;
+                tracks.forEach(track => {
+                    result.push(track.name);
                 })
+                console.log(result);
 
                 break;
             }
@@ -678,7 +687,7 @@ class simpleQuestionGen {
                                 ${index} was not a valid input.`);
             }
             if (getNames) {
-                result.push(apiResponse.items[index].name);
+                result.push([apiResponse.items[index].name, apiResponse.items[index].artists[0].name]);
             } else {
                 result.push(apiResponse.items[index]);
             }
