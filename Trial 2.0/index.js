@@ -44,4 +44,4 @@ function requestAuthorization() {
     window.location.href = url; // Show Spotify's authorization screen
 }
 document.getElementById('authorizeBtn').addEventListener('click', requestAuthorization);
-document.getElementById('refreshBtn').addEventListener('click', refreshAccessToken);
+// document.getElementById('refreshBtn').addEventListener('click', refreshAccessToken);
