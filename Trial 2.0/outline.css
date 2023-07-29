@@ -16,7 +16,7 @@ body {
 .topnav {
   position: sticky;
   background-color: #191919;
-  width: 100vw;
+  width: 110vw;
   overflow: hidden;
   position: relative;
   top: -60px;
@@ -91,6 +91,179 @@ body {
  -webkit-border-radius:40px;
  -moz-border-radius:40px;
  border-radius:40px;
+}
+
+.bottom-section {
+  position: absolute;
+  margin-top: 470px;
+  width: 110%;
+  height: 50%;
+  background-color: white;
+  transform: translateY(50%);
+  z-index: 2;
+}
+
+.rectangle {
+  width:1033px;
+  height:482px;
+  margin-left: 123px;
+  background :#1D8C9F;
+  border-radius: 36px;
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  width:513px;
+  height:128px;
+  margin-top: -175px;
+  margin-left:260px;
+  font-size: 94px;
+  color: white;
+  font-family: 'Nunito';
+  font-weight: bold;
+  position: absolute;
+}
+
+.intro {
+  width: 503px;
+  height: 174px;
+  font-family: 'Nunito';
+  font-size: 21px;
+  margin-left: 265px;
+  margin-top: 200px;
+  text-align: center;
+  position: absolute;
+  color: white;
+}
+
+.intro2 {
+  width: 503px;
+  height: 174px;
+  font-family: 'Nunito';
+  font-size: 21px;
+  margin-left: 265px;
+  margin-top: 475px;
+  text-align: center;
+  position: absolute;
+  color: white;
+}
+
+.left-bars {
+  margin-left: 54px;
+  position: absolute;
+}
+
+.right-bars {
+  margin-left: 814px;
+  position: absolute;
+}
+
+.circle {
+  width: 81px;
+  height: 81px;
+  margin-left: 470px;
+  margin-top: 495px;
+  border-radius: 40.5px;
+  background: white;
+  position: absolute;
+}
+
+.image {
+  width: 81px;
+  height: 81px;
+  margin-left: 15px;
+  margin-top: 10px;
+  position: absolute;
+}
+
+.vs-bill {
+  width:308px;
+  height:338px;
+  margin-left: 123px;
+  margin-top: 125px;
+  background :#B9E2E0;
+  border-radius: 36px;
+  align-items: center;
+  position: absolute;
+}
+
+.solo {
+  width:308px;
+  height:338px;
+  margin-left: 483px;
+  margin-top: 125px;
+  background :#FFC7AF;
+  border-radius: 36px;
+  align-items: center;
+  position: absolute;
+}
+
+.friends {
+  width:308px;
+  height:338px;
+  margin-left: 848px;
+  margin-top: 125px;
+  background :#B9E2E0;
+  border-radius: 36px;
+  align-items: center;
+  position: absolute;
+}
+
+.bill-title {
+  width: 96px;
+  height: 41px;
+  font-family: 'Nunito';
+  font-size: 21px;
+  margin-left: 106px;
+  margin-top: 63px;
+  text-align: center;
+  position: absolute;
+  color: #1D8C9F;
+  font-weight: 800;
+  font-size: 30px;
+  position: absolute;
+}
+
+.bill-desc {
+  width: 230px;
+  height: 145px;
+  margin-left: 39px;
+  margin-top: 119px;
+  font-family: 'Nunito';
+  font-size: 21px;
+  font-weight: bold;
+  text-align: center;
+  color: #1E1E1E;
+  position: absolute;
+}
+
+.block-title {
+  width: 96px;
+  height: 41px;
+  font-family: 'Nunito';
+  font-size: 21px;
+  margin-left: 106px;
+  margin-top: 63px;
+  text-align: center;
+  position: absolute;
+  color: #1D8C9F;
+  font-weight: 800;
+  font-size: 30px;
+  position: absolute;
+}
+
+.desc {
+  width: 230px;
+  height: 145px;
+  margin-left: 39px;
+  margin-top: 119px;
+  font-family: 'Nunito';
+  font-size: 21px;
+  font-weight: bold;
+  text-align: center;
+  color: #1E1E1E;
+  position: absolute;
 }
 
 
