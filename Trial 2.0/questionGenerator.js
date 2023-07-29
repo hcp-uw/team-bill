@@ -475,6 +475,9 @@ class simpleQuestionGen {
                     else if(artistAlbums[i].album_type === "SINGLE" || artistAlbums[i].album_type === "COMPILATION") { 
                         artistAlbums.splice(i, 1); 
                     }
+                    else if(artistAlbums[i].name.toLowerCase.includes("live") || artistAlbums[i].name.toLowerCase.includes("remix")) { 
+                        artistAlbums.splice(i, 1);
+                    }
 
                 }
 
