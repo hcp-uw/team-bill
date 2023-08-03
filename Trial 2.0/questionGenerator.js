@@ -2,6 +2,8 @@ import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GENRE_REC } from
 
 const DEBUG = true; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
 const QUESTION_ID = 25; // The question ID you want to test
+const SPLIT_MARKER = "*&*" // String to identify where to split between an answer and the artist. 
+                           // We could change what the characters are later.
 
 /**
  * @typedef question
@@ -883,6 +885,16 @@ function compareDates(date1, date2) {
  */
 function getScaledNum(x, a, b) {
     return Math.floor(x/a + b);
+}
+
+/**
+ * Returns a string x such that the name of item and artist are joined together with the split marker
+ * used to mark where to split it.
+ * @param {trackItem or albumItem} item
+ * @returns string x such that x = item.name + SPLIT_MARKER + item.artist
+ */
+function finalResult(item) {
+    return item.name + SPLIT_MARKER + item.artists[0].name
 }
 
 /**
