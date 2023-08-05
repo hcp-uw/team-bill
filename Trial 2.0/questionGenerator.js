@@ -180,7 +180,10 @@ class simpleQuestionGen {
             case 19: // TESTING: What is your #_ most listened to song in the last 4 weeks?
             case 21: // TESTING: Who is your top artist within the last 4 weeks?
             case 22: { // TESTING: Who is your #_ top artist in the last 4 weeks?
-                result = this.getItems(numbers, true);
+                let items = this.getItems(numbers, false);
+                for (let i = 0; i < items.length; i++) {
+                    result.push(finalResult(items[i]));
+                }
                 break;
             }
             case 2:  // DONE: Which of these songs is the most popular?
@@ -239,7 +242,7 @@ class simpleQuestionGen {
                     }
                 }
                 for (let i = 0; i < 4; i++) {
-                    result[i] = result[i].name;
+                    result[i] = finalResult(result[i]);
                 }
                 break;
             }
@@ -260,20 +263,21 @@ class simpleQuestionGen {
                     if (questionID === 4) {
                         for (let j = 0; j < track.artists.length; j++) {
                             const artist = track.artists[j];
-                            const name = artist.name;
-                            if (DEBUG) console.log(name);
-                            if (!itemMap.has(name)) {
-                                itemMap.set(name, 0); 
+                            // const name = artist.name;
+                            if (DEBUG) console.log(artist.name);
+                            if (!itemMap.has(artist)) {
+                                itemMap.set(artist, 0); 
                             }
-                            itemMap.set(name, itemMap.get(name) + 1);
+                            itemMap.set(artist, itemMap.get(artist) + 1);
                         }
                     } else { // questionID = 8
-                        const name = track.album.name;
-                        if (DEBUG) console.log(name);
-                        if (!itemMap.has(name)) {
-                            itemMap.set(name, 0); 
+                        // const name = track.album.name;
+                        const album = track.album;
+                        if (DEBUG) console.log(album);
+                        if (!itemMap.has(album)) {
+                            itemMap.set(album, 0); 
                         }
-                        itemMap.set(name, itemMap.get(name) + 1); 
+                        itemMap.set(album, itemMap.get(album) + 1); 
                     }
                 }
 
@@ -290,13 +294,15 @@ class simpleQuestionGen {
                 if (maxNum === 1) {
                     result.push("It's a tie!");
                 } else {
-                    result.push(maxItem);
+                    result.push(finalResult(maxItem));
                     result.push("It's a tie!");
                 }
 
                 if (questionID === 4) {
-                    const wrongAnswers = this.getRandomTopArtist(result[0], 4 - result.length);
-                    result = result.concat(wrongAnswers);
+                    const wrongAnswers = this.getRandomTopArtist(result[0].name, 4 - result.length);
+                    for (let i = 0; i < wrongAnswers.length; i++) {
+                        result.push(finalResult(wrongAnswers[i]));
+                    }
                 } else { // questionID = 8
                     // Since we can't just pick from a top album list we have to find some in their top items.
 
@@ -304,9 +310,9 @@ class simpleQuestionGen {
                     // 4 unique items. It would be good to use a set in this case but since we have to return
                     // an ordered array we have to use an array.
                     for (let i = 0; i < trackList.length && result.length < 4; i++) {
-                        let album = trackList[i].album.name;
-                        if (!result.includes(album)) {
-                            result.push(album);
+                        let album = trackList[i].album;
+                        if (!result.includes(finalResult(album))) {
+                            result.push(finalResult(album));
                         }
                     }
 
@@ -450,7 +456,7 @@ class simpleQuestionGen {
                 }
                 break;
             }
-            case 12: { // TESTING: Which album is - from by ?
+            case 12: { // TESTING: Which album is the song - from?
                 let trackNum = getRandomInt(this.curQuestion.min,this.curQuestion.max);
                 let trackName = trackList[trackNum].name;
                 this.curQuestion.question = this.curQuestion.question.replace("-", "\"" + trackName + "\" by " + trackList[trackNum].artists[0].name); 
@@ -514,12 +520,12 @@ class simpleQuestionGen {
                         corrDur = currDur;
                     }
                 }
-                result[0] = trackList[corrInd].name;
+                result[0] = finalResult(trackList[corrInd]);
                 let currNonIndexes = [corrInd];
                 for (let i = 0; i < 3; i++) {
                     const nonIndex = getRandomAround(currNonIndexes, 1, 10);
                     currNonIndexes.push(nonIndex);
-                    result.push(trackList[nonIndex].name);
+                    result.push(finalResult(trackList[nonIndex]));
                 }
                 break;
             }
@@ -551,7 +557,7 @@ class simpleQuestionGen {
                 }
                 // Converts the list it items in a list of song names.
                 for (let i = 0; i < 4; i++) {
-                    result[i] = result[i].name;
+                    result[i] = finalResult(result[i]);
                 }
                 break;
             }
@@ -674,11 +680,11 @@ class simpleQuestionGen {
                 }
 
                 let corTrack = tracks.splice(ind, 1)[0];
-                result[0] = corTrack.name;
+                result[0] = finalResult(corTrack);
                 tracks.forEach(track => {
-                    result.push(track.name);
+                    result.push(finalResult(track));
                 })
-                console.log(result);
+                if (DEBUG) console.log(result);
 
                 break;
             }
@@ -737,12 +743,12 @@ class simpleQuestionGen {
     }
 
     /**
-     * Takes in a correct artist and returns 3 other artist from the top artist that are not the
+     * Takes in a correct artist NAME and returns 3 other artist OBJECTS from the top artist that are not the
      * correct artist.
-     * @param {string} correctArtist The correct artist that will not be included in the random 
+     * @param {string} correctArtist The correct artist's name that will not be included in the random 
      *                               artist.
      * @param {number} amount The number of artists to return.
-     * @returns A list with length amount of artist names from the top artists not including 
+     * @returns A list with length amount of artist OBJECTS from the top artists not including 
      *          correctArtist.
      */
     getRandomTopArtist(correctArtist, amount) {
@@ -751,7 +757,7 @@ class simpleQuestionGen {
         while (result.length < amount + 1) {
             const artist = this.apiResponseMap.get("artists-long-50").items[i]
             if (result[0] !== artist.name) {
-                result.push(artist.name);
+                result.push(artist);
             }
             i = i + 1;
         }
@@ -888,12 +894,17 @@ function getScaledNum(x, a, b) {
 }
 
 /**
- * Returns a string x such that the name of item and artist are joined together with the split marker
- * used to mark where to split it.
+ * If item has artist names attached to it, returns a string x such that the name of item
+ * and artist are joined together with the split marker used to mark where to split it.
+ * Otherwise, returns item name.
  * @param {trackItem or albumItem} item
- * @returns string x such that x = item.name + SPLIT_MARKER + item.artist
+ * @returns string x such that, if artist exists, x = item.name + SPLIT_MARKER + item.artist;
+ * o        otherwise, x = item.name
  */
 function finalResult(item) {
+    if (item.artists === undefined) {
+        return item.name;
+    }
     return item.name + SPLIT_MARKER + item.artists[0].name
 }
 
