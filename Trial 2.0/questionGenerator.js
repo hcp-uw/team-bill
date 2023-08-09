@@ -59,13 +59,21 @@ class simpleQuestionGen {
         this.pickQuestion();
     }
 
+    /**
+     * Returns the secondary information for each answer
+     * @returns an array that contains the secondary information of each answer, null if no secondary information
+     * is needed for this answer set
+     */
     getSecondary = () => { 
-        const secondaryInfo = [];
-        secondaryInfo.push(this.curAnswer.split(SPLIT_MARKER));
-        for(let i = 0; i<3; i++) {
-            secondaryInfo.push(this.curNonAnswers[i].split(SPLIT_MARKER));
+        if(this.curAnswer.includes(SPLIT_MARKER)) {
+            const secondaryInfo = [];
+            secondaryInfo.push(this.curAnswer.split(SPLIT_MARKER));
+            for(let i = 0; i<3; i++) {
+                secondaryInfo.push(this.curNonAnswers[i].split(SPLIT_MARKER));
+            }
+            return secondaryInfo;
         }
-        return secondaryInfo;
+        return null; 
     }
 
     /**
