@@ -59,6 +59,15 @@ class simpleQuestionGen {
         this.pickQuestion();
     }
 
+    getSecondary = () => { 
+        const secondaryInfo = [];
+        secondaryInfo.push(this.curAnswer.split(SPLIT_MARKER));
+        for(let i = 0; i<3; i++) {
+            secondaryInfo.push(this.curNonAnswers[i].split(SPLIT_MARKER));
+        }
+        return secondaryInfo;
+    }
+
     /**
      * Set answer and non answer fields to correct values
      * @requires this.question is not undefinded and is a valid question.
