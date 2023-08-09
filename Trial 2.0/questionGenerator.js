@@ -62,7 +62,7 @@ class simpleQuestionGen {
 
     }
     getNonAnswers = () => { 
-        if(curNonAnswers[0].includes(SPLIT_MARKER)) {
+        if(this.curNonAnswers[0].includes(SPLIT_MARKER)) {
             for(let i =0; i<3; i++) {
                 this.curNonAnswers[i] = this.curNonAnswers[i].split(SPLIT_MARKER)[0];
             }
