@@ -51,9 +51,24 @@ class simpleQuestionGen {
         this.changeQuestion();
     }
 
-    getQuestion = () => { return this.curQuestion.question };
-    getAnswer = () => { return this.curAnswer };
-    getNonAnswers = () => { return this.curNonAnswers };
+    getQuestion = () => { 
+        return this.curQuestion.question 
+    }
+    getAnswer = () => { 
+        if(this.curAnswer.includes(SPLIT_MARKER)) {
+            return this.curAnswer.split(SPLIT_MARKER)[0];
+        }
+        return this.curAnswer;
+
+    }
+    getNonAnswers = () => { 
+        if(curNonAnswers[0].includes(SPLIT_MARKER)) {
+            for(let i =0; i<3; i++) {
+                this.curNonAnswers[i] = this.curNonAnswers[i].split(SPLIT_MARKER)[0];
+            }
+        }
+        return this.curNonAnswers;
+    }
 
     changeQuestion = () => {
         this.pickQuestion();
@@ -73,6 +88,7 @@ class simpleQuestionGen {
             }
             return secondaryInfo;
         }
+
         return null; 
     }
 
