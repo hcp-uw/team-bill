@@ -2,7 +2,7 @@ import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GENRE_REC } from
 
 const DEBUG = false; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
 const QUESTION_ID = 25; // The question ID you want to test
-const SPLIT_MARKER = "*&*" // String to identify where to split between an answer and the artist. 
+const SPLIT_MARKER = "backendisthebestend youallsuckL *&*" // String to identify where to split between an answer and the artist. 
                            // We could change what the characters are later.
 
 /**
@@ -55,8 +55,7 @@ class simpleQuestionGen {
         return this.curQuestion.question 
     }
     getAnswer = () => { 
-        this.curAnswer = this.curAnswer + "";
-        if(this.curAnswer.includes(SPLIT_MARKER)) {
+        if((this.curAnswer+"").includes(SPLIT_MARKER)) {
             return this.curAnswer.split(SPLIT_MARKER)[0];
         }
         return this.curAnswer;
@@ -64,14 +63,14 @@ class simpleQuestionGen {
     }
 
     getNonAnswers = () => { 
-        const ret = [];
-        this.curNonAnswers[0] = this.curNonAnswers[0] + "";
-        if(this.curNonAnswers[0].includes(SPLIT_MARKER)) {
+        const ret = [];        
+        if((this.curNonAnswers[0]+"").includes(SPLIT_MARKER)) {
             for(let i =0; i<3; i++) {
                 ret.push(this.curNonAnswers[i].split(SPLIT_MARKER)[0]);
             }
+            return ret;
         }
-        return this.ret;
+        return this.curNonAnswers;
     }
 
     changeQuestion = () => {
