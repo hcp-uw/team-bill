@@ -1,7 +1,7 @@
 import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GENRE_REC } from "./spotify.js";
 
 const DEBUG = false; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
-const QUESTION_ID = 25; // The question ID you want to test
+const QUESTION_ID = 12; // The question ID you want to test
 const SPLIT_MARKER = "backendisthebestend youallsuckL *&*" // String to identify where to split between an answer and the artist. 
                            // We could change what the characters are later.
 
@@ -493,6 +493,8 @@ class simpleQuestionGen {
                 break;
             }
             case 12: { // TESTING: Which album is the song - from?
+
+                break;
                 let trackNum = getRandomInt(this.curQuestion.min,this.curQuestion.max);
                 let trackName = trackList[trackNum].name;
                 this.curQuestion.question = this.curQuestion.question.replace("-", "\"" + trackName + "\" by " + trackList[trackNum].artists[0].name); 
@@ -515,10 +517,10 @@ class simpleQuestionGen {
                     if(artistAlbums[i].artists[0] !== album.artists[0]) {
                         artistAlbums.splice(i, 1);
                     }
-                    else if(artistAlbums[i].album_type === "SINGLE" || artistAlbums[i].album_type === "COMPILATION") { 
+                    /*if(artistAlbums[i].album_type === "SINGLE" || artistAlbums[i].album_type === "COMPILATION") { 
                         artistAlbums.splice(i, 1); 
-                    }
-                    else if(artistAlbums[i].name.toLowerCase.includes("live") || artistAlbums[i].name.toLowerCase.includes("remix")) { 
+                    }*/
+                    if(artistAlbums[i].name.toLowerCase().includes("live") || artistAlbums[i].name.toLowerCase().includes("remix")) { 
                         artistAlbums.splice(i, 1);
                     }
 
