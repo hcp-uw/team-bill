@@ -61,13 +61,15 @@ class simpleQuestionGen {
         return this.curAnswer;
 
     }
+    
     getNonAnswers = () => { 
+        const ret = [];
         if(this.curNonAnswers[0].includes(SPLIT_MARKER)) {
             for(let i =0; i<3; i++) {
-                this.curNonAnswers[i] = this.curNonAnswers[i].split(SPLIT_MARKER)[0];
+                ret.push(this.curNonAnswers[i].split(SPLIT_MARKER)[0]);
             }
         }
-        return this.curNonAnswers;
+        return this.ret;
     }
 
     changeQuestion = () => {
