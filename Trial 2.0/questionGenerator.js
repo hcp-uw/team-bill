@@ -1,7 +1,7 @@
 import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GENRE_REC } from "./spotify.js";
 
-const DEBUG = false; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
-const QUESTION_ID = 12; // The question ID you want to test
+const DEBUG = true; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
+const QUESTION_ID = 23; // The question ID you want to test
 const SPLIT_MARKER = "backendisthebestend youallsuckL *&*" // String to identify where to split between an answer and the artist. 
                            // We could change what the characters are later.
 
@@ -230,29 +230,70 @@ class simpleQuestionGen {
             case 24: { // TESTING: Which of these albums is the least popular?
                 if (questionID === 23 || questionID === 24) {
                     let urlList = [];
+                    let numbersCopy = [...numbers] // I am making a copy of numbers since I later will mutate it.
                     
+                    if (DEBUG) {
+                        console.log("-----------------------");
+                        console.log("Beginning with construction of urlList");
+                    }
+
                     // Using numbers to make it more randomized than top 4 albums.
-                    for (let i = 0; i < numbers.length; i++) {
-                        const num = numbers[i];
+                    for (let i = 0; urlList.length !== 4; i++) {
+                        if (DEBUG) console.log("Current i: " + i + " \nCurrent Numbers: " + numbersCopy + "\nCurrent UrlList Length: " + urlList.length);
+                        // Checks to see if there are any numbers left to check.
+                        if (i === this.curQuestion.max) {
+                            console.error("Not enough non-single albums... skipping question");
+                            return []; // We have to skip the question since there are not 4 ablums in your top 20 songs that are not singles
+                        }
+
+                        // Checks if we have reached the end of our list of numbers
+                        if (numbersCopy.length === i) {
+                            if (DEBUG) console.log("Adding New Random Number");
+                            // Adds a new random number
+                            let usedNumbers = [...numbersCopy];
+                            usedNumbers.sort(function(a, b){return a - b}); // Sorts usedNumbers
+                            let k = 0; // Current working index of usedNumbers
+                            let aviableNumbers = []
+                            // This for loop will generate a list of numbers that are not contained in usedNumber and goes
+                            // from 0 to this.curQuestion.max
+                            for (let j = 0; j < this.curQuestion.max - usedNumbers.length; j++) {
+                                if (j > usedNumbers[k]) { 
+                                    // Since usedNumbers is sorted if j is greated then the current usedNumber that means
+                                    // That we have already passed it and can move onto the next number.
+                                    k++;
+                                }
+                                if (j != usedNumbers[k]) {
+                                    // If j does equal usedNumbers[k] then that means we must exclude it.
+                                    aviableNumbers.push(j);
+                                }
+                            }
+                            let offNumber = Math.floor(Math.random() * aviableNumbers.length);
+                            numbersCopy.push(offNumber);
+                        }
+
+                        // Checks if the current number's album is a single, if so it skips it.
+                        const num = numbersCopy[i];
+                        if (trackList[num].album.album_type === "SINGLE") {
+                            if (DEBUG) console.log("Skipping number " + num + " because it was a single");
+                            continue;
+                        }
+
+                        // Adds url of album to urlList
                         const url = trackList[num].album.href;
                         if (!urlList.includes(url)) {
+                            if (DEBUG) console.log("Adding url of " + trackList[num].album.name);
                             urlList.push(url);
+                        } else {
+                            if (DEBUG) console.log("Skipping number " + num + " because its album was already in the urlList");
                         }
                     }
 
-                    // In case there are duplicate albums, we go down the rest of the track list.
-                    for (let i = 0; urlList.length < 4 && i < trackList.length; i++) {
-                        const url = trackList[i].album.href;
-                        if (!urlList.includes(url)) {
-                            urlList.push(url);
-                        }
+                    if (DEBUG) {
+                        console.log("Finish with construction of urlList");
+                        console.log("-----------------------");
                     }
 
-                    if (urlList.length !== 4) {
-                        return []; // If not enough albums are found.
-                    } else {
-                        result = this.apiCallGetItems(urlList);
-                    }
+                    result = this.apiCallGetItems(urlList);
                 } else {
                     result = this.getItems(numbers, false);
                 }
