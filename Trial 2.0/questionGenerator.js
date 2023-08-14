@@ -1,7 +1,7 @@
 import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GENRE_REC } from "./spotify.js";
 
-const DEBUG = true; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
-const QUESTION_ID = 23; // The question ID you want to test
+const DEBUG = false; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
+const QUESTION_ID = 8; // The question ID you want to test
 const SPLIT_MARKER = "backendisthebestend youallsuckL *&*" // String to identify where to split between an answer and the artist. 
                            // We could change what the characters are later.
 
@@ -361,19 +361,25 @@ class simpleQuestionGen {
                 // Get max from map artistMap
                 let maxNum = 0;
                 let maxItem = "";
+                let tied = false;
                 itemMap.forEach (function(value, key) {
+                    if (!tied) {
+                        tied = value === maxNum;
+                    }
                     if (maxNum < value) {
+                        tied = false;
                         maxItem = key;
                         maxNum = value;
                     }
                 });
-
-                if (maxNum === 1) {
-                    result.push("It's a tie!");
-                } else {
-                    result.push(finalResult(maxItem));
-                    result.push("It's a tie!");
+                
+                // If there is a tie we just skip the question else it makes it confusing to the user.
+                if (tied) {
+                    console.error("Tied on questionID: " + questionID+ ". Skipping question");
+                    return [];
                 }
+
+                result.push(finalResult(maxItem));
 
                 if (questionID === 4) {
                     const wrongAnswers = this.getRandomTopArtist(result[0].name, 4 - result.length);
