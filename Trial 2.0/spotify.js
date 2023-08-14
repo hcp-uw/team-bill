@@ -154,6 +154,8 @@ export function deviceId() {
     return document.getElementById("devices").value;
 }
 
+// Checks if the user is logged in
+// TODO: Check if the access token is valid
 export function isLoggedIn() {
     return access_token != null;
 }
