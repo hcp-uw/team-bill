@@ -153,3 +153,7 @@ export function callTopTracks(callbackFunction) {
 export function deviceId() {
     return document.getElementById("devices").value;
 }
+
+export function isLoggedIn() {
+    return access_token != null;
+}
