@@ -75,8 +75,8 @@ function checkAnswer(name) {
     setTimeout(function() {
         // Goes to the next question or final screen
         questionNumber++;
-        gen.changeQuestion();
         if (questionNumber <= 10) {
+            gen.changeQuestion();
             loadText();
         } else {
             // TODO: remove below and replace with transition to score screen

@@ -1,7 +1,9 @@
 import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GENRE_REC } from "./spotify.js";
 
 const DEBUG = false; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
-const QUESTION_ID = 25; // The question ID you want to test
+const QUESTION_ID = 23; // The question ID you want to test
+const SPLIT_MARKER = "backendisthebestend youallsuckL *&*" // String to identify where to split between an answer and the artist. 
+                           // We could change what the characters are later.
 
 /**
  * @typedef question
@@ -49,12 +51,48 @@ class simpleQuestionGen {
         this.changeQuestion();
     }
 
-    getQuestion = () => { return this.curQuestion.question };
-    getAnswer = () => { return this.curAnswer };
-    getNonAnswers = () => { return this.curNonAnswers };
+    getQuestion = () => { 
+        return this.curQuestion.question 
+    }
+    getAnswer = () => { 
+        if((this.curAnswer+"").includes(SPLIT_MARKER)) {
+            return this.curAnswer.split(SPLIT_MARKER)[0];
+        }
+        return this.curAnswer;
+
+    }
+
+    getNonAnswers = () => { 
+        const ret = [];        
+        if((this.curNonAnswers[0]+"").includes(SPLIT_MARKER)) {
+            for(let i =0; i<3; i++) {
+                ret.push(this.curNonAnswers[i].split(SPLIT_MARKER)[0]);
+            }
+            return ret;
+        }
+        return this.curNonAnswers;
+    }
 
     changeQuestion = () => {
         this.pickQuestion();
+    }
+
+    /**
+     * Returns the secondary information for each answer
+     * @returns an array that contains the secondary information of each answer, null if no secondary information
+     * is needed for this answer set
+     */
+    getSecondary = () => { 
+        if(this.curAnswer.includes(SPLIT_MARKER)) {
+            const secondaryInfo = [];
+            secondaryInfo.push(this.curAnswer.split(SPLIT_MARKER));
+            for(let i = 0; i<3; i++) {
+                secondaryInfo.push(this.curNonAnswers[i].split(SPLIT_MARKER));
+            }
+            return secondaryInfo;
+        }
+
+        return null; 
     }
 
     /**
@@ -178,7 +216,10 @@ class simpleQuestionGen {
             case 19: // TESTING: What is your #_ most listened to song in the last 4 weeks?
             case 21: // TESTING: Who is your top artist within the last 4 weeks?
             case 22: { // TESTING: Who is your #_ top artist in the last 4 weeks?
-                result = this.getItems(numbers, true);
+                let items = this.getItems(numbers, false);
+                for (let i = 0; i < items.length; i++) {
+                    result.push(finalResult(items[i]));
+                }
                 break;
             }
             case 2:  // DONE: Which of these songs is the most popular?
@@ -189,29 +230,70 @@ class simpleQuestionGen {
             case 24: { // TESTING: Which of these albums is the least popular?
                 if (questionID === 23 || questionID === 24) {
                     let urlList = [];
+                    let numbersCopy = [...numbers] // I am making a copy of numbers since I later will mutate it.
                     
+                    if (DEBUG) {
+                        console.log("-----------------------");
+                        console.log("Beginning with construction of urlList");
+                    }
+
                     // Using numbers to make it more randomized than top 4 albums.
-                    for (let i = 0; i < numbers.length; i++) {
-                        const num = numbers[i];
+                    for (let i = 0; urlList.length !== 4; i++) {
+                        if (DEBUG) console.log("Current i: " + i + " \nCurrent Numbers: " + numbersCopy + "\nCurrent UrlList Length: " + urlList.length);
+                        // Checks to see if there are any numbers left to check.
+                        if (i === this.curQuestion.max) {
+                            console.error("Not enough non-single albums... skipping question");
+                            return []; // We have to skip the question since there are not 4 ablums in your top 20 songs that are not singles
+                        }
+
+                        // Checks if we have reached the end of our list of numbers
+                        if (numbersCopy.length === i) {
+                            if (DEBUG) console.log("Adding New Random Number");
+                            // Adds a new random number
+                            let usedNumbers = [...numbersCopy];
+                            usedNumbers.sort(function(a, b){return a - b}); // Sorts usedNumbers
+                            let k = 0; // Current working index of usedNumbers
+                            let aviableNumbers = []
+                            // This for loop will generate a list of numbers that are not contained in usedNumber and goes
+                            // from 0 to this.curQuestion.max
+                            for (let j = 0; j < this.curQuestion.max - usedNumbers.length; j++) {
+                                if (j > usedNumbers[k]) { 
+                                    // Since usedNumbers is sorted if j is greated then the current usedNumber that means
+                                    // That we have already passed it and can move onto the next number.
+                                    k++;
+                                }
+                                if (j != usedNumbers[k]) {
+                                    // If j does equal usedNumbers[k] then that means we must exclude it.
+                                    aviableNumbers.push(j);
+                                }
+                            }
+                            let offNumber = Math.floor(Math.random() * aviableNumbers.length);
+                            numbersCopy.push(offNumber);
+                        }
+
+                        // Checks if the current number's album is a single, if so it skips it.
+                        const num = numbersCopy[i];
+                        if (trackList[num].album.album_type === "SINGLE") {
+                            if (DEBUG) console.log("Skipping number " + num + " because it was a single");
+                            continue;
+                        }
+
+                        // Adds url of album to urlList
                         const url = trackList[num].album.href;
                         if (!urlList.includes(url)) {
+                            if (DEBUG) console.log("Adding url of " + trackList[num].album.name);
                             urlList.push(url);
+                        } else {
+                            if (DEBUG) console.log("Skipping number " + num + " because its album was already in the urlList");
                         }
                     }
 
-                    // In case there are duplicate albums, we go down the rest of the track list.
-                    for (let i = 0; urlList.length < 4 && i < trackList.length; i++) {
-                        const url = trackList[i].album.href;
-                        if (!urlList.includes(url)) {
-                            urlList.push(url);
-                        }
+                    if (DEBUG) {
+                        console.log("Finish with construction of urlList");
+                        console.log("-----------------------");
                     }
 
-                    if (urlList.length !== 4) {
-                        return []; // If not enough albums are found.
-                    } else {
-                        result = this.apiCallGetItems(urlList);
-                    }
+                    result = this.apiCallGetItems(urlList);
                 } else {
                     result = this.getItems(numbers, false);
                 }
@@ -237,7 +319,7 @@ class simpleQuestionGen {
                     }
                 }
                 for (let i = 0; i < 4; i++) {
-                    result[i] = result[i].name;
+                    result[i] = finalResult(result[i]);
                 }
                 break;
             }
@@ -258,20 +340,21 @@ class simpleQuestionGen {
                     if (questionID === 4) {
                         for (let j = 0; j < track.artists.length; j++) {
                             const artist = track.artists[j];
-                            const name = artist.name;
-                            if (DEBUG) console.log(name);
-                            if (!itemMap.has(name)) {
-                                itemMap.set(name, 0); 
+                            // const name = artist.name;
+                            if (DEBUG) console.log(artist.name);
+                            if (!itemMap.has(artist)) {
+                                itemMap.set(artist, 0); 
                             }
-                            itemMap.set(name, itemMap.get(name) + 1);
+                            itemMap.set(artist, itemMap.get(artist) + 1);
                         }
                     } else { // questionID = 8
-                        const name = track.album.name;
-                        if (DEBUG) console.log(name);
-                        if (!itemMap.has(name)) {
-                            itemMap.set(name, 0); 
+                        // const name = track.album.name;
+                        const album = track.album;
+                        if (DEBUG) console.log(album);
+                        if (!itemMap.has(album)) {
+                            itemMap.set(album, 0); 
                         }
-                        itemMap.set(name, itemMap.get(name) + 1); 
+                        itemMap.set(album, itemMap.get(album) + 1); 
                     }
                 }
 
@@ -288,13 +371,15 @@ class simpleQuestionGen {
                 if (maxNum === 1) {
                     result.push("It's a tie!");
                 } else {
-                    result.push(maxItem);
+                    result.push(finalResult(maxItem));
                     result.push("It's a tie!");
                 }
 
                 if (questionID === 4) {
-                    const wrongAnswers = this.getRandomTopArtist(result[0], 4 - result.length);
-                    result = result.concat(wrongAnswers);
+                    const wrongAnswers = this.getRandomTopArtist(result[0].name, 4 - result.length);
+                    for (let i = 0; i < wrongAnswers.length; i++) {
+                        result.push(finalResult(wrongAnswers[i]));
+                    }
                 } else { // questionID = 8
                     // Since we can't just pick from a top album list we have to find some in their top items.
 
@@ -302,9 +387,9 @@ class simpleQuestionGen {
                     // 4 unique items. It would be good to use a set in this case but since we have to return
                     // an ordered array we have to use an array.
                     for (let i = 0; i < trackList.length && result.length < 4; i++) {
-                        let album = trackList[i].album.name;
-                        if (!result.includes(album)) {
-                            result.push(album);
+                        let album = trackList[i].album;
+                        if (!result.includes(finalResult(album))) {
+                            result.push(finalResult(album));
                         }
                     }
 
@@ -448,7 +533,9 @@ class simpleQuestionGen {
                 }
                 break;
             }
-            case 12: { // TESTING: Which album is - from by ?
+            case 12: { // TESTING: Which album is the song - from?
+
+                break;
                 let trackNum = getRandomInt(this.curQuestion.min,this.curQuestion.max);
                 let trackName = trackList[trackNum].name;
                 this.curQuestion.question = this.curQuestion.question.replace("-", "\"" + trackName + "\" by " + trackList[trackNum].artists[0].name); 
@@ -471,10 +558,10 @@ class simpleQuestionGen {
                     if(artistAlbums[i].artists[0] !== album.artists[0]) {
                         artistAlbums.splice(i, 1);
                     }
-                    else if(artistAlbums[i].album_type === "SINGLE" || artistAlbums[i].album_type === "COMPILATION") { 
+                    /*if(artistAlbums[i].album_type === "SINGLE" || artistAlbums[i].album_type === "COMPILATION") { 
                         artistAlbums.splice(i, 1); 
-                    }
-                    else if(artistAlbums[i].name.toLowerCase.includes("live") || artistAlbums[i].name.toLowerCase.includes("remix")) { 
+                    }*/
+                    if(artistAlbums[i].name.toLowerCase().includes("live") || artistAlbums[i].name.toLowerCase().includes("remix")) { 
                         artistAlbums.splice(i, 1);
                     }
 
@@ -512,12 +599,12 @@ class simpleQuestionGen {
                         corrDur = currDur;
                     }
                 }
-                result[0] = trackList[corrInd].name;
+                result[0] = finalResult(trackList[corrInd]);
                 let currNonIndexes = [corrInd];
                 for (let i = 0; i < 3; i++) {
                     const nonIndex = getRandomAround(currNonIndexes, 1, 10);
                     currNonIndexes.push(nonIndex);
-                    result.push(trackList[nonIndex].name);
+                    result.push(finalResult(trackList[nonIndex]));
                 }
                 break;
             }
@@ -549,7 +636,7 @@ class simpleQuestionGen {
                 }
                 // Converts the list it items in a list of song names.
                 for (let i = 0; i < 4; i++) {
-                    result[i] = result[i].name;
+                    result[i] = finalResult(result[i]);
                 }
                 break;
             }
@@ -630,62 +717,53 @@ class simpleQuestionGen {
                 if (DEBUG) console.log("Tracks", tracks);
                 if (DEBUG) console.log("Audio features", audioFeatures);
 
-                let feature = "";
-                if (questionID === 25 || questionID === 28) feature = "loudness";
+                let feature = ""; // in switch, set this to the Spotify API property for each question case
+                let findMax = false; // false if we are finding a min for the curQuestion, true if max
+                switch(questionID) {
+                    case 25:
+                        findMax = true;
+                    case 28:
+                        feature = "loudness";
+                        break;
 
+                    case 26:
+                        findMax = true;
+                    case 27:
+                        feature = "tempo";
+                        break;
+
+                    case 29:
+                        feature = "speechiness";
+                        findMax = true;
+                        break;
+
+                    case 30:
+                        findMax = true;
+                    case 31:
+                        feature = "valence";
+                        break;
+                    default:
+                        throw new Error("add code for question ID " + questionID);
+                }
+                
                 let ind = 0; // set initial max/min to be the first index (0)
-                if (questionID === 25 || questionID === 28) {
-                    let ans = audioFeatures[0][feature];
-                    if (DEBUG) console.log(feature + " of " + tracks[0].name + ": " + ans);
-                    for (let i = 1; i < 4; i++) {
-                        let cur = audioFeatures[i][feature];
-                        if (DEBUG) console.log(feature + " of " + tracks[i].name + ": " + cur);
-                        if (questionID === 25 && cur > ans || questionID === 28 && cur < ans) {
-                            ind = i;
-                            ans = cur;
-                        }
-                    }
-                } else if (questionID === 26 || questionID === 27) {
-                    let ans = audioFeatures[0].tempo;
-                    if (DEBUG) console.log("BPM of " + tracks[0].name + ": " + ans);
-                    for (let i = 1; i < 4; i++) {
-                        let cur = audioFeatures[i].tempo;
-                        if (DEBUG) console.log("BPM of " + tracks[i].name + ": " + cur);
-                        if (questionID === 26 && cur > ans || questionID === 27 && cur < ans) {
-                            ind = i;
-                            ans = cur;
-                        }
-                    }
-                } else if (questionID === 29) {
-                    let ans = audioFeatures[0].speechiness;
-                    if (DEBUG) console.log("Sspeechiness of " + tracks[0].name + ": " + ans);
-                    for (let i = 1; i < 4; i++) {
-                        let cur = audioFeatures[i].speechiness;
-                        if (DEBUG) console.log("Speechiness of " + tracks[i].name + ": " + cur);
-                        if (cur > ans) {
-                            ind = i;
-                            ans = cur;
-                        }
-                    }
-                } else { // if (questionID === 30 || questionID === 31)
-                    let ans = audioFeatures[0].valence;
-                    if (DEBUG) console.log("Valence of " + tracks[0].name + ": " + ans);
-                    for (let i = 1; i < 4; i++) {
-                        let cur = audioFeatures[i].valence;
-                        if (DEBUG) console.log("Valence of " + tracks[i].name + ": " + cur);
-                        if (questionID === 30 && cur > ans || questionID === 31 && cur < ans) {
-                            ind = i;
-                            ans = cur;
-                        }
+                let ans = audioFeatures[0][feature];
+                if (DEBUG) console.log(feature + " of " + tracks[0].name + ": " + ans);
+                for (let i = 1; i < 4; i++) {
+                    let cur = audioFeatures[i][feature];
+                    if (DEBUG) console.log(feature + " of " + tracks[i].name + ": " + cur);
+                    if (findMax && cur > ans || !findMax && cur < ans) {
+                        ind = i;
+                        ans = cur;
                     }
                 }
 
                 let corTrack = tracks.splice(ind, 1)[0];
-                result[0] = corTrack.name;
+                result[0] = finalResult(corTrack);
                 tracks.forEach(track => {
-                    result.push(track.name);
+                    result.push(finalResult(track));
                 })
-                console.log(result);
+                if (DEBUG) console.log(result);
 
                 break;
             }
@@ -744,12 +822,12 @@ class simpleQuestionGen {
     }
 
     /**
-     * Takes in a correct artist and returns 3 other artist from the top artist that are not the
+     * Takes in a correct artist NAME and returns 3 other artist OBJECTS from the top artist that are not the
      * correct artist.
-     * @param {string} correctArtist The correct artist that will not be included in the random 
+     * @param {string} correctArtist The correct artist's name that will not be included in the random 
      *                               artist.
      * @param {number} amount The number of artists to return.
-     * @returns A list with length amount of artist names from the top artists not including 
+     * @returns A list with length amount of artist OBJECTS from the top artists not including 
      *          correctArtist.
      */
     getRandomTopArtist(correctArtist, amount) {
@@ -758,7 +836,7 @@ class simpleQuestionGen {
         while (result.length < amount + 1) {
             const artist = this.apiResponseMap.get("artists-long-50").items[i]
             if (result[0] !== artist.name) {
-                result.push(artist.name);
+                result.push(artist);
             }
             i = i + 1;
         }
@@ -892,6 +970,21 @@ function compareDates(date1, date2) {
  */
 function getScaledNum(x, a, b) {
     return Math.floor(x/a + b);
+}
+
+/**
+ * If item has artist names attached to it, returns a string x such that the name of item
+ * and artist are joined together with the split marker used to mark where to split it.
+ * Otherwise, returns item name.
+ * @param {trackItem or albumItem} item
+ * @returns string x such that, if artist exists, x = item.name + SPLIT_MARKER + item.artist;
+ * o        otherwise, x = item.name
+ */
+function finalResult(item) {
+    if (item.artists === undefined) {
+        return item.name;
+    }
+    return item.name + SPLIT_MARKER + item.artists[0].name
 }
 
 /**
