@@ -1,116 +1,41 @@
 .topnav {
     margin-bottom: 0px;
 }
-
-
-h1 {
-    color: #FFFFFF;
-    font-family: 'Nunito';
-    font-size: 3.94rem;
-    /* font-size: 8vh; */
-    text-align: center;
+.question-container {
+    display: flex;
+}
+#question {
     margin-top: 0px;
-    max-width: 100%;
+    color: white;
+    font-size: 3.94rem;
+    text-align: center;
+}
+.button-container {
+    display: flex;
+    flex-flow: row wrap;
+    padding-left: 15vw;
+    padding-right: 15vw;
 }
 
-#answer-top-left{
+.button {
+    width: 33.3vw;
+    height: 15vh;
     background-color: #B9E2E0;
     font-family: 'Nunito';
-    border: none;
-    color: #1D8C9F;
     font-weight: bold;
-    width: 32.5%;
-    height: 18%;
-    border-radius: 2.5rem;
     font-size: 2.5rem;
-    text-align: center;
-    text-decoration: none;
-    position: absolute;
-    top: 35%;
-    left: 14%;
-}
-
-#answer-top-left:hover {
-    background-color: #1D8C9F;
-    /* color: #B9E2E0; */
-    color: white;
-    cursor: pointer;
-}
-
-#answer-top-right{
-    background-color: #B9E2E0;
-    font-family: 'Nunito';
-    border: none;
     color: #1D8C9F;
-    font-weight: bold;
-    width: 32.5%;
-    height: 18%;
-    text-align: center;
-    text-decoration: none;
-    font-size: 2.5rem;
-    position: absolute;
+    z-index: 100;
     border-radius: 2.5rem;
-    top: 35%;
-    left: 54%;
+    flex: 0 0 auto;
 }
 
-#answer-top-right:hover {
-    background-color: #1D8C9F;
-    /* color: #B9E2E0; */
-    color: white;
-    cursor: pointer;
-}
-
-#answer-bottom-left{
-    background-color: #B9E2E0;
-    font-family: 'Nunito';
-    border: none;
-    color: #1D8C9F;
-    font-weight: bold;
-    width: 32.5%;
-    height: 18%;
-    text-align: center;
-    text-decoration: none;
-    font-size: 2.5rem;
-    position: absolute;
-    border-radius: 2.5rem;
-    top: 60%;
-    left: 14%;
-}
-
-#answer-bottom-left:hover {
-    background-color: #1D8C9F;
-    /* color: #B9E2E0; */
-    color: white;
-    cursor: pointer;
-}
-
-#answer-bottom-right{
-    background-color: #B9E2E0;
-    font-family: 'Nunito';
-    border: none;
-    color: #1D8C9F;
-    font-weight: bold;
-    width: 32.5%;
-    height: 18%;
-    text-align: center;
-    text-decoration: none;
-    font-size: 2.5rem;
-    position: absolute;
-    border-radius: 2.5rem;
-    top: 60%;
-    left: 54%;
+.button:hover {
+    background-color: #1D8C9F!important;
+    color: #B9E2E0;
 }
 
 
-#answer-bottom-right:hover {
-    background-color: #1D8C9F;
-    /* color: #B9E2E0; */
-    color: white;
-    cursor: pointer;
-}
-
-/* FIX CENTERING ISSUES */
 #question-circle { /* Circle of the question number */
     font-family: 'Nunito';
     font-weight: bolder;
@@ -123,7 +48,6 @@ h1 {
     margin-left: 8px;
     margin-right: 8px;
 }
-
 #question-number { /* Number of the question number*/
     display: flex;
     align-items: center;
@@ -131,19 +55,12 @@ h1 {
     height: 100%;
     width: 100%;
 }
-
-
-
 .left-wave { /* Picture of the left wave */
     height: 6rem;
 }
-
 .right-wave { /* Picture of the right wave */
-
     height: 6rem;
 }
-
-
 .question-wave { /* Div containing the question circle, number, left and right waves*/
     display: flex;
     align-items: center;
@@ -152,5 +69,4 @@ h1 {
     float: center;
     top: 85%;
     right: 35.5%;
-
 }

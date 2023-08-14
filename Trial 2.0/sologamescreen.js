@@ -37,6 +37,7 @@ function loadAnswers() {
         // Reset the button colors and borders from previous question
         btn.style.backgroundColor = "#B9E2E0";
         btn.style.border = "0px";
+        btn.disabled = false;
         if (arrAnswers[rand] === gen.getAnswer()) {
             // Since the corresponding index of correctAnswers is the index of btnIDs and we just poped
             // the current btnID that means that btnIDS.length is the index of btn.
@@ -60,6 +61,7 @@ function checkAnswer(name) {
     }
     for (let i = 0; i < 4; i++) {
         console.log(btnIDs[i]);
+        document.getElementById(btnIDs[i]).disabled = true;
         if (document.getElementById(btnIDs[i]).innerText == gen.getAnswer()) {
             document.getElementById(btnIDs[i]).style.backgroundColor="#a0ebb4";
             //change color right
@@ -80,6 +82,6 @@ function checkAnswer(name) {
             // TODO: remove below and replace with transition to score screen
             alert("score: " + score);
         }
-    }, 1000);
+    }, 1000); //1 second delay
 
  }
