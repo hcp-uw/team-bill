@@ -31,12 +31,14 @@ class simpleQuestionGen {
     curAnswer;
     curNonAnswers;
     apiResponseMap; // maps type of API call to (unfiltered) response of that call
+    storedQuestions; // list of past questions asked
 
     /**
      * Constructs new simpleQuestionGen
      * @param {Array<question>} questions 
      */
     constructor(questions) {
+        this.storedQuestions = [];
         this.questions = questions;
         this.apiResponseMap = new Map();
         this.getApiData();
@@ -784,6 +786,43 @@ class simpleQuestionGen {
     }
 
     /**
+     * Sets this.curQuestion to a question from this.questions and removes that question from the list.
+     * @modifies questions, question, curAnswer, curNonAnswer
+     * @effects questions will have question removed from it.
+     *          question will be a randomly chosen question from questions.
+     *          curAnswer will be equal to the answer to that question.
+     *          curNonAnswer will be a list of 3 non answers to that question.
+     */
+    pickQuestion() {
+        if (this.questions === undefined) {
+            throw new Error("QuestionGen: this.questions must be defined before calling pickQuestion");
+        } else if (this.questions.length === 0) {
+            throw new Error("QuestionGen: There are no questions left in this.questions");
+        }
+
+        if (DEBUG) {
+            this.curQuestion = this.questions.splice(QUESTION_ID - 1, 1)[0];
+        } else {
+            this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
+        }
+        if (DEBUG) {
+            console.log("Current Question:", this.curQuestion);
+        } 
+        this.setAnswers();
+    }
+
+    /**
+     * Adds a question to the list of stored questions for the answer gen.
+     * @param {String} question 
+     * @param {String} correctAnswer 
+     * @param {String} moreInfo 
+     * @effects storedQuestions to include {question: question, correctAnswer:correctAnswer, moreInfo:moreInfo}
+     */
+    storeQuestion(question, correctAnswer, moreInfo) {
+        this.storeQuestion.push({question: question, correctAnswer:correctAnswer, moreInfo:moreInfo});
+    }
+
+    /**
      * Using the current question and apiResponseMap, it finds the items or names at the given indexes
      * @param {Array<number>} indexes A list of indexes (numbers) that must be valid indexes of the
      * item list of the current apiCall.
@@ -848,32 +887,6 @@ class simpleQuestionGen {
         }
         result.splice(0, 1);
         return result;
-    }
-
-    /**
-     * Sets this.curQuestion to a question from this.questions and removes that question from the list.
-     * @modifies questions, question, curAnswer, curNonAnswer
-     * @effects questions will have question removed from it.
-     *          question will be a randomly chosen question from questions.
-     *          curAnswer will be equal to the answer to that question.
-     *          curNonAnswer will be a list of 3 non answers to that question.
-     */
-    pickQuestion() {
-        if (this.questions === undefined) {
-            throw new Error("QuestionGen: this.questions must be defined before calling pickQuestion");
-        } else if (this.questions.length === 0) {
-            throw new Error("QuestionGen: There are no questions left in this.questions");
-        }
-
-        if (DEBUG) {
-            this.curQuestion = this.questions.splice(QUESTION_ID - 1, 1)[0];
-        } else {
-            this.curQuestion = this.questions.splice(Math.floor(Math.random() * this.questions.length), 1)[0];
-        }
-        if (DEBUG) {
-            console.log("Current Question:", this.curQuestion);
-        } 
-        this.setAnswers();
     }
 
     /**
