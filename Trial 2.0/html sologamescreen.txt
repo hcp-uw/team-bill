@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link href='https://fonts.googleapis.com/css?family=Nunito' rel='stylesheet'>
+        <link rel="stylesheet" href="outline.css">
+        <link rel="stylesheet" href="sologamescreen.css">
+        <link rel="icon" href="images\BillLogoUpdated.png">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Solo Game</title>
+    </head>
+    <body> 
+      <!-- <div id="nav-bar"></div> -->
+      <!-- <script src="navbar.js" onload="loadNav()"></script> -->
+        <div class="topnav">
+          <!-- TODO: there's probably a better (more semantic) element to use instead of these div tags -->
+            <a id="nav-bar-logo" href="index.html"> <img src="images\BillLogoUpdated.png" /> </a>
+            <a href='index.html'>Home</a>
+            <a href='VsBillTitlePage.html'>Vs. Bill</a>
+            <a class="active" href='sologamescreen.html'>Solo</a>
+    
+            <a href="howtoplay.html">How to Play</a>
+          <input id="authorizeBtn" type="button" value=" Login "><br />
+        </div> 
+
+        <section id="game-section">
+
+          <div class="question-container">
+            <h1 id="question">Loading Question...</h1>
+          </div>
+
+          <div class="button-container">
+            <button class="button" id="button-top-left">
+              <p class="answer" id="answer-top-left">Loading Answer...</p>
+              <p class="second" id="answer-top-left-second">secondary info</p>
+            </button>
+            <button class="button" id="button-top-right">
+              <p class="answer" id="answer-top-right">Loading Answer...</p>
+              <p class="second" id="answer-top-right-second">secondary info</p>
+            </button>
+            <button class="button" id="button-bottom-left">
+              <p class="answer" id="answer-bottom-left">Loading Answer...</p>
+              <p class="second" id="answer-bottom-left-second">secondary info</p>
+            </button>
+            <button class="button" id="button-bottom-right">
+              <p class="answer" id="answer-bottom-right">Loading Answer...</p>
+              <p class="second" id="answer-bottom-right-second">secondary info</p>
+            </button>
+          </div>
+
+        </section>
+
+        <div class = "question-wave">
+          <img class = "wave" src="images\hollowOrangeSoundWaveRight.png" alt=""> <!-- Empty alt attribute for decorative images -->
+          <div id ="question-circle"><span id="question-number">1</span></div>
+          <img class = "wave" src="images\hollowOrangeSoundWaveLeft.png" alt="">
+        </div>
+
+        <script src="sologamescreen.js" type="module"></script>
+    </body>
+    
+
+</html>
