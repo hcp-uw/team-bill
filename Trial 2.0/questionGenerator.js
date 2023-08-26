@@ -87,9 +87,9 @@ class simpleQuestionGen {
     getSecondary = () => { 
         if(this.curAnswer.includes(SPLIT_MARKER)) {
             const secondaryInfo = [];
-            secondaryInfo.push(this.curAnswer.split(SPLIT_MARKER));
+            secondaryInfo.push(this.curAnswer.split(SPLIT_MARKER)[1]);
             for(let i = 0; i<3; i++) {
-                secondaryInfo.push(this.curNonAnswers[i].split(SPLIT_MARKER));
+                secondaryInfo.push(this.curNonAnswers[i].split(SPLIT_MARKER)[1]);
             }
             return secondaryInfo;
         }
