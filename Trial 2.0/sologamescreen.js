@@ -6,6 +6,8 @@ let questionNumber = 1;
 let score = 0;
 // Creates a questionGenerator object
 let gen;
+// An array of all the chosen answers so far 
+let clicked = [];
 makeQuestionGen().then(function(value) {
     gen = value;
     onLoad();
@@ -13,7 +15,7 @@ makeQuestionGen().then(function(value) {
 
 // 
 function onLoad() {
-    loadText();
+    loadText(); 
     document.getElementById('answer-top-left').addEventListener('click', ( () => checkAnswer('answer-top-left')));
     document.getElementById('answer-top-right').addEventListener('click', ( () => checkAnswer('answer-top-right')));
     document.getElementById('answer-bottom-left').addEventListener('click', ( () => checkAnswer('answer-bottom-left')));
@@ -70,6 +72,9 @@ function checkAnswer(name) {
             // change color wrong
         }
     }
+
+    //Keep track of the selected answers
+    clicked.push(document.getElementById(name).innerText);
 
     // Sets a delay so that the player can see the correct answer and their picked answer
     setTimeout(function() {
