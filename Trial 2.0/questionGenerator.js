@@ -198,6 +198,9 @@ class simpleQuestionGen {
         /** "items" array from top artists API call */
         let artistList;
 
+        // Secondary Info of question. Should be a full sentence. Leave as null to not display.
+        let secondaryInfo;
+
         // TESTING - Make sure it switches to correct api call.
         if (this.curQuestion.apiCall.endsWith('long-50')) {
             trackList = this.apiResponseMap.get("tracks-long-50").items;
@@ -780,8 +783,9 @@ class simpleQuestionGen {
                 break;
             }
         }
-        // console.log("Result:");
-        // console.log(result);
+
+        this.storeQuestion(this.curQuestion, result[0], secondaryInfo);
+
         return result;
     }
 
