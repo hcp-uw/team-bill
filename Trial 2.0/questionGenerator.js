@@ -865,7 +865,7 @@ class simpleQuestionGen {
      * @effects storedQuestions to include {question: question, correctAnswer:correctAnswer, moreInfo:moreInfo}
      */
     storeQuestion(question, correctAnswer, moreInfo) {
-        this.storeQuestion.push({question: question, correctAnswer:correctAnswer, moreInfo:moreInfo});
+        this.storedQuestions.push({question: question, correctAnswer:correctAnswer, moreInfo:moreInfo});
     }
 
     /**
