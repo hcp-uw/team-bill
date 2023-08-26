@@ -866,7 +866,7 @@ class simpleQuestionGen {
      */
     storeQuestion(question, correctAnswer, moreInfo) {
         this.storedQuestions.push({question: question, correctAnswer:correctAnswer, moreInfo:moreInfo});
-        localStorage.setItem("Storage Questions", JSON.stringify(this.storedQuestions));
+        localStorage.setItem("Stored Questions", JSON.stringify(this.storedQuestions));
         
     }
 
