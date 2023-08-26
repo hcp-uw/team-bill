@@ -328,8 +328,8 @@ class simpleQuestionGen {
                 }
                 break;
             }
-            case 4: //DONE: Which artist appears most in your top _ songs?
-            case 8: { // DONE: Which album appears most in your top _ songs? 
+            case 4: //DONE: Which artist appears most in your top _ songs?                              - Needs Secondary Info
+            case 8: { // DONE: Which album appears most in your top _ songs?                            - Needs Secondary Info 
                 let itemMap = new Map();
 
                 // Checking preconditions: 
@@ -385,6 +385,11 @@ class simpleQuestionGen {
                 }
 
                 result.push(finalResult(maxItem));
+                if (questionID === 4) {
+                    secondaryInfo = "The song appeared " + maxNum + " times in your top " + numbers[0] + " songs,";
+                } else {
+                    secondaryInfo = "The album appeared " + maxNum + " times in your top " + numbers[0] + " albums.";
+                }
 
                 if (questionID === 4) {
                     const wrongAnswers = this.getRandomTopArtist(result[0].name, 4 - result.length);
@@ -412,7 +417,7 @@ class simpleQuestionGen {
                 
                 break;
             }
-            case 5: { // DONE: How many different artists are in your top #_ songs?
+            case 5: { // DONE: How many different artists are in your top #_ songs?                     - Needs Secondary Info
                  
                 let diffArtists = new Array();
                 for(let i = 0; i <= numbers[0]; i++) {
@@ -424,6 +429,15 @@ class simpleQuestionGen {
                 }
                 const ans = diffArtists.length;
                 result.push(ans);
+                // Finding secondary info
+                if (ans <= 5) {
+                    secondaryInfo = "Artists in your top " +number[0]+ " songs: "
+                    for (let i = 0; i < ans; i++) {
+                        let newLine = diffArtists[i] + ", "
+                        secondaryInfo = secondaryInfo + newLine
+                    }
+                    secondaryInfo = secondaryInfo + ".";
+                }
 
                 //function that gives out random number function
                 while(result.length < 4) {
@@ -470,11 +484,11 @@ class simpleQuestionGen {
 
                 break;
             }
-            case 7: { //DONE: "What is your most common genre in your top ten artists?"
+            case 7: { //DONE: "What is your most common genre in your top ten artists?"                 - Needs Secondary Info
                 //Correct answer
                 let comGenres = new Map();
                 let maxGenre = artistList[0].genres[0];
-                for (let i = 0; i < 6; i++) {
+                for (let i = 0; i < 10; i++) {
                     let genre = artistList[i].genres[0];
                     if (!comGenres.has(genre)) { 
                         comGenres.set(genre, 0);
@@ -486,6 +500,15 @@ class simpleQuestionGen {
                     
                 }
                 result.push(maxGenre);
+
+                // Finding secondary Info
+                secondaryInfo = "Artists that fall into the " + maxGenre + "genre: "
+                for (let i = 0; i < 10; i++) {
+                    if (artistList[i].genres[0] === maxGenre) {
+                        secondaryInfo = secondaryInfo + artistList[i].name + ", ";
+                    }
+                }
+                secondaryInfo = secondaryInfo + ".";
 
                 //Incorrect Answers
                 // Finding in top artist
@@ -515,7 +538,7 @@ class simpleQuestionGen {
 
                 break;
             }
-            case 9: { // DONE: How many of your top _ songs are explicit?
+            case 9: { // DONE: How many of your top _ songs are explicit?                               - Needs Secondary Info
                 // Check: at least top 3 songs
                 if (numbers[0] <= 2) {
                     throw new Error(
@@ -531,12 +554,25 @@ class simpleQuestionGen {
                 }
         
                 let numExplicit = 0;
+                let explicitSongList = [];
                 for (let i = 0; i < numbers[0]; i++) {
                     const track = trackList[i];
-                    if (track.explicit) numExplicit++;
+                    if (track.explicit) { 
+                        numExplicit++;
+                        explicitSongList.push(track.name + " by " + track.artists[0].name); 
+                    }
                 }
         
                 result.push(numExplicit);
+                // Finding secondary info
+                if (numExplicit <= 5) {
+                    secondaryInfo = "The explicit songs in your top " + number[0] + " are: "
+                    for (let i = 0; i < numExplicit; i++) {
+                        let newLine = explicitSongList[i] + ", "
+                        secondaryInfo = secondaryInfo + newLine;
+                    }
+                    secondaryInfo = secondaryInfo + ".";
+                }
         
                 for (let i = 0; i < 3; i++) {
                     const wrongAnswer = getRandomAround(result, 0, numbers[0]);
@@ -596,8 +632,8 @@ class simpleQuestionGen {
 
                 break;
             }
-            case 13: // DONE: What is the shortest song in your top ten?
-            case 14: { // DONE: What is the longest song in your top ten?
+            case 13: // DONE: What is the shortest song in your top ten?                                - Needs Secondary Info
+            case 14: { // DONE: What is the longest song in your top ten?                               - Needs Secondary Info
                 
                 // initially set correct answer to first song
                 let corrInd = 0;
@@ -610,7 +646,10 @@ class simpleQuestionGen {
                         corrDur = currDur;
                     }
                 }
+
                 result[0] = finalResult(trackList[corrInd]);
+                secondaryInfo = "The duration of the song is " + Math.round(corrDur/1000) + " seconds."
+
                 let currNonIndexes = [corrInd];
                 for (let i = 0; i < 3; i++) {
                     const nonIndex = getRandomAround(currNonIndexes, 1, 10);
@@ -619,8 +658,8 @@ class simpleQuestionGen {
                 }
                 break;
             }
-            case 15: // DONE: Which of these songs was released the longest time ago?
-            case 16: { // DONE: Which of these songs was released most recently?
+            case 15: // DONE: Which of these songs was released the longest time ago?                   - Needs Secondary Info
+            case 16: { // DONE: Which of these songs was released most recently?                        - Needs Secondary Info
                 // Gets list of items we are working with.
                 result = this.getItems(numbers, false); 
                 // This is a compare function that takes in songs and compares them based on date 
@@ -645,6 +684,8 @@ class simpleQuestionGen {
                         result[i] = temp;
                     }
                 }
+
+                secondaryInfo = "The song was released on " + result[0].release_date + ".";
                 // Converts the list it items in a list of song names.
                 for (let i = 0; i < 4; i++) {
                     result[i] = finalResult(result[i]);
@@ -711,8 +752,8 @@ class simpleQuestionGen {
                 break;
             }
             case 25: // TESTING Helena: Which of these songs is the loudest according to Spotify?
-            case 26: // TESTING: Which of these songs has the highest BPM?
-            case 27: // TESTING: Which of these songs has the lowest BPM?
+            case 26: // TESTING: Which of these songs has the highest BPM?                              - Needs Secondary Info
+            case 27: // TESTING: Which of these songs has the lowest BPM?                               - Needs Secondary Info
             case 28: // TESTING: Which of these songs is the quietest according to Spotify?
             case 29: // TESTING: Which of these contains the most spoken words according to Spotify?
             case 30: // TESTING: Which of these songs is the most upbeat according to Spotify?
@@ -771,6 +812,7 @@ class simpleQuestionGen {
 
                 let corTrack = tracks.splice(ind, 1)[0];
                 result[0] = finalResult(corTrack);
+                secondaryInfo = "The bpm of the top song is " + ans + ".";
                 tracks.forEach(track => {
                     result.push(finalResult(track));
                 })
