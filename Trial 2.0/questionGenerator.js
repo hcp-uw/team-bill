@@ -431,7 +431,7 @@ class simpleQuestionGen {
                 result.push(ans);
                 // Finding secondary info
                 if (ans <= 5) {
-                    secondaryInfo = "Artists in your top " +number[0]+ " songs: "
+                    secondaryInfo = "Artists in your top " + numbers[0]+ " songs: "
                     for (let i = 0; i < ans; i++) {
                         let newLine = diffArtists[i] + ", "
                         secondaryInfo = secondaryInfo + newLine
