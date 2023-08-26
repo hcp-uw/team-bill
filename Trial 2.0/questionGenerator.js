@@ -1,6 +1,6 @@
 import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GENRE_REC } from "./spotify.js";
 
-const DEBUG = false; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
+const DEBUG = true; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
 const QUESTION_ID = 23; // The question ID you want to test
 const SPLIT_MARKER = "backendisthebestend youallsuckL *&*" // String to identify where to split between an answer and the artist. 
                            // We could change what the characters are later.
@@ -85,7 +85,7 @@ class simpleQuestionGen {
      * is needed for this answer set
      */
     getSecondary = () => { 
-        if((this.curAnswer+"").includes(SPLIT_MARKER)) {
+        if(this.curAnswer.includes(SPLIT_MARKER)) {
             const secondaryInfo = [];
             secondaryInfo.push(this.curAnswer.split(SPLIT_MARKER)[1]);
             for(let i = 0; i<3; i++) {
@@ -335,7 +335,7 @@ class simpleQuestionGen {
                 // Checking preconditions: 
                 if (trackList.length <= numbers[0]) {
                     throw new Error(`Precondition not met for question ID 8. The first number in numbers 
-                    must be less than the number of top tracks. In this case ${numbers[0]} is not less 
+                    must be less than the number of top tracks. In this case ${number[0]} is not less 
                     than ${trackList.length}`);
                 }
 
@@ -431,7 +431,7 @@ class simpleQuestionGen {
                 result.push(ans);
                 // Finding secondary info
                 if (ans <= 5) {
-                    secondaryInfo = "Artists in your top " + numbers[0]+ " songs: "
+                    secondaryInfo = "Artists in your top " +number[0]+ " songs: "
                     for (let i = 0; i < ans; i++) {
                         let newLine = diffArtists[i] + ", "
                         secondaryInfo = secondaryInfo + newLine
@@ -542,14 +542,14 @@ class simpleQuestionGen {
                 // Check: at least top 3 songs
                 if (numbers[0] <= 2) {
                     throw new Error(
-                    `Error for question ID 9. Must be at least top 3 songs to have 4 unique answers, not top ${numbers[0]}`
+                    `Error for question ID 9. Must be at least top 3 songs to have 4 unique answers, not top ${number[0]}`
                     );
                 }
         
                 // Check: correct index less than number of top tracks
                 if (trackList.length <= numbers[0]) {
                     throw new Error(`Error for question ID 9. The first number in numbers array
-                            must be less than the number of top tracks. In this case ${numbers[0]} is not less 
+                            must be less than the number of top tracks. In this case ${number[0]} is not less 
                             than ${trackList.length}`);
                 }
         
@@ -566,7 +566,7 @@ class simpleQuestionGen {
                 result.push(numExplicit);
                 // Finding secondary info
                 if (numExplicit <= 5) {
-                    secondaryInfo = "The explicit songs in your top " + numbers[0] + " are: "
+                    secondaryInfo = "The explicit songs in your top " + number[0] + " are: "
                     for (let i = 0; i < numExplicit; i++) {
                         let newLine = explicitSongList[i] + ", "
                         secondaryInfo = secondaryInfo + newLine;
@@ -866,6 +866,8 @@ class simpleQuestionGen {
      */
     storeQuestion(question, correctAnswer, moreInfo) {
         this.storedQuestions.push({question: question, correctAnswer:correctAnswer, moreInfo:moreInfo});
+        localStorage.setItem("Storage Questions", JSON.stringify(this.storedQuestions));
+        
     }
 
     /**
