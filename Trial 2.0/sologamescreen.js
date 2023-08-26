@@ -48,12 +48,15 @@ function loadAnswers() {
         btn.disabled = false;
         btn.classList.remove("correct");
         btn.classList.remove("wrong");
+        second.innerText = "";
         if (arrAnswers[rand] === gen.getAnswer()) {
             // Since the corresponding index of correctAnswers is the index of btnIDs and we just poped
             // the current btnID that means that btnIDS.length is the index of btn.
         }
         ans.innerText = arrAnswers.splice(rand, 1)[0];
-        second.innerText = arrSecondaryInfo.splice(rand, 1)[0];
+        if (arrSecondaryInfo !== null) {
+            second.innerText = arrSecondaryInfo.splice(rand, 1)[0];
+        }
     }
 }
 
