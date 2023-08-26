@@ -37,10 +37,12 @@ function loadText() {
 // Replaces all answer text with 3 wrong answers and 1 correct answer chosen randomly
 function loadAnswers() {
     let arrAnswers = [gen.getAnswer(), ...gen.getNonAnswers()];
+    let arrSecondaryInfo = gen.getSecondary();
     for (let i = 0; i < 4; i++) {
         const rand = getRandomInt(arrAnswers.length); // Random index of arrAnswers
         const btn = document.getElementById(btnIDs[i]);
         const ans = document.getElementById(ansIDs[i]);
+        const second = document.getElementById(secondIDs[i]);
         // Reset the button colors and borders from previous question
         btn.style.border = "0px";
         btn.disabled = false;
@@ -51,6 +53,7 @@ function loadAnswers() {
             // the current btnID that means that btnIDS.length is the index of btn.
         }
         ans.innerText = arrAnswers.splice(rand, 1)[0];
+        second.innerText = arrSecondaryInfo.splice(rand, 1)[0];
     }
 }
 
