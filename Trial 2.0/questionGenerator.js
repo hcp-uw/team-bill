@@ -1,6 +1,6 @@
 import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GENRE_REC } from "./spotify.js";
 
-const DEBUG = true; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
+const DEBUG = false; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
 const QUESTION_ID = 23; // The question ID you want to test
 const SPLIT_MARKER = "backendisthebestend youallsuckL *&*" // String to identify where to split between an answer and the artist. 
                            // We could change what the characters are later.
