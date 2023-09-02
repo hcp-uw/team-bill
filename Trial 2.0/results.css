@@ -1,0 +1,11 @@
+.question-block {
+    border: solid; 
+    border-color: black; 
+    border-width: 1px; 
+    margin: 10px;
+}
+
+p {
+    margin: 0px;
+    pad: 0px;
+}

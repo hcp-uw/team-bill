@@ -1,7 +1,7 @@
 import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GENRE_REC } from "./spotify.js";
 
 const DEBUG = false; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
-const QUESTION_ID = 23; // The question ID you want to test
+const QUESTION_ID = 7; // The question ID you want to test
 const SPLIT_MARKER = "backendisthebestend youallsuckL *&*" // String to identify where to split between an answer and the artist. 
                            // We could change what the characters are later.
 
@@ -85,10 +85,10 @@ class simpleQuestionGen {
      * is needed for this answer set
      */
     getSecondary = () => { 
-        if(this.curAnswer.includes(SPLIT_MARKER)) {
+        if((this.curAnswer+"").includes(SPLIT_MARKER)) {
             const secondaryInfo = [];
             secondaryInfo.push(this.curAnswer.split(SPLIT_MARKER)[1]);
-            for(let i = 0; i<3; i++) {
+            for(let i = 0; i < 3; i++) {
                 secondaryInfo.push(this.curNonAnswers[i].split(SPLIT_MARKER)[1]);
             }
             return secondaryInfo;
@@ -115,7 +115,7 @@ class simpleQuestionGen {
 
         // Checking preconditions
         if (this.apiResponseMap.get(this.curQuestion.apiCall).items.length < 4) {
-            console.error("Go listen to more spotify you dumb!");
+            console.error("You do not have enough top items for this question!");
             this.pickQuestion();
             return;
         } else if (maxRange < minRange && maxRange !== -1) {
@@ -431,7 +431,7 @@ class simpleQuestionGen {
                 result.push(ans);
                 // Finding secondary info
                 if (ans <= 5) {
-                    secondaryInfo = "Artists in your top " +number[0]+ " songs: "
+                    secondaryInfo = "Artists in your top " +numbers[0]+ " songs: "
                     for (let i = 0; i < ans; i++) {
                         let newLine = diffArtists[i] + ", "
                         secondaryInfo = secondaryInfo + newLine
@@ -489,6 +489,9 @@ class simpleQuestionGen {
                 let comGenres = new Map();
                 let maxGenre = artistList[0].genres[0];
                 for (let i = 0; i < 10; i++) {
+                    if (artistList[i] === undefined) {
+                        return [];
+                    }
                     let genre = artistList[i].genres[0];
                     if (!comGenres.has(genre)) { 
                         comGenres.set(genre, 0);
@@ -566,7 +569,7 @@ class simpleQuestionGen {
                 result.push(numExplicit);
                 // Finding secondary info
                 if (numExplicit <= 5) {
-                    secondaryInfo = "The explicit songs in your top " + number[0] + " are: "
+                    secondaryInfo = "The explicit songs in your top " + numbers[0] + " are: "
                     for (let i = 0; i < numExplicit; i++) {
                         let newLine = explicitSongList[i] + ", "
                         secondaryInfo = secondaryInfo + newLine;
@@ -581,7 +584,7 @@ class simpleQuestionGen {
                 break;
             }
             case 12: { // TESTING: Which album is the song - from?
-
+                return [];
                 break;
                 let trackNum = getRandomInt(this.curQuestion.min,this.curQuestion.max);
                 let trackName = trackList[trackNum].name;
@@ -826,7 +829,11 @@ class simpleQuestionGen {
             }
         }
 
-        this.storeQuestion(this.curQuestion, result[0], secondaryInfo);
+        if ((result[0]+"").includes(SPLIT_MARKER)) {
+            this.storeQuestion(this.curQuestion.question, result[0].split(SPLIT_MARKER)[0], secondaryInfo);
+        } else {
+            this.storeQuestion(this.curQuestion.question, result[0], secondaryInfo);
+        }
 
         return result;
     }
