@@ -103,7 +103,9 @@ function checkAnswer(suffix) {
             loadText();
         } else {
             // TODO: remove below and replace with transition to score screen
-            alert("score: " + score);
+            localStorage.setItem("score", score);
+            localStorage.setItem("Clicked Answers", JSON.stringify(clicked));
+            window.location.href = window.location.origin + "/results.html";
         }
     }, 1000); //1 second delay
 

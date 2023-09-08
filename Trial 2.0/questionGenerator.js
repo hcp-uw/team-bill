@@ -2,7 +2,7 @@ import { callApi, callApiSync, TOPTRACKS, TOPARTIST, PLAYLISTS, GENRE_REC } from
 
 const DEBUG = false; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
 const QUESTION_ID = 7; // The question ID you want to test
-const SPLIT_MARKER = "backendisthebestend youallsuckL *&*" // String to identify where to split between an answer and the artist. 
+const SPLIT_MARKER = "*&*" // String to identify where to split between an answer and the artist. 
                            // We could change what the characters are later.
 
 /**
@@ -431,9 +431,16 @@ class simpleQuestionGen {
                 result.push(ans);
                 // Finding secondary info
                 if (ans <= 5) {
-                    secondaryInfo = "Artists in your top " +numbers[0]+ " songs: "
+                    secondaryInfo = "The artists in your top " + (numbers[0] + 1) + " songs: "
                     for (let i = 0; i < ans; i++) {
-                        let newLine = diffArtists[i] + ", "
+                        let newLine = "";
+                        if (ans - i > 2) {
+                            newLine = diffArtists[i] + ", "
+                        } else if (ans - 1 === 2) {
+                            newLine = diffArtists[i] + " and "
+                        } else {
+                            newLine = diffArtists[i]
+                        }
                         secondaryInfo = secondaryInfo + newLine
                     }
                     secondaryInfo = secondaryInfo + ".";
@@ -567,11 +574,19 @@ class simpleQuestionGen {
                 }
         
                 result.push(numExplicit);
+
                 // Finding secondary info
                 if (numExplicit <= 5) {
-                    secondaryInfo = "The explicit songs in your top " + numbers[0] + " are: "
+                    secondaryInfo = "The explicit songs in your top " + numbers[0] + " songs are: "
                     for (let i = 0; i < numExplicit; i++) {
-                        let newLine = explicitSongList[i] + ", "
+                        let newLine = "";
+                        if (numExplicit - i > 2) {
+                            newLine = explicitSongList[i] + ", "
+                        } else if (numExplicit - 1 === 2) {
+                            newLine = explicitSongList[i] + " and "
+                        } else {
+                            newLine = explicitSongList[i]
+                        }
                         secondaryInfo = secondaryInfo + newLine;
                     }
                     secondaryInfo = secondaryInfo + ".";
@@ -651,7 +666,7 @@ class simpleQuestionGen {
                 }
 
                 result[0] = finalResult(trackList[corrInd]);
-                secondaryInfo = "The duration of the song is " + Math.round(corrDur/1000) + " seconds."
+                secondaryInfo = "The duration of " + trackList[corrInd].name + " was " + convertTime(corrDur);
 
                 let currNonIndexes = [corrInd];
                 for (let i = 0; i < 3; i++) {
@@ -665,6 +680,14 @@ class simpleQuestionGen {
             case 16: { // DONE: Which of these songs was released most recently?                        - Needs Secondary Info
                 // Gets list of items we are working with.
                 result = this.getItems(numbers, false); 
+                
+                // Skips question if any of the songs release date percision is not a day
+                for (let i = 0; i < 4; i++) {
+                    if (result[i].album.release_date_precision !== "day") {
+                        return [];
+                    }
+                }
+
                 // This is a compare function that takes in songs and compares them based on date 
                 // published.
                 let compareSongDates = (a, b) => {
@@ -688,7 +711,7 @@ class simpleQuestionGen {
                     }
                 }
 
-                secondaryInfo = "The song was released on " + result[0].release_date + ".";
+                secondaryInfo = "The song was released on " + result[0].album.release_date + ".";
                 // Converts the list it items in a list of song names.
                 for (let i = 0; i < 4; i++) {
                     result[i] = finalResult(result[i]);
@@ -815,7 +838,12 @@ class simpleQuestionGen {
 
                 let corTrack = tracks.splice(ind, 1)[0];
                 result[0] = finalResult(corTrack);
-                secondaryInfo = "The bpm of the top song is " + ans + ".";
+
+                // Sets secondary info only if the question is about bpm.
+                if (questionID === 26 || questionID === 27) {
+                    secondaryInfo = "The bpm of " + corTrack.name + " was " + ans + ".";
+                }
+
                 tracks.forEach(track => {
                     result.push(finalResult(track));
                 })
@@ -1059,6 +1087,24 @@ function finalResult(item) {
         return item.name;
     }
     return item.name + SPLIT_MARKER + item.artists[0].name
+}
+
+/**
+ * Converts a number of miliseconds into a string with the format "minutes:seconds"
+ * rounding to the closest second.
+ * @param {number} miliseconds 
+ * @returns string x that denotes the time given in the format "minites:seconds"
+ */
+function convertTime(miliseconds) {
+    const seconds = Math.round(miliseconds/1000);
+    const minutes = Math.floor(seconds/60);
+    const remaingSeconds = seconds%60;
+    
+    if (remaingSeconds > 9) {
+        return minutes + ":" + remaingSeconds;
+    } else {
+        return minutes + ":0" + remaingSeconds;
+    }
 }
 
 /**

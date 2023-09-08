@@ -9,3 +9,15 @@ p {
     margin: 0px;
     pad: 0px;
 }
+
+.correct {
+    background-color: #a0ebb4;
+}
+
+.wrong {
+    background-color: #ffc7af;
+}
+
+.moreInfo {
+    margin-top: 10px;
+}
