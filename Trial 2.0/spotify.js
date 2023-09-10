@@ -140,12 +140,12 @@ export function callApi(method, url, body, callback, apiType) {
  * @param {*} body Body of request
  * @returns {object} response text of the request. 
  */
-export function callApiSync(url, body) {
+export function callApiSync(url) {
     let xhr = new XMLHttpRequest();
     xhr.open("GET", url, false);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("Authorization", "Bearer " + access_token);
-    xhr.send(body); // FYI, if the request is set to "GET", the body will automatically be set to null no matter what is put here
+    xhr.send(); // FYI, if the request is set to "GET", the body will automatically be set to null no matter what is put here
 
     if (xhr.status == 200) {
         var data = JSON.parse(xhr.responseText);
@@ -153,7 +153,6 @@ export function callApiSync(url, body) {
     } else if (xhr.status == 401) {
         console.log("Refreshing Access Token");
         refreshAccessToken();
-        // return callApiSync(url, body);
     }
     else { 
         console.log("Status: " + xhr.status + "\nResponse Text: " + xhr.responseText + "\nStatus Text: " + xhr.statusText);
