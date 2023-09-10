@@ -80,8 +80,7 @@ function fetchAccessToken(code) {
     callAuthorizationApi(body);
 }
 
-
-export function refreshAccessToken() {
+function refreshAccessToken() {
     refresh_token = localStorage.getItem("refresh_token");
     let body = "grant_type=refresh_token";
     body += "&refresh_token=" + refresh_token;
@@ -104,7 +103,7 @@ function callAuthorizationApi(body) {
     xhr.onload = handleAuthorizationResponse;
 }
 
-//Export
+// Not Export
 function handleAuthorizationResponse() {
     if (this.status == 200) { 
         var data = JSON.parse(this.responseText);
@@ -170,17 +169,6 @@ export function callTopTracks(callbackFunction) {
         callbackFunction
     );
 }
-
-/*function shuffle() {
-    callApi(
-        "PUT",
-        SHUFFLE + "?state=true&device_id=" + deviceId(),
-        null,
-        handleApiResponse
-    );
-    play();
-}*/
-
 
 export function deviceId() {
     return document.getElementById("devices").value;
