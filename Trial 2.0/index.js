@@ -1,4 +1,4 @@
-import {handleRedirect, refreshAccessToken, isLoggedIn, requestAuthorization } from "./spotify.js";
+import {handleRedirect, isLoggedIn, requestAuthorization } from "./spotify.js";
 
 document.addEventListener("DOMContentLoaded", onPageLoad);
 
