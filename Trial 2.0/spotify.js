@@ -39,7 +39,8 @@ export function requestAuthorization(opt_redirect_uri) {
     console.log("Requested Authorization!");
     localStorage.setItem("client_id", client_id);
     localStorage.setItem("client_secret", client_secret); // In a real app you should not expose your client_secret to the user
-    localStorage.setItem("redirect_uri", opt_redirect_uri);
+    localStorage.setItem("redirect_uri", opt_redirect_uri); // Stores optional redirect uri so if the redirect is changed, the 
+                                                            // next time this page is loaded that uri is used
     if (opt_redirect_uri !== undefined) {
         redirect_uri = opt_redirect_uri;
     }
@@ -60,6 +61,8 @@ export function handleRedirect() {
     window.history.pushState("", "", redirect_uri); // remove param from url
 }
 
+
+// Not Export
 function getCode() {
     let code = null;
     const queryString = window.location.search;
@@ -80,6 +83,7 @@ function fetchAccessToken(code) {
     callAuthorizationApi(body);
 }
 
+// Not Export
 function refreshAccessToken() {
     refresh_token = localStorage.getItem("refresh_token");
     let body = "grant_type=refresh_token";
