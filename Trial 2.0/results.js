@@ -34,6 +34,7 @@ function loadText() {
             document.getElementById("question-" + (i + 1)).parentElement.classList.add("correct");
         }
     }
+    document.getElementById("scores").innerText = score;
 }
 
 onLoad();

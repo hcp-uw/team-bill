@@ -3,19 +3,50 @@
     border-color: black; 
     border-width: 1px; 
     margin: 10px;
+    border-radius: 25px; 
+    padding-left:10px;
+    padding-bottom: 15px;
+    font-family: 'Nunito';
+}
+
+.score-block {
+    border: solid; 
+    border-color: black; 
+    border-width: 1px; 
+    margin: 10px;
+    padding-left:10px;
+    padding-bottom: 15px;
+    font-family: 'Nunito';
+    background-color: #fffdd0;
+    color: #b3b187;
 }
 
 p {
     margin: 0px;
-    pad: 0px;
+    padding-left: 10px;
+    font-size: 20px;
 }
 
+h1 { 
+    font-family: 'Nunito';
+    text-align:  center;
+}
+
+
+h2 { 
+    font-size: 18px;
+}
+
+
+
 .correct {
-    background-color: #a0ebb4;
+    background-color:#a0ebb4;
+    color:#608d6c;
 }
 
 .wrong {
     background-color: #ffc7af;
+    color: #ce5e2e;
 }
 
 .moreInfo {
