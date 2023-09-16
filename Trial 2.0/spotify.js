@@ -1,8 +1,17 @@
-export var redirect_uri = "http://127.0.0.1:8080";
 export var client_id = "a0c734380e8a4301b8af9f29b139165c";
 export var client_secret = "33dad7cfdcd347b0a83d551537ffa728"; // In a real app you should not expose your client_secret to the user
 export var scope =
     "user-top-read user-read-private user-read-email user-modify-playback-state user-read-playback-position user-library-read streaming user-read-playback-state user-read-recently-played playlist-read-private";
+
+var redirect_uri;
+const stored_uri = localStorage.getItem("redirect_uri");
+if (stored_uri === undefined) {
+    redirect_uri = "http://127.0.0.1:8080";
+} else {
+    redirect_uri = stored_uri;
+    localStorage.removeItem("redirect_uri");
+}
+export {redirect_uri};
 
 var access_token = null;
 var refresh_token = null;
@@ -21,6 +30,30 @@ function onPageLoad() {
     access_token = localStorage.getItem("access_token");
 }
 
+/**
+ * Requests authorization from spotify. Will redirect the user to the spotify login portal and 
+ * then back to the address of the callback function in ./spotify.js
+ * @param {string || undiefined} redirectUri optional to set the redirect uri. 
+ */
+export function requestAuthorization(opt_redirect_uri) {
+    console.log("Requested Authorization!");
+    localStorage.setItem("client_id", client_id);
+    localStorage.setItem("client_secret", client_secret); // In a real app you should not expose your client_secret to the user
+    localStorage.setItem("redirect_uri", opt_redirect_uri); // Stores optional redirect uri so if the redirect is changed, the 
+                                                            // next time this page is loaded that uri is used
+    if (opt_redirect_uri !== undefined) {
+        redirect_uri = opt_redirect_uri;
+    }
+
+    let url = AUTHORIZE;
+    url += "?client_id=" + client_id;
+    url += "&response_type=code";
+    url += "&redirect_uri=" + encodeURI(redirect_uri);
+    url += "&show_dialog=true";
+    url += "&scope=" + scope;
+    window.location.href = url; // Show Spotify's authorization screen
+}
+
 export function handleRedirect() {
     console.log("Handling redirect!!");
     let code = getCode();
@@ -28,6 +61,8 @@ export function handleRedirect() {
     window.history.pushState("", "", redirect_uri); // remove param from url
 }
 
+
+// Not Export
 function getCode() {
     let code = null;
     const queryString = window.location.search;
@@ -48,8 +83,8 @@ function fetchAccessToken(code) {
     callAuthorizationApi(body);
 }
 
-
-export function refreshAccessToken() {
+// Not Export
+function refreshAccessToken() {
     refresh_token = localStorage.getItem("refresh_token");
     let body = "grant_type=refresh_token";
     body += "&refresh_token=" + refresh_token;
@@ -72,7 +107,7 @@ function callAuthorizationApi(body) {
     xhr.onload = handleAuthorizationResponse;
 }
 
-//Export
+// Not Export
 function handleAuthorizationResponse() {
     if (this.status == 200) { 
         var data = JSON.parse(this.responseText);
@@ -109,12 +144,12 @@ export function callApi(method, url, body, callback, apiType) {
  * @param {*} body Body of request
  * @returns {object} response text of the request. 
  */
-export function callApiSync(url, body) {
+export function callApiSync(url) {
     let xhr = new XMLHttpRequest();
     xhr.open("GET", url, false);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("Authorization", "Bearer " + access_token);
-    xhr.send(body); // FYI, if the request is set to "GET", the body will automatically be set to null no matter what is put here
+    xhr.send(); // FYI, if the request is set to "GET", the body will automatically be set to null no matter what is put here
 
     if (xhr.status == 200) {
         var data = JSON.parse(xhr.responseText);
@@ -122,7 +157,6 @@ export function callApiSync(url, body) {
     } else if (xhr.status == 401) {
         console.log("Refreshing Access Token");
         refreshAccessToken();
-        // return callApiSync(url, body);
     }
     else { 
         console.log("Status: " + xhr.status + "\nResponse Text: " + xhr.responseText + "\nStatus Text: " + xhr.statusText);
@@ -138,17 +172,6 @@ export function callTopTracks(callbackFunction) {
         callbackFunction
     );
 }
-
-/*function shuffle() {
-    callApi(
-        "PUT",
-        SHUFFLE + "?state=true&device_id=" + deviceId(),
-        null,
-        handleApiResponse
-    );
-    play();
-}*/
-
 
 export function deviceId() {
     return document.getElementById("devices").value;

@@ -1,4 +1,5 @@
 import {makeQuestionGen} from "./questionGenerator.js";
+import {handleRedirect} from "./spotify.js";
 
 // Current question number
 let questionNumber = 1;
@@ -13,13 +14,24 @@ const secondIDs = ["answer-top-left-second", "answer-top-right-second", "answer-
 let gen;
 // An array of all the chosen answers so far 
 let clicked = [];
-makeQuestionGen().then(function(value) {
-    gen = value;
-    onLoad();
-}) 
 
-// 
-function onLoad() {
+function onPageLoad() {
+    // Checks if the page was a redirect from spotify authorization.
+    if (window.location.search.length > 0) {
+        handleRedirect();
+        console.log("handled redirect!");
+    } else {
+        // Makes a question gen then loads the contents of the page.
+        makeQuestionGen().then(function(value) {
+            gen = value;
+            loadContents();
+        }) 
+    }
+}
+
+
+// Loads contents of the page
+function loadContents() {
     loadText();
     document.getElementById('button-top-left').addEventListener('click', ( () => checkAnswer('top-left')));
     document.getElementById('button-top-right').addEventListener('click', ( () => checkAnswer('top-right')));
@@ -110,3 +122,5 @@ function checkAnswer(suffix) {
     }, 1000); //1 second delay
 
  }
+
+ onPageLoad();

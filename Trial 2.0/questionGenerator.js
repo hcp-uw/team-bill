@@ -982,7 +982,7 @@ class simpleQuestionGen {
         const types = ["tracks-long-50", "artists-long-50", "playlists-50", "genre-recs", "tracks-short-50", "artists-short-50"];
         const urls = [TOPTRACKS + "?limit=50&time_range=long_term", TOPARTIST + "?limit=50&time_range=long_term", PLAYLISTS + "?limit=50", GENRE_REC, TOPTRACKS + "?limit=50&time_range=short_term", TOPARTIST + "?limit=50&time_range=short_term"];
         for (let i = 0; i < types.length; i++) {
-            const data = callApiSync(urls[i], null);
+            const data = callApiSync(urls[i]);
             this.apiResponseMap.set(types[i], data);
         }
         console.log(this.apiResponseMap);
