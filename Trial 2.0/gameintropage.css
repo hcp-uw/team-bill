@@ -1,0 +1,48 @@
+/*overall stylesheet for game intro pages*/
+
+.gametitle {
+    font-size: 10rem;
+    text-align: center;
+    margin-top: 3.5rem;
+    color: white;
+    font-family: 'Nunito';
+}
+
+.description {
+    font-size: 2rem;
+    font-family: 'Nunito';
+    color: #B9E2E0;
+    margin: 2rem 2rem;
+    text-align: center;
+    padding-left: 15rem;
+    padding-right: 15rem;
+}
+
+.playbutton {
+    background-color: #FFC7AF;
+    border: none;
+    color: #ce5e2e;
+    padding: 1.2rem;
+    text-align: center;
+    font-size: 5rem;
+    border-radius: 4rem;
+    width: 20rem;
+    margin-top: 1rem;
+    display: block;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    font-family: 'Nunito';
+}
+
+.play-wave { /* Div containing the question circle, number, left and right waves*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    float: center;
+    padding-top: 1rem;
+    right: 5rem;
+}
+
+.wave {
+    height: 9rem;
+}
