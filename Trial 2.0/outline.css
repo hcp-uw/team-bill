@@ -17,7 +17,7 @@ body {
 .topnav {
   position: sticky;
   background-color: #191919;
-  width: 110vw;
+  width: 100vw;
   overflow: hidden;
   position: relative;
   top: -60px;
@@ -94,7 +94,7 @@ body {
  border-radius:40px;
 }
 
-.bottom-section {
+/* .bottom-section {
   position: absolute;
   margin-top: 470px;
   width: 110%;
@@ -265,6 +265,6 @@ body {
   text-align: center;
   color: #1E1E1E;
   position: absolute;
-}
+} */
 
 
