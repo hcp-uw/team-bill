@@ -2,10 +2,10 @@
     border: solid; 
     border-color: black; 
     border-width: 1px; 
-    margin: 10px;
+    /*margin: 10px;*/
     border-radius: 25px; 
     padding-left:10px;
-    padding-bottom: 15px;
+    /*padding-bottom: 15px;*/
     font-family: 'Nunito';
 }
 
@@ -17,14 +17,13 @@
     padding-left:10px;
     padding-bottom: 15px;
     font-family: 'Nunito';
-    background-color: #fffdd0;
-    color: #b3b187;
+    background-color: #1D8C9F;
+    color: whitesmoke;
 }
 
 p {
-    margin: 0px;
     padding-left: 10px;
-    font-size: 20px;
+    font-size: 17px;
 }
 
 h1 { 
@@ -34,7 +33,7 @@ h1 {
 
 
 h2 { 
-    font-size: 18px;
+    font-size: 14px;
 }
 
 
