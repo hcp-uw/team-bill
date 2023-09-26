@@ -1,3 +1,127 @@
-#authorizeBtn {
-    border-radius: 1rem;
+/* General page formatting */
+body {
+    margin: 0;
+    overflow-x: hidden;
+}
+.main{
+    min-height: 100vh;
+}
+
+/* Title block formatting */
+
+#title {
+    font-size: 4.44rem;
+    margin: auto;
+}
+#title-desc {
+    display: flex;
+    font-size: 1rem;
+    margin: auto;
+    align-items: center;
+}
+
+#title-text {
+    margin: 0 10%;
+    text-align: center;
+}
+
+.title-wave{
+    max-width: 100%;
+    height: auto;
+}
+
+.title-rectangle {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 81vw;
+    min-height: 35vh;
+    background-color: #1D8C9F;
+    align-items: center;
+    text-align: center;
+    color: white;
+    border-radius: 32px;
+}
+
+/* Remove waves if the screen width is below given width */
+@media (max-width: 800px) {
+    .title-wave {
+        display: none;
+    }
+}
+
+/* How to play formatting */
+
+#how-to-rectangle {
+    display: flex;
+    flex-direction: column;
+    background-color: #B9E2E0;
+    border-radius: 32px;
+    width: 81vw;
+    min-height: 35vh;
+    margin: auto;
+    margin-top: 7vh;
+    text-align: center;
+
+
+}
+
+
+#how-to-title {
+    margin: 0;
+    margin-top: 2vh;;
+    color: #1D8C9F;
+
+}
+
+#how-to-desc {
+    color: #1E1E1E;
+    margin: auto 7%;
+    text-align: left;
+}
+
+/* Play button formatting */
+
+#play-container {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin: 3% auto auto;
+}
+
+#play-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFC7AF;
+    color: #CE5E2E;
+    border-radius: 32px;
+    min-width: 9vw;
+    height: 6vh;
+    font-size: 2.08rem;
+    font-weight: bold;
+}
+
+
+/* About us formatting*/
+#about-us {
+    display:flex;
+    flex-direction: column;
+    background-color: white;
+    color: #1E1E1E;
+    min-height: 27vh;
+}
+
+#abt-info {
+    margin: auto 12%;
+}
+
+#abt-title {
+    font-size: 1.56rem;
+    margin: 0;
+}
+
+#abt-desc {
+    font-size: 1.06rem;
 }
