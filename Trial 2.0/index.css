@@ -11,18 +11,24 @@ body {
 
 #title {
     font-size: 4.44rem;
-    margin: auto;
+    margin: 0 0 1% 0;
+    
 }
 #title-desc {
     display: flex;
+    flex-direction: row;
+    column-gap: 2rem;
+    width: 100%;
     font-size: 1rem;
-    margin: auto;
+    margin: 0;
     align-items: center;
+    justify-content: center;
 }
 
 #title-text {
-    margin: 0 10%;
+    margin: 0 1%;
     text-align: center;
+    width: auto;
 }
 
 .title-wave{
@@ -33,14 +39,16 @@ body {
 .title-rectangle {
     display: flex;
     flex-direction: column;
-    margin: auto;
+    margin: 0 auto;
     width: 81vw;
     min-height: 35vh;
     background-color: #1D8C9F;
     align-items: center;
     text-align: center;
+    justify-content: center;
     color: white;
     border-radius: 32px;
+    padding: 48px 12px 80px;
 }
 
 /* Remove waves if the screen width is below given width */
@@ -62,6 +70,7 @@ body {
     margin: auto;
     margin-top: 7vh;
     text-align: center;
+    padding: 48px 12px;
 
 
 }
@@ -69,8 +78,9 @@ body {
 
 #how-to-title {
     margin: 0;
-    margin-top: 2vh;;
+    margin-top: 2vh;
     color: #1D8C9F;
+    margin-bottom: 2vh;
 
 }
 
@@ -87,7 +97,7 @@ body {
     width: 100%;
     align-items: center;
     justify-content: center;
-    margin: 3% auto auto;
+    margin: 3vh auto 3vh;
 }
 
 #play-button {
@@ -97,8 +107,8 @@ body {
     background-color: #FFC7AF;
     color: #CE5E2E;
     border-radius: 32px;
-    min-width: 9vw;
-    height: 6vh;
+    min-width: 9.375rem;
+    height: 4.6758rem;
     font-size: 2.08rem;
     font-weight: bold;
 }
@@ -111,6 +121,7 @@ body {
     background-color: white;
     color: #1E1E1E;
     min-height: 27vh;
+    padding-bottom: 1rem;
 }
 
 #abt-info {
@@ -120,6 +131,7 @@ body {
 #abt-title {
     font-size: 1.56rem;
     margin: 0;
+    margin-top: 5vh;
 }
 
 #abt-desc {

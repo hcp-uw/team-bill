@@ -25,4 +25,5 @@ function playSolo() {
 document.getElementById('authorizeBtn').addEventListener('click', requestAuthorization);
 document.getElementById('soloDiv').addEventListener('click', playSolo);
 document.getElementById('soloTab').addEventListener('click', playSolo);
+document.getElementById('play-button').addEventListener('click', playSolo);
 // document.getElementById('refreshBtn').addEventListener('click', refreshAccessToken);
