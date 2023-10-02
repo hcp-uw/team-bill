@@ -5,7 +5,7 @@ export var scope =
 
 var redirect_uri;
 const stored_uri = localStorage.getItem("redirect_uri");
-if (stored_uri === undefined) {
+if (stored_uri === null) {
     redirect_uri = "http://127.0.0.1:8080";
 } else {
     redirect_uri = stored_uri;
@@ -39,11 +39,12 @@ export function requestAuthorization(opt_redirect_uri) {
     console.log("Requested Authorization!");
     localStorage.setItem("client_id", client_id);
     localStorage.setItem("client_secret", client_secret); // In a real app you should not expose your client_secret to the user
-    localStorage.setItem("redirect_uri", opt_redirect_uri); // Stores optional redirect uri so if the redirect is changed, the 
-                                                            // next time this page is loaded that uri is used
-    if (opt_redirect_uri !== undefined) {
+    if (typeof(opt_redirect_uri) == 'string') {
         redirect_uri = opt_redirect_uri;
     }
+
+    localStorage.setItem("redirect_uri", redirect_uri); // Stores optional redirect uri so if the redirect is changed, the 
+                                                        // next time this page is loaded that uri is used
 
     let url = AUTHORIZE;
     url += "?client_id=" + client_id;
