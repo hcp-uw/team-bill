@@ -858,7 +858,7 @@ class simpleQuestionGen {
         }
 
         if ((result[0]+"").includes(SPLIT_MARKER)) {
-            this.storeQuestion(this.curQuestion.question, result[0].split(SPLIT_MARKER)[0], secondaryInfo);
+            this.storeQuestion(this.curQuestion.question, "\"" + result[0].split(SPLIT_MARKER)[0] + "\" by " + result[0].split(SPLIT_MARKER)[1], secondaryInfo);
         } else {
             this.storeQuestion(this.curQuestion.question, result[0], secondaryInfo);
         }
