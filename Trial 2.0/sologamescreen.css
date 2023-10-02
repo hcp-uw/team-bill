@@ -81,27 +81,27 @@
 }
 
 .button.correct {
-    background-color: #a0ebb4;
+    background-color: #B9E2E0;
 }
 
 .button.correct .answer {
-    color: #2e4434;
+    color: #1D8C9F;
 }
 
 .button.correct .second {
-    color: #161f18;
+    color: #0a505c;
 }
 
 .button.wrong {
-    background-color: #ffc7af;
+    background-color: #FFC7AF;
 }
 
 .button.wrong .answer {
-    color: #822d1e;
+    color: #CE5E2E;
 }
 
 .button.wrong .second {
-    color: #45160e;
+    color: #69280c;
 }
 
 .question-wave {

@@ -8,33 +8,40 @@ function onLoad() {
     clickedAnswers = JSON.parse(localStorage.getItem("Clicked Answers"));
     console.log(clickedAnswers);
     score = parseInt(localStorage.getItem("score"));
-    console.log(score);
+    playAgainBtn = document.getElementById("play-again-btn");
+    playAgainBtn.addEventListener("click", () => {
+        window.location.href = window.location.origin + "/sologamescreen.html";
+    })
     loadText();
 }
 
 function loadText() {
-    console.log("Loading text!");
-    console.log(storedQuestions.length);
+    console.log("Loading results!");
     for (let i = 0; i < storedQuestions.length; i++) {
         let curQuestion = storedQuestions[i];
         let curAnswer = curQuestion.correctAnswer;
         let curChosenAnswer = clickedAnswers[i];
         let moreInfo = curQuestion.moreInfo;
+
         document.getElementById("question-" + (i + 1)).innerText = curQuestion.question;
-        document.getElementById("chosen-answer-" + (i + 1)).innerText = curChosenAnswer;
-        document.getElementById("correct-answer-" + (i + 1)).innerText = curAnswer;
-        if (moreInfo !== undefined) {
-            document.getElementById("more-info-" + (i + 1)).innerText = curQuestion.moreInfo;
-            document.getElementById("more-info-" + (i + 1)).classList.add("moreInfo");
-        } 
 
         if (curChosenAnswer + "" !== curAnswer + "") {
-            document.getElementById("question-" + (i + 1)).parentElement.classList.add("wrong");
+            document.getElementById("question-" + (i + 1)).parentElement.parentElement.classList.add("wrong");
+            document.getElementById("you-chose-" + (i + 1)).innerText = "You chose: " + curChosenAnswer;
+            document.getElementById("correct-answer-was-" + (i + 1)).innerText = "Correct answer: " + curAnswer;
         } else {
-            document.getElementById("question-" + (i + 1)).parentElement.classList.add("correct");
+            document.getElementById("question-" + (i + 1)).parentElement.parentElement.classList.add("correct");
+            document.getElementById("you-chose-" + (i + 1)).innerText = "You chose the correct answer: " + curChosenAnswer;
         }
+
+        if (moreInfo !== undefined) {
+            document.getElementById("more-info-" + (i + 1)).innerText = curQuestion.moreInfo;
+        } 
     }
-    document.getElementById("scores").innerText = score;
+    // Show entire questions section now
+    document.getElementById("questions").style.display = "block";
+
+    document.getElementById("score").innerText = score + "/10";
 }
 
 onLoad();
