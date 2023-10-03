@@ -446,7 +446,7 @@ class simpleQuestionGen {
                 }
                 break; 
             }
-            case 6: { // DONE: How many songs are there in your playlist named - ?
+            /*case 6: { // DONE: How many songs are there in your playlist named - ?
                 
                 const playlists = this.apiResponseMap.get("playlists-50").items;
                 var userId = callApiSync("https://api.spotify.com/v1/me").id;
@@ -481,7 +481,7 @@ class simpleQuestionGen {
                 }
 
                 break;
-            }
+            }*/
             case 7: { //DONE: "What is your most common genre in your top ten artists?"                 - Needs Secondary Info
                 //Correct answer
                 let comGenres = new Map();
