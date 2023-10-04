@@ -103,7 +103,12 @@ function checkAnswer(suffix) {
     }
 
     // Keep track of the selected answers
-    clicked.push(ans.innerText);
+    if (second.innerText.length > 0) {
+        clicked.push("\"" + ans.innerText + "\" by " + second.innerText);
+    } else {
+        clicked.push(ans.innerText);
+    }
+    
     console.log(clicked);
 
     // Sets a delay so that the player can see the correct answer and their picked answer

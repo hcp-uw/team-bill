@@ -1,54 +1,76 @@
+#your-results {
+    font-size: 3.94rem;
+    color: white;
+    text-align: center;
+    margin: 0;
+}
+
+#score-heading {
+    font-size: 1.875rem;
+    color: #B9E2E0;
+    text-align: center;
+    margin: 0 0 2em;
+}
+
+#questions {
+    display: none; /* Show once done loading in JS file */
+    text-align: center;
+}
+
+.question {
+    margin: 0.15em 0;
+    font-size: 1.875em;
+}
+
 .question-block {
-    border: solid; 
-    border-color: black; 
-    border-width: 1px; 
-    margin: 10px;
-    border-radius: 25px; 
-    padding-left:10px;
-    padding-bottom: 15px;
-    font-family: 'Nunito';
+    display: flex;
+    column-gap: 1em;
+    margin: 2.5em 7em;
+    padding: 2em 3em 2em 2em;
+    border-radius: 2.5rem;
+    text-align: left;
 }
 
-.score-block {
-    border: solid; 
-    border-color: black; 
-    border-width: 1px; 
-    margin: 10px;
-    padding-left:10px;
-    padding-bottom: 15px;
-    font-family: 'Nunito';
-    background-color: #fffdd0;
-    color: #b3b187;
+.question-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    color: black;
+    border-radius: 50%;
+    height: 3rem;
+    width: 3rem;
+    min-height: 3rem;
+    min-width: 3rem;
+    margin: 0;
+    font-weight: 900;
+    font-size: 1.5em;
 }
-
-p {
-    margin: 0px;
-    padding-left: 10px;
-    font-size: 20px;
-}
-
-h1 { 
-    font-family: 'Nunito';
-    text-align:  center;
-}
-
-
-h2 { 
-    font-size: 18px;
-}
-
-
 
 .correct {
-    background-color:#a0ebb4;
-    color:#608d6c;
+    background-color:#B9E2E0;
+    color:#1D8C9F;
 }
 
 .wrong {
-    background-color: #ffc7af;
-    color: #ce5e2e;
+    background-color: #FFC7AF;
+    color: #CE5E2E;
 }
 
-.moreInfo {
-    margin-top: 10px;
+p {
+    font-size: 1.31em;
+    color: black;
+}
+
+#play-again-btn {
+    font-weight: bold;
+    text-align: center;
+    padding: .6rem 1.2rem;
+    margin: 1em 0 3em;
+    font-size: 1.31rem;
+    background-color: white;
+    border-radius: 2.1875rem;
+    border-color: transparent;
+    cursor: pointer;
+    font-family: 'Nunito';
 }

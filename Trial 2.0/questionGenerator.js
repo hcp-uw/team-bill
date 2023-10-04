@@ -386,9 +386,9 @@ class simpleQuestionGen {
 
                 result.push(finalResult(maxItem));
                 if (questionID === 4) {
-                    secondaryInfo = "The song appeared " + maxNum + " times in your top " + numbers[0] + " songs,";
+                    secondaryInfo = "The song appeared " + maxNum + " times in your top " + (numbers[0] + 1) + " songs.";
                 } else {
-                    secondaryInfo = "The album appeared " + maxNum + " times in your top " + numbers[0] + " albums.";
+                    secondaryInfo = "The album appeared " + maxNum + " times in your top " + (numbers[0] + 1) + " albums.";
                 }
 
                 if (questionID === 4) {
@@ -431,19 +431,10 @@ class simpleQuestionGen {
                 result.push(ans);
                 // Finding secondary info
                 if (ans <= 5) {
-                    secondaryInfo = "The artists in your top " + (numbers[0] + 1) + " songs: "
+                    secondaryInfo = "The artists in your top " + (numbers[0] + 1) + " songs:";
                     for (let i = 0; i < ans; i++) {
-                        let newLine = "";
-                        if (ans - i > 2) {
-                            newLine = diffArtists[i] + ", "
-                        } else if (ans - 1 === 2) {
-                            newLine = diffArtists[i] + " and "
-                        } else {
-                            newLine = diffArtists[i]
-                        }
-                        secondaryInfo = secondaryInfo + newLine
+                        secondaryInfo += "\n" + diffArtists[i];
                     }
-                    secondaryInfo = secondaryInfo + ".";
                 }
 
                 //function that gives out random number function
@@ -455,7 +446,7 @@ class simpleQuestionGen {
                 }
                 break; 
             }
-            case 6: { // DONE: How many songs are there in your playlist named - ?
+            /*case 6: { // DONE: How many songs are there in your playlist named - ?
                 
                 const playlists = this.apiResponseMap.get("playlists-50").items;
                 var userId = callApiSync("https://api.spotify.com/v1/me").id;
@@ -490,7 +481,7 @@ class simpleQuestionGen {
                 }
 
                 break;
-            }
+            }*/
             case 7: { //DONE: "What is your most common genre in your top ten artists?"                 - Needs Secondary Info
                 //Correct answer
                 let comGenres = new Map();
@@ -512,13 +503,12 @@ class simpleQuestionGen {
                 result.push(maxGenre);
 
                 // Finding secondary Info
-                secondaryInfo = "Artists that fall into the " + maxGenre + "genre: "
+                secondaryInfo = "Artists that fall into the " + maxGenre + " genre:"
                 for (let i = 0; i < 10; i++) {
                     if (artistList[i].genres[0] === maxGenre) {
-                        secondaryInfo = secondaryInfo + artistList[i].name + ", ";
+                        secondaryInfo += "\n" + artistList[i].name;
                     }
                 }
-                secondaryInfo = secondaryInfo + ".";
 
                 //Incorrect Answers
                 // Finding in top artist
@@ -577,19 +567,10 @@ class simpleQuestionGen {
 
                 // Finding secondary info
                 if (numExplicit <= 5) {
-                    secondaryInfo = "The explicit songs in your top " + numbers[0] + " songs are: "
+                    secondaryInfo = "The explicit songs in your top " + (numbers[0] + 1) + " songs are:"
                     for (let i = 0; i < numExplicit; i++) {
-                        let newLine = "";
-                        if (numExplicit - i > 2) {
-                            newLine = explicitSongList[i] + ", "
-                        } else if (numExplicit - 1 === 2) {
-                            newLine = explicitSongList[i] + " and "
-                        } else {
-                            newLine = explicitSongList[i]
-                        }
-                        secondaryInfo = secondaryInfo + newLine;
+                        secondaryInfo += "\n" + explicitSongList[i];
                     }
-                    secondaryInfo = secondaryInfo + ".";
                 }
         
                 for (let i = 0; i < 3; i++) {
@@ -666,7 +647,7 @@ class simpleQuestionGen {
                 }
 
                 result[0] = finalResult(trackList[corrInd]);
-                secondaryInfo = "The duration of " + trackList[corrInd].name + " was " + convertTime(corrDur);
+                secondaryInfo = "The duration of " + trackList[corrInd].name + " is " + convertTime(corrDur) + ".";
 
                 let currNonIndexes = [corrInd];
                 for (let i = 0; i < 3; i++) {
@@ -839,9 +820,9 @@ class simpleQuestionGen {
                 let corTrack = tracks.splice(ind, 1)[0];
                 result[0] = finalResult(corTrack);
 
-                // Sets secondary info only if the question is about bpm.
+                // Sets secondary info only if the question is about BPM.
                 if (questionID === 26 || questionID === 27) {
-                    secondaryInfo = "The bpm of " + corTrack.name + " was " + ans + ".";
+                    secondaryInfo = "The BPM of " + corTrack.name + " is " + ans + ".";
                 }
 
                 tracks.forEach(track => {
@@ -858,7 +839,7 @@ class simpleQuestionGen {
         }
 
         if ((result[0]+"").includes(SPLIT_MARKER)) {
-            this.storeQuestion(this.curQuestion.question, result[0].split(SPLIT_MARKER)[0], secondaryInfo);
+            this.storeQuestion(this.curQuestion.question, "\"" + result[0].split(SPLIT_MARKER)[0] + "\" by " + result[0].split(SPLIT_MARKER)[1], secondaryInfo);
         } else {
             this.storeQuestion(this.curQuestion.question, result[0], secondaryInfo);
         }
