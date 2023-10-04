@@ -566,7 +566,7 @@ class simpleQuestionGen {
                 result.push(numExplicit);
 
                 // Finding secondary info
-                if (numExplicit <= 5) {
+                if (numExplicit > 0 && numExplicit <= 5) {
                     secondaryInfo = "The explicit songs in your top " + (numbers[0] + 1) + " songs are:"
                     for (let i = 0; i < numExplicit; i++) {
                         secondaryInfo += "\n" + explicitSongList[i];
