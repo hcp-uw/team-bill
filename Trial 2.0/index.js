@@ -12,7 +12,7 @@ function onPageLoad() {
         console.log("handled redirect!");
     }
 }
-
+// Test
 
 function playSolo() {
     if (isLoggedIn()) {
