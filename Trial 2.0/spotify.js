@@ -23,6 +23,7 @@ export const GET_PLAYLIST = "https://api.spotify.com/v1/playlists/"; // must con
 export const TOPTRACKS = "https://api.spotify.com/v1/me/top/tracks";
 export const TOPARTIST = "https://api.spotify.com/v1/me/top/artists";
 export const GENRE_REC = "https://api.spotify.com/v1/recommendations/available-genre-seeds";
+export const CUR_USER = "https://api.spotify.com/v1/me" 
 
 document.addEventListener("DOMContentLoaded", onPageLoad);
 
@@ -37,8 +38,8 @@ function onPageLoad() {
  */
 export function requestAuthorization(opt_redirect_uri) {
     console.log("Requested Authorization!");
-    localStorage.setItem("client_id", client_id);
-    localStorage.setItem("client_secret", client_secret); // In a real app you should not expose your client_secret to the user
+    // localStorage.setItem("client_id", client_id);
+    // localStorage.setItem("client_secret", client_secret); // In a real app you should not expose your client_secret to the user
     if (typeof(opt_redirect_uri) == 'string') {
         redirect_uri = opt_redirect_uri;
     }
@@ -112,8 +113,7 @@ function callAuthorizationApi(body) {
 function handleAuthorizationResponse() {
     if (this.status == 200) { 
         var data = JSON.parse(this.responseText);
-        console.log(data);
-        var data = JSON.parse(this.responseText);
+        console.log(data);;
         if (data.access_token != undefined) {
             access_token = data.access_token;
             localStorage.setItem("access_token", access_token);
@@ -125,7 +125,6 @@ function handleAuthorizationResponse() {
         location.reload();
     } else {
         console.log(this.responseText);
-        alert(this.responseText);
     }
 }
 
@@ -181,5 +180,9 @@ export function deviceId() {
 // Checks if the user is logged in
 // TODO: Check if the access token is valid
 export function isLoggedIn() {
-    return access_token != null;
+    return localStorage.getItem('access_token') != null;
+}
+
+export function logout() {
+    localStorage.clear();
 }
