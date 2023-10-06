@@ -882,7 +882,7 @@ class simpleQuestionGen {
      *      as long as question and correctAnswer have defined values
      */
     storeQuestion(question, correctAnswer, moreInfo) {
-        if (question !== undefined && correctAnser !== undefined) {
+        if (question !== undefined && correctAnswer !== undefined) {
             this.storedQuestions.push({question: question, correctAnswer:correctAnswer, moreInfo:moreInfo});
             localStorage.setItem("Stored Questions", JSON.stringify(this.storedQuestions));
         }
