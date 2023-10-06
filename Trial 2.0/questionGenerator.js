@@ -569,7 +569,7 @@ class simpleQuestionGen {
                 result.push(numExplicit);
 
                 // Finding secondary info
-                if (numExplicit <= 5) {
+                if (numExplicit > 0 && numExplicit <= 5) {
                     secondaryInfo = "The explicit songs in your top " + (numbers[0] + 1) + " songs are:"
                     for (let i = 0; i < numExplicit; i++) {
                         secondaryInfo += "\n" + explicitSongList[i];
@@ -882,11 +882,13 @@ class simpleQuestionGen {
      * @param {String} correctAnswer 
      * @param {String} moreInfo 
      * @effects storedQuestions to include {question: question, correctAnswer:correctAnswer, moreInfo:moreInfo}
+     *      as long as question and correctAnswer have defined values
      */
     storeQuestion(question, correctAnswer, moreInfo) {
-        this.storedQuestions.push({question: question, correctAnswer:correctAnswer, moreInfo:moreInfo});
-        localStorage.setItem("Stored Questions", JSON.stringify(this.storedQuestions));
-        
+        if (question !== undefined && correctAnser !== undefined) {
+            this.storedQuestions.push({question: question, correctAnswer:correctAnswer, moreInfo:moreInfo});
+            localStorage.setItem("Stored Questions", JSON.stringify(this.storedQuestions));
+        }
     }
 
     /**

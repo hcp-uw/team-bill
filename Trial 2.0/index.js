@@ -1,4 +1,4 @@
-import {handleRedirect, isLoggedIn, requestAuthorization } from "./spotify.js";
+import {handleRedirect, isLoggedIn, requestAuthorization, logout, callApi, CUR_USER } from "./spotify.js";
 
 document.addEventListener("DOMContentLoaded", onPageLoad);
 
@@ -13,7 +13,6 @@ function onPageLoad() {
     }
 }
 
-
 function playSolo() {
     if (isLoggedIn()) {
         window.location.href = window.location.origin + "/sologamescreen.html";
@@ -22,8 +21,5 @@ function playSolo() {
     }
 }
 
-document.getElementById('authorizeBtn').addEventListener('click', requestAuthorization);
-document.getElementById('soloDiv').addEventListener('click', playSolo);
-document.getElementById('soloTab').addEventListener('click', playSolo);
+
 document.getElementById('play-button').addEventListener('click', playSolo);
-// document.getElementById('refreshBtn').addEventListener('click', refreshAccessToken);

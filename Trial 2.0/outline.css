@@ -20,7 +20,7 @@ body {
   width: 100vw;
   overflow: hidden;
   position: relative;
-  top: -3.75rem;
+  top: -3rem;
   left: -0.625rem;
   height: 3.875rem;
   margin-bottom: 0rem;
@@ -47,14 +47,28 @@ body {
   margin-left: 2rem;
 }
 
+#profile-picture.shown {
+  margin: 0.65rem 0.7rem 0.65rem 0rem;
+  border-radius: 50%;
+  height: 2.4rem;
+  width: 2.4rem;
+}
+
+#profile-picture.hidden {
+  margin: 0rem 0rem;
+  border-radius: 50%;
+  height: 2.4rem;
+  width: 0rem;
+  visibility: hidden;
+}
+
 
 /* Style the log in button inside the navigation bar */
-.topnav input {
+#authorizeBtn {
   float: right;
   font-weight : bold;
   color: #191919;
   text-align: center;
-  padding: .6rem 1.2rem;
   margin: .65rem 1.5rem;
   text-decoration: none;
   font-size: 1.1rem;
@@ -64,22 +78,35 @@ body {
   border-style: solid;
   font-family: 'Nunito';
   cursor: pointer;
+  width: 8rem;
+  height: 2.5rem;
+  position: sticky;
+}
+
+#authorizeBtn.hidden {
+  padding: .4rem 1.2rem;
+}
+
+#authorizeBtn.shown {
+  padding: .6rem 0rem;
+  display: flex;
+  align-items: center;
 }
 
 /* Change the color of button on hover */
-.topnav a:hover {
+.topnav button:hover {
   background-color: #191919;
   color: #f2f2f2;
 }
 
 /* Change the color of links on hover */
-.topnav a:hover { 
+.topnav button:hover { 
   background-color: #ddd;
   color: black;
 }
 
 /* Add a color to the active/current link */
-.topnav a.active {
+.topnav button.active {
   background-color: #FFC7AF;
   color: black;
   font-weight: bold;
@@ -131,6 +158,6 @@ body {
   text-align: center;
   color: #1E1E1E;
   position: absolute;
-} */
+}
 
 
