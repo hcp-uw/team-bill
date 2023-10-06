@@ -490,6 +490,9 @@ class simpleQuestionGen {
                     if (artistList[i] === undefined) {
                         return [];
                     }
+                    if (artistList[i].genre === undefined) {
+                        return [];
+                    }
                     let genre = artistList[i].genres[0];
                     if (!comGenres.has(genre)) { 
                         comGenres.set(genre, 0);
