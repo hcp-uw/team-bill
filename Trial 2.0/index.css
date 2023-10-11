@@ -52,14 +52,13 @@ body {
 }
 
 /* Remove waves if the screen width is below given width */
-@media (max-width: 800px) {
+@media (max-width: 1250px) {
     .title-wave {
         display: none;
     }
 }
 
 /* How to play formatting */
-
 #how-to-rectangle {
     display: flex;
     flex-direction: column;
@@ -71,14 +70,12 @@ body {
     margin-top: 7vh;
     text-align: center;
     padding: 48px 12px;
-
-
 }
 
 
 #how-to-title {
     margin: 0;
-    margin-top: 2vh;
+    margin-top: -1vh;
     color: #1D8C9F;
     margin-bottom: 2vh;
 
@@ -111,6 +108,9 @@ body {
     height: 4.6758rem;
     font-size: 2.08rem;
     font-weight: bold;
+    cursor: pointer;
+    border: none;
+    margin: 0.5rem;
 }
 
 
