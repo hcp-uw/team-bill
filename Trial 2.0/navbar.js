@@ -2,6 +2,7 @@ import {handleRedirect, isLoggedIn, requestAuthorization, logout, callApi, CUR_U
 document.addEventListener("DOMContentLoaded", onPageLoad);
 
 function onPageLoad() {
+    document.getElementById("back-to-home-logo").addEventListener("click", () => window.location.href = window.location.origin);
     if (isLoggedIn()) {
         document.getElementById('authorizeBtn').innerHTML = document.getElementById('authorizeBtn').innerHTML.replace('Login', 'Logout');
         document.getElementById('authorizeBtn').removeEventListener("click", requestAuthorization);

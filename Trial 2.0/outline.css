@@ -8,21 +8,21 @@ html {
 }
 
 body {
-  padding-top: 3rem;
   background-color: #000000;
   font-family: 'Nunito', sans-serif;
+  margin: 0;
+  padding-top: 48px;
 }
 
 /* Add a black background color to the top navigation */
 .topnav {
-  position: sticky;
+  position: absolute;
   background-color: #191919;
-  width: 102vw;
-  overflow: hidden;
+  width: 100vw;
   position: relative;
-  top: -3rem;
-  left: -0.625rem;
-  height: 3.875rem;
+  top: -48px;
+  left: 0;
+  height: 62px;
   margin-bottom: 0rem;
 }
 
@@ -45,6 +45,10 @@ body {
   height: 2.438rem;
   margin: 0.688rem;
   margin-left: 2rem;
+}
+
+#back-to-home-logo {
+  cursor: pointer;
 }
 
 #profile-picture.shown {
