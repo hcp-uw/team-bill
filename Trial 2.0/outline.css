@@ -17,7 +17,7 @@ body {
 .topnav {
   position: sticky;
   background-color: #191919;
-  width: 100vw;
+  width: 102vw;
   overflow: hidden;
   position: relative;
   top: -3rem;
@@ -69,7 +69,7 @@ body {
   font-weight : bold;
   color: #191919;
   text-align: center;
-  margin: .65rem 1.5rem;
+  margin: .65rem 2rem;
   text-decoration: none;
   font-size: 1.1rem;
   background-color: #FFC7AF;
