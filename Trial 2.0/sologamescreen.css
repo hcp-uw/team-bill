@@ -1,16 +1,3 @@
-.topnav {
-    margin-bottom: 0px;
-}
-
-#nav-bar-logo {
-    padding: 0;
-    margin: 0;
-}
-
-#nav-bar-logo:hover {
-    background-color: transparent;
-}
-
 #game-section {
     margin: 0 2rem 2rem;
     min-height: calc(100vh - 124px - 10rem);
