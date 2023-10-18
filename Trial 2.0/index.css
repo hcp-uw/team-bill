@@ -10,8 +10,8 @@ body {
 /* Title block formatting */
 
 #billboard {
-    width: 400px;
-    margin: 0 0 2em;
+    width: 300px;
+    margin: 0 0 3em;
 }
 
 #title-desc {
@@ -48,7 +48,7 @@ body {
     justify-content: center;
     color: white;
     border-radius: 32px;
-    padding: 48px 12px 80px;
+    padding: 80px 12px;
 }
 
 /* Remove waves if the screen width is below given width */
