@@ -4,6 +4,7 @@ const DEBUG = false; // debugging boolean to use in the future for console logs,
 const QUESTION_ID = 7; // The question ID you want to test
 const SPLIT_MARKER = "*&*" // String to identify where to split between an answer and the artist. 
                            // We could change what the characters are later.
+const SONG_CHAR_LIMIT = 30; // Character limit on song names being returned. If a song name is too long it will cut it off and put '...' after.
 
 /**
  * @typedef question
@@ -44,11 +45,11 @@ class simpleQuestionGen {
         this.getApiData();
 
         // Checking Basic Preconditions
-        // if (this.apiResponseMap.get("tracks-long-50").items.length < 10 ||
-        //      this.apiResponseMap.get("artists-long-50").items.length < 10) {
-        //         throw new Error("Basic Preconitions are not met." + 
-        //                         " Must have at least 10 top songs and top artists ");
-        // }
+        if (this.apiResponseMap.get("tracks-long-50").items.length < 10 ||
+             this.apiResponseMap.get("artists-long-50").items.length < 10) {
+                throw new Error("Basic Preconitions are not met." + 
+                                " Must have at least 10 top songs and top artists ");
+        }
 
         this.changeQuestion();
     }
@@ -58,21 +59,22 @@ class simpleQuestionGen {
     }
     getAnswer = () => { 
         if((this.curAnswer+"").includes(SPLIT_MARKER)) {
-            return this.curAnswer.split(SPLIT_MARKER)[0];
+            return cutSongName(this.curAnswer.split(SPLIT_MARKER)[0]);
         }
-        return this.curAnswer;
+        return cutSongName(this.curAnswer);
 
     }
 
-    getNonAnswers = () => { 
-        const ret = [];        
+
+    getNonAnswers = () => {       
         if((this.curNonAnswers[0]+"").includes(SPLIT_MARKER)) {
-            for(let i =0; i<3; i++) {
-                ret.push(this.curNonAnswers[i].split(SPLIT_MARKER)[0]);
+            const ret = [];
+            for(let i = 0; i < 3; i++) {
+                ret.push(cutSongName(this.curNonAnswers[i].split(SPLIT_MARKER)[0]));
             }
             return ret;
         }
-        return this.curNonAnswers;
+        return cutSongName(this.curNonAnswers);
     }
 
     changeQuestion = () => {
@@ -1058,6 +1060,18 @@ function compareDates(date1, date2) {
  */
 function getScaledNum(x, a, b) {
     return Math.floor(x/a + b);
+}
+
+/**
+ * Cuts off song name if it is too long.
+ * @param {string} songName 
+ * @returns song name such that if it is longer that SONG_CHAR_LIMIT it gets cut at that index and '...' gets added.
+ */
+function cutSongName(songName) {
+    if (songName.length > SONG_CHAR_LIMIT) {
+        return songName.slice(0, SONG_CHAR_LIMIT) + '...';
+    } 
+    return songName;
 }
 
 /**
