@@ -45,12 +45,11 @@ class simpleQuestionGen {
         this.getApiData();
 
         // Checking Basic Preconditions
-        // TODO: Uncomment this
-        // if (this.apiResponseMap.get("tracks-long-50").items.length < 10 ||
-        //      this.apiResponseMap.get("artists-long-50").items.length < 10) {
-        //         throw new Error("Basic Preconitions are not met." + 
-        //                         " Must have at least 10 top songs and top artists ");
-        // }
+        if (this.apiResponseMap.get("tracks-long-50").items.length < 10 ||
+             this.apiResponseMap.get("artists-long-50").items.length < 10) {
+                throw new Error("Basic Preconitions are not met." + 
+                                " Must have at least 10 top songs and top artists ");
+        }
 
         this.changeQuestion();
     }
