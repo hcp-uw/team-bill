@@ -61,6 +61,9 @@ p {
     font-size: 1.31em;
     color: black;
 }
+    p.more-info {
+        font-weight: 900;
+    }
 
 #play-again-btn {
     font-weight: bold;
