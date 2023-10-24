@@ -16,11 +16,15 @@
     flex-flow: row wrap;
     justify-content: center;
     row-gap: 4vh;
-    column-gap: 5vw;
+    column-gap: 4vw;
     margin-top: 6.66px;
 
     /* padding-left: 15vw;
     padding-right: 15vw; */
+}
+
+.margin-top {
+    margin-top: 5vh;
 }
 
 .button {
@@ -141,6 +145,10 @@
     .button-container {
         row-gap: 0.5rem;
         column-gap: 0.5rem;
+    }
+
+    .margin-top {
+        margin-top: 0.5rem;
     }
 
     .button {
