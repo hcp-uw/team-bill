@@ -10,7 +10,7 @@ body {
 /* Title block formatting */
 
 #billboard {
-    width: 300px;
+    width: 350px;
     margin: 0 0 3em;
 }
 
@@ -19,7 +19,6 @@ body {
     flex-direction: row;
     column-gap: 2rem;
     width: 100%;
-    font-size: 1rem;
     margin: 0;
     align-items: center;
     justify-content: center;
@@ -48,7 +47,7 @@ body {
     justify-content: center;
     color: white;
     border-radius: 32px;
-    padding: 80px 12px;
+    padding: 60px 12px 80px;
 }
 
 /* Remove waves if the screen width is below given width */
@@ -60,10 +59,6 @@ body {
 
 /* How to play formatting */
 #how-to-rectangle {
-    display: flex;
-    flex-direction: column;
-    background-color: #B9E2E0;
-    border-radius: 32px;
     width: 81vw;
     min-height: 35vh;
     margin: auto;
@@ -82,10 +77,25 @@ body {
 }
 
 #how-to-desc {
-    color: #1E1E1E;
-    margin: auto 7%;
-    text-align: left;
+    display: flex;
+    justify-content: center;
+    column-gap: 4vw;
+    text-align: center;
+    margin-top: 3em;
+    font-size: 1.2em;
+    font-weight: 600;
 }
+    #how-to-desc div {
+        background-color: #B9E2E0;
+            border-radius: 32px;
+        width: 25vw;
+        padding: 1em;
+        box-sizing: border-box;
+    }
+        #how-to-desc div h2 {
+            color: #1D8C9F;
+            font-weight: 900;
+        }
 
 /* Play button formatting */
 
@@ -94,7 +104,7 @@ body {
     width: 100%;
     align-items: center;
     justify-content: center;
-    margin: 3vh auto 3vh;
+    margin: 3em auto 3em;
 }
 
 #play-button {
@@ -106,34 +116,18 @@ body {
     border-radius: 40px;
     min-width: 9.375rem;
     height: 4.6758rem;
-    font-size: 2.08rem;
     font-weight: bold;
     cursor: pointer;
     border: none;
     margin: 0.5rem;
+    font-size: 1.8em;
 }
 
 
 /* About us formatting*/
 #about-us {
-    display:flex;
-    flex-direction: column;
     background-color: white;
     color: #1E1E1E;
-    min-height: 27vh;
-    padding-bottom: 1rem;
-}
-
-#abt-info {
-    margin: auto 12%;
-}
-
-#abt-title {
-    font-size: 1.56rem;
-    margin: 0;
-    margin-top: 5vh;
-}
-
-#abt-desc {
-    font-size: 1.06rem;
+    padding: 2em 9.5vw 3em;
+    font-size: 1.2em;
 }

@@ -4,10 +4,10 @@
     <link href='https://fonts.googleapis.com/css?family=Nunito' rel='stylesheet'>
     <link rel="stylesheet" href="index.css" >
     <link rel="stylesheet" href="outline.css" >
-    <link rel="icon" href="images\BillLogoUpdated.png">
+    <link rel="icon" sizes="180x180" href="images\bill-logo.png">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Bill!</title>
+    <title>Billboard</title>
     <!-- update the version number as needed -->
     <!-- <script defer src="/__/firebase/9.15.0/firebase-app-compat.js"></script>  -->
     <!-- include only the Firebase features as you need  -->
@@ -61,27 +61,37 @@
       
     <section class="main">
       <section class="title-rectangle">
-        <img id="billboard" src="images/billboard.svg" alt="Billboard logo">
+        <img id="billboard" src="images/billboard-logo.png" alt="Billboard logo">
         <div id="title-desc">
-          <img class="title-wave" src="images/blueSoundWavesLeft.png">
-          <h2 id="title-text">A more interactive experience with your music play. <br><br>
+          <img class="title-wave" src="images/blueSoundWavesLeft.png" alt="">
+          <h2 id="title-text">A personalized music trivia experience.<br><br>
             How well do you know your own music taste? <br>
-            Guess your favorite songs, albums, genres,
-            and more!</h2>
-          <img class="title-wave" src="images/blueSoundWavesRight.png">
+            Guess your favorite songs, artists, genres, and more!</h2>
+          <img class="title-wave" src="images/blueSoundWavesRight.png" alt="">
         </div>
       </section>
 
-      <section id="how-to-rectangle">
-        <h1 id="how-to-title"> How to Play</h1>
-        <h2 id="how-to-desc">
-          <ol>
-            <li> Login to Spotify using your desired Spotify account </li>
-            <li> Press the play button below to start game play </li>
-            <li> Answer the questions about your own music listening habits </li>
-            <li> Look at the results page and see how you did!</li>
-          </ol>
-        </h2>
+      <!-- <h2 id="how-to-desc">
+        <ol>
+          <li> Login to Spotify using your desired Spotify account </li>
+          <li> Press the play button below to start game play </li>
+          <li> Answer the questions about your own music listening habits </li>
+          <li> Look at the results page and see how you did!</li>
+        </ol>
+      </h2> -->
+      <section id="how-to-desc">
+        <div>
+          <h2>Step 1</h2>
+          <p>Click "Play" below to log in through Spotify and start the game!</p>
+        </div>
+        <div>
+          <h2>Step 2</h2>
+          <p>Then, answer 10 multiple-choice questions about your own listening history.</p>
+        </div>
+        <div>
+          <h2>Step 3</h2>
+          <p>Finally, view your results and see more information about the correct answers!</p>
+        </div>
       </section>
 
       <section id="play-container">
@@ -95,20 +105,17 @@
     </section>
 
     <section id="about-us">
-      <div id="abt-info"> 
-        <h1 id="abt-title">About us</h1>
-        <h2 id="abt-desc">
-          We are Team Bill! We are a project team in Husky Coding Project at the University of Washington. Our team
-          has 7 members and we are all interested in learning about the computer science industry. Our goal for this project was to
-          have fun and get exposed to some new programming concepts! We also love music analyzing tools such as Spotify Wrapped,
-          so we wanted to make our own version for others to enjoy and learn more about their own music tastes.
-          <br>
-          To create this project we used Firebase as our hosting service, and we used Spotify's Web API to get data about
-          our users.
-        </h2>
-          </h2>
-      </div>
-      </section>
+      <h2>About us</h2>
+      <p>
+        We are Team Bill! We are a project team in Husky Coding Project at the University of Washington. Our team
+        has 7 members and we are all interested in learning about the computer science industry. Our goal for this project was to
+        have fun and get exposed to some new programming concepts! We also love music analyzing tools such as Spotify Wrapped,
+        so we wanted to make our own version for others to enjoy and learn more about their own music tastes.
+        <br>
+        To create this project we used Firebase as our hosting service, and we used Spotify's Web API to get data about
+        our users.
+      </p>
+    </section>
 
     <script type="module" src="index.js"></script>
   </body>
