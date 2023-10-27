@@ -131,3 +131,42 @@ body {
     padding: 2em 9.5vw 3em;
     font-size: 1.2em;
 }
+
+#about-cards {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    background-color: white;
+}
+.about-card {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #1d8c9f;
+    color: white;
+    height: 375px;
+    width: 225px;
+    border-radius: 25px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin: 40px;
+    margin-top: 10px;
+}
+
+.about-card img {
+    height: 50%;
+    padding-top: 0px;
+    margin-top: 0px;
+    border-radius: 25px;
+    object-fit: cover;
+}
+
+.about-card h3 {
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+
+}
+
+.about-card h4 {
+    margin: 5px;
+}
