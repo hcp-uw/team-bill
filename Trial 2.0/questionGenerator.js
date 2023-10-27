@@ -47,7 +47,8 @@ class simpleQuestionGen {
         // Checking Basic Preconditions
         if (this.apiResponseMap.get("tracks-long-50").items.length < 10 ||
              this.apiResponseMap.get("artists-long-50").items.length < 10) {
-                throw new Error("Basic Preconitions are not met." + 
+               alert("You do not meet the basic preconditions")
+                console.error("Basic Preconditions are not met." + 
                                 " Must have at least 10 top songs and top artists ");
         }
 

@@ -134,9 +134,11 @@ body {
 
 #about-cards {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     flex-wrap: wrap;
     background-color: white;
+    width: 81vw;
+    padding-top: 50px;
 }
 .about-card {
     display: flex;
@@ -151,6 +153,7 @@ body {
     padding-right: 20px;
     margin: 40px;
     margin-top: 10px;
+
 }
 
 .about-card img {
