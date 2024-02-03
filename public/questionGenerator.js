@@ -1,4 +1,4 @@
-import { callApi, callApiSync, TOPTRACKS, TOPARTIST, GENRE_REC } from "./spotify.js";
+import { callApiSync, TOPTRACKS, TOPARTIST, GENRE_REC } from "./spotify.js";
 
 const DEBUG = false; // debugging boolean to use in the future for console logs, etc. -- don't need to keep I just included it if certain console logs get annoying
 const QUESTION_ID = 7; // The question ID you want to test
