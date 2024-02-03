@@ -1,5 +1,4 @@
-export var client_id = "a0c734380e8a4301b8af9f29b139165c";
-export var client_secret = "33dad7cfdcd347b0a83d551537ffa728"; // In a real app you should not expose your client_secret to the user
+import {client_id, client_secret} from "./api_key.js";
 export var scope = "user-top-read user-read-recently-played";
 
 var redirect_uri;
