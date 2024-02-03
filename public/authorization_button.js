@@ -1,4 +1,4 @@
-import {handleRedirect, isLoggedIn, requestAuthorization, logout, callApi, CUR_USER } from "./spotify.js";
+import {isLoggedIn, requestAuthorization, logout, callApi, CUR_USER } from "./spotify.js";
 document.addEventListener("DOMContentLoaded", onPageLoad);
 
 function onPageLoad() {
