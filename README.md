@@ -12,7 +12,7 @@ Billboard was created by Team Bill, a group of 7 people, for the Husky Coding Pr
 Before you start make sure you have npm installed.
 
 ### Install Firebase
-Use the following command to install firebased:
+Use the following command to install firebase:
 
 ```npm i firebase```
 
@@ -26,7 +26,7 @@ To be able to play the trivia game using your own Spotify account you will have 
 Once you create the project go to **settings** and under basic information you should be able to view your client ID and client secret. Copy these values and insert them into their respective variable in the `public/api_key.js` file.
 
 ### Start Emulator and Open Website
-1. Use the following command to start the firebase emulator to start the server:
+1. Use the following command to start the firebase emulator:
 
     ```firebase emulators:start```
 
